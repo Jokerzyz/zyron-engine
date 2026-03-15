@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>矩阵特效与 ASCII 艺术终端 | Soft Neumorphism UI</title>
+    <title>矩阵特效与 ASCII 艺术终端 v1.3 | Soft Neumorphism UI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -187,17 +187,6 @@
         canvas { 
             border-radius: 24px;
             background: #ffffff; /* 保持画布纯白底以准确呈现颜色 */
-        .neu-btn-ai:hover {
-            box-shadow: 8px 8px 16px var(--shadow-dark), 
-                       -8px -8px 16px var(--shadow-light),
-                       inset 1px 1px 2px rgba(255,255,255,0.9),
-                       0 0 15px rgba(0, 102, 255, 0.2);
-        }
-
-        /* 渲染画布 */
-        canvas { 
-            border-radius: 24px;
-            background: #ffffff; 
             image-rendering: auto; 
             max-height: 75vh;
             box-shadow: 8px 8px 24px rgba(163, 177, 198, 0.4);
@@ -220,7 +209,7 @@
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase">Matrix UI Kit</h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase">Matrix UI Kit <span class="text-xl text-[var(--accent)] ml-1">v1.3</span></h1>
                 <span class="text-xs font-black px-4 py-1.5 rounded-full neu-inset text-[var(--accent)] tracking-widest">ASCII ENGINE</span>
             </div>
             <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide">Tactile Elements • Organic Claymorphism • High Quality Render</p>
@@ -283,7 +272,7 @@
 
                         <div class="pt-2">
                             <div class="flex justify-between items-center text-xs mb-3">
-                                <span id="lblDotScale" class="font-extrabold text-[var(--text-muted)]">单元缩放 (间隙)</span>
+                                <span id="lblDotScale" class="font-extrabold text-[var(--text-muted)]" title="控制每行文字或圆点之间的垂直空隙，以及图案自身的大小">行间距与字号缩放</span>
                                 <span id="dotScaleVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.85</span>
                             </div>
                             <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
@@ -294,7 +283,7 @@
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-extrabold text-[var(--text-dark)]">锁定等大圆点 (LED化)</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="fixedDotSize" class="sr-only peer" checked>
+                                    <input type="checkbox" id="fixedDotSize" class="sr-only peer">
                                     <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
                                     <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
                                 </label>
@@ -360,8 +349,8 @@
                                     <span>排版与渲染逻辑</span>
                                 </div>
                                 <select id="asciiLogicSelect" class="neu-input w-full text-[11px] font-bold cursor-pointer">
-                                    <option value="density" selected>亮度密度映射 (依明暗匹配不同字符)</option>
-                                    <option value="mask">连续文本遮罩 (使用原文覆盖+透明度明暗遮罩)</option>
+                                    <option value="density">亮度密度映射 (依明暗匹配不同字符)</option>
+                                    <option value="mask" selected>连续文本遮罩 (使用原文覆盖+透明度明暗遮罩)</option>
                                 </select>
                             </div>
                             <div>
@@ -374,11 +363,41 @@
                                         <option value=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*">彩色赛博代码 (RGB Code)</option>
                                         <option value="  VCXZNOQSA#">复古排字</option>
                                         <option value=" ░▒▓█">像素块</option>
-                                        <option value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ">英文长散文遮罩</option>
+                                        <option value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " selected>英文长散文遮罩</option>
                                         <option value="custom">自定义...</option>
                                     </select>
                                 </div>
-                                <input type="text" id="asciiCharsInput" value=" .:-=+*#%@" class="neu-input w-full text-[10px] font-mono tracking-wider">
+                                <input type="text" id="asciiCharsInput" value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " class="neu-input w-full text-[10px] font-mono tracking-wider">
+                            </div>
+                            
+                            <!-- 新增：强制剔除空格功能 (消除竖向断层) -->
+                            <div class="pt-3 border-t border-white/30">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[10px] font-bold text-[var(--text-muted)]" title="开启后自动清除文本中的空格字符，彻底解决因空格上下对齐产生的竖向断层与镂空">强制无缝排版 (自动剔除空格)</span>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" id="asciiRemoveSpaces" class="sr-only peer" checked>
+                                        <div class="w-10 h-5 neu-inset rounded-full transition-colors duration-300"></div>
+                                        <div class="absolute left-1 top-1 w-3 h-3 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-5 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- 字符横向紧凑度修正功能 -->
+                            <div class="pt-3 border-t border-white/30">
+                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                    <span>字符横向紧凑度 (挤压列间距)</span>
+                                    <span id="asciiRatioVal" class="font-mono text-[var(--accent)]">0.60</span>
+                                </div>
+                                <input type="range" id="asciiRatio" min="0.3" max="1.5" step="0.05" value="0.6">
+                            </div>
+
+                            <!-- 字符亮度强化功能 (解决高密度变暗问题) -->
+                            <div class="pt-3 border-t border-white/30">
+                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                    <span title="由于Canvas抗锯齿机制，阵列过密时文字发灰发暗。调高此值可使用多重叠印技术让文字重新变得极其亮白/鲜艳。">字符亮度强化 (抗模糊 Overdraw)</span>
+                                    <span id="asciiIntensityVal" class="font-mono text-[var(--accent)]">1</span>
+                                </div>
+                                <input type="range" id="asciiIntensity" min="1" max="5" step="1" value="1">
                             </div>
                         </div>
 
@@ -464,7 +483,7 @@
                         <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]">清空重置</button>
                         <button id="saveButton" class="flex-[2] py-4 neu-btn text-xs font-black text-[var(--text-dark)]">📸 留存当前单帧</button>
                     </div>
-                    <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 渲染导出视频帧序列</button>
+                    <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 渲染导出无损视频序列包</button>
                 </div>
             </aside>
 
@@ -483,7 +502,7 @@
                     <div id="videoControls" class="absolute bottom-8 left-1/2 -translate-x-1/2 w-11/12 max-w-2xl neu-panel px-8 py-4 hidden flex-col gap-2 z-10 border-2 border-white/40">
                         <div class="flex items-center gap-5">
                             <button id="playPauseBtn" class="neu-btn w-12 h-12 rounded-full flex-shrink-0 text-[var(--accent)]">
-                                <svg id="playIcon" class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
+                                <svg id="playIcon" class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
                                 <svg id="pauseIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
                             </button>
                             <button id="prevFrameBtn" class="neu-btn w-10 h-10 rounded-full flex-shrink-0" title="上一帧">
@@ -568,7 +587,12 @@
             const asciiCharsInput = document.getElementById('asciiCharsInput');
             const asciiPresetSelect = document.getElementById('asciiPresetSelect');
             const asciiControls = document.getElementById('asciiControls');
-            const asciiLogicSelect = document.getElementById('asciiLogicSelect'); // 新增：排版逻辑选择器
+            const asciiLogicSelect = document.getElementById('asciiLogicSelect'); 
+            const asciiRatio = document.getElementById('asciiRatio'); 
+            const asciiRatioVal = document.getElementById('asciiRatioVal');
+            const asciiIntensity = document.getElementById('asciiIntensity');
+            const asciiIntensityVal = document.getElementById('asciiIntensityVal');
+            const asciiRemoveSpaces = document.getElementById('asciiRemoveSpaces'); // 新增
 
             const sourceBrightness = document.getElementById('sourceBrightness');
             const sourceContrast = document.getElementById('sourceContrast');
@@ -645,9 +669,9 @@
                 gridSize: 20, dotScale: 0.85, sourceBrightness: 0, sourceContrast: 0,
                 brightness: 20, contrast: 20, fps: 24, bgColor: "#000000", dotColor: "#ffffff", 
                 invertMapping: false, smoothStep: true, renderMode: 'dot', 
-                asciiLogic: 'density', asciiChars: " .:-=+*#%@", 
+                asciiLogic: 'mask', asciiChars: "THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ", asciiRatio: 0.6, asciiIntensity: 1, asciiRemoveSpaces: true,
                 dotStyle: 'solid', customColorDark: "#000000", customColorMid: "#0066ff", 
-                customColorLight: "#ffffff", fixedDotSize: true, dotCutoff: 0.05
+                customColorLight: "#ffffff", fixedDotSize: false, dotCutoff: 0.05
             };
 
             // --- Basic Utilities ---
@@ -673,6 +697,8 @@
                 contrastVal.textContent = contrast.value;
                 fpsVal.textContent = fpsInput.value;
                 dotCutoffVal.textContent = parseFloat(dotCutoff.value).toFixed(2);
+                if(asciiRatioVal && asciiRatio) asciiRatioVal.textContent = parseFloat(asciiRatio.value).toFixed(2);
+                if(asciiIntensityVal && asciiIntensity) asciiIntensityVal.textContent = asciiIntensity.value;
             }
 
             function updateDotStyleUI() {
@@ -700,7 +726,7 @@
                     asciiControls.classList.add('hidden');
                     dotGeometryControls.classList.remove('hidden');
                     lblGridSize.textContent = "圆点阵列密度";
-                    lblDotScale.textContent = "单元最大缩放比例 (间隙)";
+                    lblDotScale.textContent = "行间距与字号缩放";
                 } else {
                     modeAsciiBtn.classList.add('active');
                     modeAsciiBtn.classList.remove('text-[var(--text-muted)]');
@@ -710,7 +736,7 @@
                     asciiControls.classList.remove('hidden');
                     dotGeometryControls.classList.add('hidden');
                     lblGridSize.textContent = "字符阵列排版密度";
-                    lblDotScale.textContent = "字符渲染字号大小 (间隙)";
+                    lblDotScale.textContent = "字符纵向行间距缩放";
                 }
                 updateDotStyleUI();
                 presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
@@ -835,37 +861,49 @@
                 const isMappingInverted = invertMapping.checked;
                 const useSmooth = smoothStep.checked;
                 const rMode = currentRenderMode;
-                const aChars = asciiCharsInput.value || " ";
+                const aCharsRaw = asciiCharsInput.value || " ";
                 const aLogic = asciiLogicSelect ? asciiLogicSelect.value : 'density';
                 const dStyle = dotStyleSelect.value;
                 const isFixedSize = fixedDotSize.checked;
                 const cutoff = parseFloat(dotCutoff.value);
+                const aRatio = asciiRatio ? parseFloat(asciiRatio.value) : 0.6;
+                const aIntensity = asciiIntensity ? parseInt(asciiIntensity.value) : 1;
+                
+                // 核心修复：开启遮罩模式且勾选剔除空格时，移除字符串中的所有空白符
+                const removeSpaces = asciiRemoveSpaces ? asciiRemoveSpaces.checked : true;
+                let safeChars = aCharsRaw;
+                if (rMode === 'ascii' && aLogic === 'mask' && removeSpaces) {
+                    safeChars = aCharsRaw.replace(/\s+/g, '');
+                    if (safeChars.length === 0) safeChars = "MATRIX"; // 防止全部是空格被删空
+                }
+
+                const stepX = (rMode === 'ascii') ? baseGrid * aRatio : baseGrid;
+                const stepY = baseGrid;
 
                 ctx.fillStyle = bgColorPicker.value;
                 ctx.fillRect(0, 0, procW, procH);
                 
-                const numCols = Math.floor(procW / baseGrid);
-                const numRows = Math.floor(procH / baseGrid);
-                const offsetX = (procW - (numCols * baseGrid)) / 2;
-                const offsetY = (procH - (numRows * baseGrid)) / 2;
+                const numCols = Math.floor(procW / stepX);
+                const numRows = Math.floor(procH / stepY);
+                const offsetX = (procW - (numCols * stepX)) / 2;
+                const offsetY = (procH - (numRows * stepY)) / 2;
 
-                let textIdx = 0; // 掩码模式全局序列索引
+                let textIdx = 0; 
 
                 for (let row = 0; row < numRows; row++) {
                     for (let col = 0; col < numCols; col++) {
                         
-                        // 预先抽取遮罩字符，确保排版不管明暗都严格遵守行列连续性
                         let maskChar = '';
-                        if (rMode === 'ascii' && aLogic === 'mask' && aChars.length > 0) {
-                            maskChar = aChars[textIdx % aChars.length];
+                        if (rMode === 'ascii' && aLogic === 'mask') {
+                            maskChar = safeChars[textIdx % safeChars.length];
                             textIdx++;
                         }
 
                         let totalLum = 0, totalR = 0, totalG = 0, totalB = 0, count = 0;
-                        const startX = Math.floor(offsetX + col * baseGrid);
-                        const startY = Math.floor(offsetY + row * baseGrid);
-                        const endX = Math.min(Math.floor(offsetX + (col + 1) * baseGrid), procW);
-                        const endY = Math.min(Math.floor(offsetY + (row + 1) * baseGrid), procH);
+                        const startX = Math.floor(offsetX + col * stepX);
+                        const startY = Math.floor(offsetY + row * stepY);
+                        const endX = Math.min(Math.floor(offsetX + (col + 1) * stepX), procW);
+                        const endY = Math.min(Math.floor(offsetY + (row + 1) * stepY), procH);
 
                         for (let py = startY; py < endY; py++) {
                             for (let px = startX; px < endX; px++) {
@@ -889,11 +927,11 @@
                                 renderRatio = renderRatio * renderRatio * (3 - 2 * renderRatio);
                             }
 
-                            const centerX = offsetX + col * baseGrid + baseGrid / 2;
-                            const centerY = offsetY + row * baseGrid + baseGrid / 2;
+                            const centerX = offsetX + col * stepX + stepX / 2;
+                            const centerY = offsetY + row * stepY + stepY / 2;
 
                             if (rMode === 'dot') {
-                                const maxRadius = (baseGrid / 2) * maxRadiusScale;
+                                const maxRadius = (stepY / 2) * maxRadiusScale;
                                 let radius = 0;
                                 if (isFixedSize) { if (renderRatio > cutoff) radius = maxRadius; } 
                                 else { if (renderRatio > cutoff) radius = maxRadius * renderRatio; }
@@ -905,31 +943,31 @@
                                     ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.fill();
                                 }
                             } else {
-                                // ---- ASCII 引擎升级：完美支持色彩遮罩与密度双模式 ---
-                                
-                                // 设置统一的颜色获取逻辑
+                                // ---- ASCII Color Mapping ---
                                 if (dStyle === 'original') { ctx.fillStyle = `rgb(${Math.round(totalR/count)}, ${Math.round(totalG/count)}, ${Math.round(totalB/count)})`; } 
                                 else if (dStyle.startsWith('volumetric')) { ctx.fillStyle = getVolumetricColor(normalizedLum, dStyle); } 
                                 else { ctx.fillStyle = dotColorPicker.value; }
 
-                                const fontSize = baseGrid * maxRadiusScale * 1.2;
+                                const fontSize = stepY * maxRadiusScale * 1.2;
                                 ctx.font = `900 ${fontSize}px "JetBrains Mono", "Courier New", Courier, monospace`;
                                 ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
                                 if (aLogic === 'mask') {
-                                    // 【核心算法】文本遮罩模式：靠透明度隐现底层内容
                                     if (renderRatio > cutoff && maskChar !== ' ') {
                                         ctx.globalAlpha = Math.max(0, Math.min(1, renderRatio));
-                                        ctx.fillText(maskChar, centerX, centerY);
+                                        for(let i = 0; i < aIntensity; i++) {
+                                            ctx.fillText(maskChar, centerX, centerY);
+                                        }
                                         ctx.globalAlpha = 1.0;
                                     }
                                 } else {
-                                    // 传统的密度替换模式
                                     if (renderRatio > cutoff) {
-                                        const charIdx = Math.floor(renderRatio * 0.999 * aChars.length);
-                                        const char = aChars[charIdx];
+                                        const charIdx = Math.floor(renderRatio * 0.999 * safeChars.length);
+                                        const char = safeChars[charIdx];
                                         if (char && char !== ' ') {
-                                            ctx.fillText(char, centerX, centerY);
+                                            for(let i = 0; i < aIntensity; i++) {
+                                                ctx.fillText(char, centerX, centerY);
+                                            }
                                         }
                                     }
                                 }
@@ -976,12 +1014,12 @@
             modeAsciiBtn.addEventListener('click', () => setRenderMode('ascii'));
             dotStyleSelect.addEventListener('change', () => { updateDotStyleUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             
-            [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput].forEach(el => {
-                el.addEventListener('input', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput, asciiRatio, asciiIntensity].forEach(el => {
+                if(el) el.addEventListener('input', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             });
 
-            [invertMapping, smoothStep, fixedDotSize].forEach(el => {
-                el.addEventListener('change', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            [invertMapping, smoothStep, fixedDotSize, asciiRemoveSpaces].forEach(el => {
+                if(el) el.addEventListener('change', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             });
 
             asciiLogicSelect.addEventListener('change', () => {
@@ -1005,7 +1043,7 @@
             function handleSubReset() { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
             
             resetGeometryBtn.addEventListener('click', () => { gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff; isManuallyOverridingGrid = false; handleSubReset(); });
-            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; updateDotStyleUI(); handleSubReset(); });
+            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces; updateDotStyleUI(); handleSubReset(); });
             resetSignalBtn.addEventListener('click', () => { sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast; brightness.value = defaults.brightness; contrast.value = defaults.contrast; invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; handleSubReset(); });
             resetOutputBtn.addEventListener('click', () => { exportResolution.value = 'source'; fpsInput.value = defaults.fps; updateUIValues(); });
 
@@ -1140,14 +1178,13 @@
                 brightness.value = defaults.brightness; contrast.value = defaults.contrast; fpsInput.value = defaults.fps; exportResolution.value = 'source'; bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor;
                 invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
                 setRenderMode(defaults.renderMode); dotStyleSelect.value = defaults.dotStyle; updateDotStyleUI();
-                asciiLogicSelect.value = defaults.asciiLogic;
+                asciiLogicSelect.value = defaults.asciiLogic; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces;
                 customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight;
                 asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars;
-                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); isManuallyOverridingGrid = false; keyframes = []; aiResultBox.classList.add('hidden');
-                updateKeyframeUI(); updateUIValues(); if (!isVideo) processFrame();
+                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); isManuallyOverridingGrid = false; keyframes = []; updateKeyframeUI(); updateUIValues(); if (!isVideo) processFrame();
             };
 
-            // --- Modals, Firebase & AI ---
+            // --- Modals & Firebase Initialization ---
             const customModal = document.getElementById('customModal'), modalTitle = document.getElementById('modalTitle'), modalMessage = document.getElementById('modalMessage'), modalInput = document.getElementById('modalInput'), modalCancel = document.getElementById('modalCancel'), modalConfirm = document.getElementById('modalConfirm');
             let modalResolve = null;
             function showModal({ title = "提示", message, showInput = false, hideCancel = false }) { return new Promise((resolve) => { modalTitle.textContent = title; modalMessage.textContent = message; if (showInput) { modalInput.classList.remove('hidden'); modalInput.value = ''; setTimeout(() => modalInput.focus(), 50); } else { modalInput.classList.add('hidden'); } if (hideCancel) modalCancel.classList.add('hidden'); else modalCancel.classList.remove('hidden'); customModal.classList.remove('hidden'); customModal.classList.add('flex'); modalResolve = resolve; }); }
@@ -1167,6 +1204,9 @@
                     if (p.renderMode) setRenderMode(p.renderMode);
                     if (p.dotStyle) { dotStyleSelect.value = p.dotStyle; if (p.dotStyle === 'volumetric_custom') { customColorDark.value = p.customColorDark || "#000000"; customColorMid.value = p.customColorMid || "#99bbff"; customColorLight.value = p.customColorLight || "#ffffff"; } updateDotStyleUI(); }
                     if (p.asciiLogic) { asciiLogicSelect.value = p.asciiLogic; }
+                    if (p.asciiRatio && asciiRatio) { asciiRatio.value = p.asciiRatio; }
+                    if (p.asciiIntensity && asciiIntensity) { asciiIntensity.value = p.asciiIntensity; }
+                    if (p.asciiRemoveSpaces !== undefined && asciiRemoveSpaces) { asciiRemoveSpaces.checked = p.asciiRemoveSpaces; }
                     if (p.asciiChars) { asciiCharsInput.value = p.asciiChars; const match = Array.from(asciiPresetSelect.options).find(opt => opt.value === p.asciiChars); asciiPresetSelect.value = match ? match.value : 'custom'; }
                     deletePresetBtn.classList.remove('hidden'); isManuallyOverridingGrid = false; updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame();
                 } else { deletePresetBtn.classList.add('hidden'); }
@@ -1174,7 +1214,7 @@
 
             savePresetBtn.addEventListener('click', async () => {
                 const name = await showModal({ title: "保存预设", message: "请输入此配置的名称：", showInput: true }); if (!name) return;
-                const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value };
+                const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, asciiRatio: asciiRatio ? parseFloat(asciiRatio.value) : 0.6, asciiIntensity: asciiIntensity ? parseInt(asciiIntensity.value) : 1, asciiRemoveSpaces: asciiRemoveSpaces ? asciiRemoveSpaces.checked : true, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value };
                 userPresets[name] = preset; presetSelect.value = name; deletePresetBtn.classList.remove('hidden');
                 if (db && currentUser) { try { await setDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), preset); } catch (e) { showModal({ title: "错误", message: "云端失败，已保存至本地。", hideCancel: true }); } } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); presetSelect.value = name; }
             });
