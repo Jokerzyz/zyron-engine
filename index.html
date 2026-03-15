@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩阵特效与 ASCII 艺术终端 | Soft Neumorphism UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 浅灰蓝拟态主色调 (Pale Grey Background) */
+            --bg-color: #E0E5EC;
+            --shadow-dark: #a3b1c6;
+            --shadow-light: #ffffff;
+            
+            /* 严格的字体色彩约束 */
+            --text-dark: #000000;
+            --text-muted: rgba(0, 0, 0, 0.45); 
+            --accent: #0066ff; /* 指定的高亮蓝 */
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            font-family: 'Nunito', system-ui, -apple-system, sans-serif; 
+            letter-spacing: 0.02em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 专属定制的拟态物理滑槽 (Scrollbar Slot) --- */
+        .control-panel {
+            padding-right: 14px;
+        }
+        .control-panel::-webkit-scrollbar { 
+            width: 20px;
+        }
+        .control-panel::-webkit-scrollbar-track { 
+            background: var(--bg-color); 
+            border-radius: 20px; 
+            /* 物理凹槽内阴影 */
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), 
+                        inset -3px -3px 6px var(--shadow-light); 
+            /* 利用边框创建与面板的间隙 */
+            border: 6px solid var(--bg-color); 
+        }
+        .control-panel::-webkit-scrollbar-thumb { 
+            background: var(--bg-color); 
+            border-radius: 20px; 
+            /* 滑块立体感：使用内阴影模拟体积，防止外阴影被截断 */
+            box-shadow: inset 1px 1px 2px rgba(255,255,255,0.9), 
+                        inset -1px -1px 3px rgba(163, 177, 198, 0.6); 
+            /* 透明边框+content-box实现悬浮药丸效果 */
+            border: 2px solid transparent; 
+            background-clip: content-box;
+            cursor: pointer;
+        }
+        .control-panel::-webkit-scrollbar-thumb:hover {
+            background-color: #d1d9e6;
+        }
+        .control-panel::-webkit-scrollbar-thumb:active {
+            background-color: var(--accent);
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* --- 核心拟态 (Neumorphism) 样式模块 --- */
+        
+        /* 面板基座 (Elevated) */
+        .neu-panel {
+            background: var(--bg-color);
+            border-radius: 32px;
+            box-shadow: 12px 12px 24px var(--shadow-dark), 
+                       -12px -12px 24px var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        /* 内部凹陷容器 (Inset/Pressed) */
+        .neu-inset {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), 
+                        inset -6px -6px 12px var(--shadow-light);
+            border: 1px solid transparent;
+        }
+
+        /* 交互按钮 (Tactile Button) */
+        .neu-btn {
+            background: var(--bg-color);
+            border-radius: 16px;
+            box-shadow: 6px 6px 12px var(--shadow-dark), 
+                       -6px -6px 12px var(--shadow-light),
+                       inset 1px 1px 2px rgba(255,255,255,0.8);
+            color: var(--text-dark);
+            font-weight: 800;
+            transition: all 0.2s cubic-bezier(0.15, 0.8, 0.25, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: inline-flex; justify-content: center; align-items: center;
+            cursor: pointer;
+        }
+        .neu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 16px var(--shadow-dark), 
+                       -8px -8px 16px var(--shadow-light),
+                       inset 1px 1px 2px rgba(255,255,255,0.9);
+        }
+        /* 按下或选中状态 (Pressed State) */
+        .neu-btn:active, .neu-btn.active {
+            transform: translateY(1px);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), 
+                        inset -5px -5px 10px var(--shadow-light);
+            border-color: transparent;
+            color: var(--accent); /* 选中蓝 */
+        }
+
+        /* 输入框 & 下拉框 */
+        .neu-input {
+            background: var(--bg-color);
+            border-radius: 14px;
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), 
+                        inset -4px -4px 8px var(--shadow-light);
+            border: 2px solid transparent;
+            color: var(--text-dark);
+            padding: 10px 14px;
+            font-weight: 700;
+            transition: all 0.25s ease;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+        .neu-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), 
+                        inset -6px -6px 12px var(--shadow-light), 
+                        0 0 0 4px rgba(0, 102, 255, 0.15); /* 焦点蓝环 */
+        }
+
+        /* --- 特殊控件定制 --- */
+        
+        /* 范围滑块 (Sliders) */
+        input[type="range"] { -webkit-appearance: none; width: 100%; background: transparent; padding: 10px 0; }
+        input[type="range"]:focus { outline: none; }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%; height: 12px; background: var(--bg-color); border-radius: 12px;
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%;
+            background: var(--bg-color);
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), inset 2px 2px 4px rgba(255,255,255,0.9);
+            margin-top: -7px; cursor: pointer; transition: all 0.15s ease;
+            border: 2px solid var(--bg-color);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        input[type="range"]::-webkit-slider-thumb:active { 
+            background: var(--accent);
+            box-shadow: 2px 2px 6px var(--shadow-dark), -2px -2px 6px var(--shadow-light);
+        }
+
+        /* 原生颜色选择器包装 */
+        input[type="color"] {
+            -webkit-appearance: none; border: none; width: 40px; height: 40px; border-radius: 50%;
+            padding: 0; background: var(--bg-color); cursor: pointer; overflow: hidden;
+            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+            transition: transform 0.2s;
+        }
+        input[type="color"]:hover { transform: scale(1.05); }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 4px; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
+
+        /* 关键帧时间线标记 */
+        .keyframe-marker { 
+            position: absolute; 
+            width: 12px; 
+            height: 12px; 
+            background: #ffb703; /* 醒目亮黄色 */
+            border-radius: 50%; 
+            top: 50%; 
+            transform: translate(-50%, -50%); 
+            pointer-events: none; 
+            border: 2px solid #ffffff; 
+            box-shadow: 0 0 8px rgba(255, 183, 3, 0.8), 2px 2px 4px var(--shadow-dark); 
+            z-index: 40; 
+        }
+
+        /* 渲染画布 */
+        canvas { 
+            border-radius: 24px;
+            background: #ffffff; /* 保持画布纯白底以准确呈现颜色 */
+        .neu-btn-ai:hover {
+            box-shadow: 8px 8px 16px var(--shadow-dark), 
+                       -8px -8px 16px var(--shadow-light),
+                       inset 1px 1px 2px rgba(255,255,255,0.9),
+                       0 0 15px rgba(0, 102, 255, 0.2);
+        }
+
+        /* 渲染画布 */
+        canvas { 
+            border-radius: 24px;
+            background: #ffffff; 
+            image-rendering: auto; 
+            max-height: 75vh;
+            box-shadow: 8px 8px 24px rgba(163, 177, 198, 0.4);
+            border: 4px solid var(--bg-color);
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(224, 229, 236, 0.85); backdrop-filter: blur(12px); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="p-4 md:p-8 selection:bg-[#0066ff] selection:text-white">
+    <div class="max-w-[1500px] mx-auto">
+        
+        <!-- 页面顶栏 -->
+        <header class="mb-10 text-center flex flex-col items-center">
+            <div class="inline-flex items-center gap-4 mb-3 px-8 py-4 neu-panel">
+                <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
+                    <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
+                </div>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase">Matrix UI Kit</h1>
+                <span class="text-xs font-black px-4 py-1.5 rounded-full neu-inset text-[var(--accent)] tracking-widest">ASCII ENGINE</span>
+            </div>
+            <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide">Tactile Elements • Organic Claymorphism • High Quality Render</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <!-- 左侧精细化控制台 -->
+            <aside class="neu-panel p-8 lg:col-span-4 xl:col-span-3 overflow-y-auto max-h-[80vh] control-panel space-y-8">
+                
+                <!-- 1. 顶部：模式大开关 Tabs -->
+                <div class="neu-inset p-2 flex gap-2 rounded-2xl relative z-10">
+                    <button id="modeDotBtn" class="neu-btn active flex-1 py-3.5 text-sm uppercase tracking-wider">Dot Matrix</button>
+                    <button id="modeAsciiBtn" class="neu-btn flex-1 py-3.5 text-sm uppercase tracking-wider text-[var(--text-muted)]">Ascii Art</button>
+                </div>
+
+                <!-- 2. 文件与预设卡片 -->
+                <div class="space-y-5">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-black text-[var(--text-muted)] uppercase tracking-widest">Source & Preset</label>
+                        <span id="cloudStatus" class="text-[9px] font-bold px-3 py-1 neu-inset rounded-full text-green-600">已同步</span>
+                    </div>
+                    
+                    <div class="relative overflow-hidden neu-inset p-2 flex items-center rounded-2xl group">
+                        <input type="file" id="fileUpload" accept="video/*,image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div class="neu-btn px-5 py-3 text-xs font-bold pointer-events-none group-hover:text-[var(--accent)] transition-all">📂 载入媒体</div>
+                        <span id="fileNameDisplay" class="ml-4 text-xs font-bold text-[var(--text-muted)] truncate pointer-events-none pr-2">未选择文件...</span>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <select id="presetSelect" class="neu-input flex-1 text-xs h-[48px] cursor-pointer">
+                            <option value="">-- 自定义参数 (未保存) --</option>
+                        </select>
+                        <button id="savePresetBtn" class="neu-btn px-5 h-[48px] text-sm" title="保存预设">💾</button>
+                        <button id="deletePresetBtn" class="neu-btn px-5 h-[48px] text-sm text-[var(--danger)] hidden" title="删除预设">🗑️</button>
+                    </div>
+                </div>
+
+                <!-- 3. 几何分布卡片 (Geometry) -->
+                <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest">Geometry</label>
+                        <button id="resetGeometryBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl">⟲ 恢复</button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-3">
+                                <span id="lblGridSize" class="font-extrabold text-[var(--text-muted)]">阵列排版密度</span>
+                                <div class="flex items-center gap-2">
+                                    <span id="keyframeIndicator" class="text-[9px] hidden font-black px-2 py-1 neu-inset rounded-lg text-[var(--accent)]">(KEYED)</span>
+                                    <input type="number" id="gridSizeInput" min="4" max="200" step="0.5" value="20" class="w-16 neu-input py-1.5 px-2 text-right">
+                                </div>
+                            </div>
+                            <input type="range" id="gridSize" min="4" max="200" value="20" step="0.5">
+                            <div class="flex gap-3 mt-5">
+                                <button id="addKeyframe" class="neu-btn flex-1 py-2.5 text-xs font-bold text-[var(--text-dark)]">📍 打关键帧</button>
+                                <button id="clearKeyframes" class="neu-btn flex-1 py-2.5 text-xs text-[var(--text-muted)]">清空动画</button>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <div class="flex justify-between items-center text-xs mb-3">
+                                <span id="lblDotScale" class="font-extrabold text-[var(--text-muted)]">单元缩放 (间隙)</span>
+                                <span id="dotScaleVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.85</span>
+                            </div>
+                            <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
+                        </div>
+
+                        <!-- 圆点专属：排布算法控制 -->
+                        <div id="dotGeometryControls" class="space-y-5 pt-5 border-t border-white/30">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-extrabold text-[var(--text-dark)]">锁定等大圆点 (LED化)</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="fixedDotSize" class="sr-only peer" checked>
+                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                </label>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center text-xs mb-3">
+                                    <span class="font-extrabold text-[var(--text-muted)]">背景暗部剔除阈值</span>
+                                    <span id="dotCutoffVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.05</span>
+                                </div>
+                                <input type="range" id="dotCutoff" min="0" max="1" step="0.01" value="0.05">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. 色彩与风格 (Style & Color) -->
+                <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest">Style & Color</label>
+                        <button id="resetColorBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl">⟲ 恢复</button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between p-3 neu-inset rounded-2xl">
+                            <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]">全局底板颜色</span>
+                            <input type="color" id="bgColor" value="#000000">
+                        </div>
+
+                        <!-- Color Mapping Controls (Universal for Dot & ASCII) -->
+                        <div id="colorMappingControls" class="space-y-4">
+                            <div>
+                                <div class="text-xs font-extrabold text-[var(--text-muted)] mb-3">色彩渲染模式 (Mapping)</div>
+                                <select id="dotStyleSelect" class="neu-input w-full text-xs cursor-pointer">
+                                    <option value="volumetric_blue">立体蓝调 (黑/深蓝/浅蓝/白)</option>
+                                    <option value="solid" selected>单色扁平填充 (统一发光色)</option>
+                                    <option value="original">像素化采样原片色彩 (真彩矩阵)</option>
+                                    <option value="volumetric_mono">立体灰阶 (复古素描风格)</option>
+                                    <option value="volumetric_custom">自定义三阶发光立体色</option>
+                                </select>
+                            </div>
+                            
+                            <!-- 动态显隐的三色调色盘 -->
+                            <div id="customVolumetricControls" class="hidden space-y-3 p-4 neu-inset rounded-2xl">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-extrabold text-[var(--text-muted)]">阴影深色</span>
+                                    <input type="color" id="customColorDark" value="#000000">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-extrabold text-[var(--text-muted)]">中间漫反射</span>
+                                    <input type="color" id="customColorMid" value="#0066ff">
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-extrabold text-[var(--text-muted)]">高光亮色</span>
+                                    <input type="color" id="customColorLight" value="#ffffff">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ASCII Controls -->
+                        <div id="asciiControls" class="hidden space-y-4 pt-3 border-t border-white/40">
+                            <div>
+                                <div class="flex justify-between items-center text-xs font-extrabold text-[var(--text-muted)] mb-3">
+                                    <span>排版与渲染逻辑</span>
+                                </div>
+                                <select id="asciiLogicSelect" class="neu-input w-full text-[11px] font-bold cursor-pointer">
+                                    <option value="density" selected>亮度密度映射 (依明暗匹配不同字符)</option>
+                                    <option value="mask">连续文本遮罩 (使用原文覆盖+透明度明暗遮罩)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                    <span>字符字典或长文本 (暗 ➔ 亮)</span>
+                                    <select id="asciiPresetSelect" class="neu-input py-1.5 px-2 text-[10px] w-[130px]">
+                                        <option value=" .:-=+*#%@">标准灰度</option>
+                                        <option value=" .'`^&quot;,:;Il!i&gt;&lt;~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$">极限细节</option>
+                                        <option value=" 01">黑客代码</option>
+                                        <option value=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*">彩色赛博代码 (RGB Code)</option>
+                                        <option value="  VCXZNOQSA#">复古排字</option>
+                                        <option value=" ░▒▓█">像素块</option>
+                                        <option value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ">英文长散文遮罩</option>
+                                        <option value="custom">自定义...</option>
+                                    </select>
+                                </div>
+                                <input type="text" id="asciiCharsInput" value=" .:-=+*#%@" class="neu-input w-full text-[10px] font-mono tracking-wider">
+                            </div>
+                        </div>
+
+                        <!-- 单色选择器 -->
+                        <div id="solidColorControl" class="flex items-center justify-between p-3 neu-inset rounded-2xl">
+                            <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]">单元发光颜色</span>
+                            <input type="color" id="dotColor" value="#ffffff">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. 信号处理 (Processing) -->
+                <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest">Filters</label>
+                        <button id="resetSignalBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl">⟲ 恢复</button>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span>输入源：曝光补偿</span><span id="sourceBrightnessVal">0</span></div>
+                            <input type="range" id="sourceBrightness" min="-100" max="100" value="0">
+                        </div>
+                        <div class="pb-4 border-b border-white/30">
+                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span>输入源：对比强化</span><span id="sourceContrastVal">0</span></div>
+                            <input type="range" id="sourceContrast" min="-100" max="100" value="0">
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-xs font-extrabold mb-3"><span>映射层：全局光感</span><span id="brightnessVal">20</span></div>
+                            <input type="range" id="brightness" min="-100" max="100" value="20">
+                        </div>
+                        <div class="pb-4 border-b border-white/30">
+                            <div class="flex justify-between text-xs font-extrabold mb-3"><span>映射层：色阶分离度</span><span id="contrastVal">20</span></div>
+                            <input type="range" id="contrast" min="-100" max="100" value="20">
+                        </div>
+                        
+                        <div class="space-y-5 pt-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-extrabold">反转明暗映射 (Invert)</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="invertMapping" class="sr-only peer">
+                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                </label>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-extrabold" title="过滤视频噪点，防止网格闪烁">时域平滑滤波去噪</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="smoothStep" class="sr-only peer" checked>
+                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. 导出面板 -->
+                <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                    <div class="flex justify-between items-center">
+                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest">Output</label>
+                        <button id="resetOutputBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl">⟲ 恢复</button>
+                    </div>
+                    <div class="space-y-5">
+                        <select id="exportResolution" class="neu-input w-full text-xs font-bold cursor-pointer">
+                            <option value="source">原始画布尺寸 (1:1)</option>
+                            <option value="3840x2160">超清 4K UHD (3840 x 2160)</option>
+                            <option value="2560x1440">高清 2K QHD (2560 x 1440)</option>
+                            <option value="1920x1080">全高清 1080p (1920 x 1080)</option>
+                        </select>
+                        <div class="pt-2">
+                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span>序列导出帧率 (FPS)</span><span id="fpsVal" class="font-mono text-[var(--accent)]">24</span></div>
+                            <input type="range" id="fpsInput" min="1" max="60" value="24">
+                            <p class="text-[9px] text-[var(--text-muted)] font-bold mt-3 leading-tight opacity-80">💡 提示：图片序列无帧率元数据，导入 AE/PR 时请右键素材「解释素材 ➔ 假定帧率」为该数值。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部操作大按钮 -->
+                <div class="pt-8 space-y-5 pb-4">
+                    <div class="flex gap-4">
+                        <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]">清空重置</button>
+                        <button id="saveButton" class="flex-[2] py-4 neu-btn text-xs font-black text-[var(--text-dark)]">📸 留存当前单帧</button>
+                    </div>
+                    <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 渲染导出视频帧序列</button>
+                </div>
+            </aside>
+
+            <!-- 预览主视图区 -->
+            <main class="lg:col-span-8 xl:col-span-9 flex flex-col items-center justify-start pt-2">
+                <div id="previewContainer" class="w-full flex justify-center items-center neu-inset p-8 min-h-[500px] lg:min-h-[calc(100vh-160px)] relative group">
+                    <canvas id="halftoneCanvas" class="max-w-full max-h-[85vh]"></canvas>
+                    
+                    <!-- 全屏切换按钮 -->
+                    <button id="fullscreenBtn" class="absolute top-6 right-6 p-3 neu-btn opacity-0 group-hover:opacity-100 transition-opacity z-10 rounded-full" title="全屏预览">
+                        <svg id="fsEnterIcon" class="w-5 h-5 text-[var(--text-dark)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+                        <svg id="fsExitIcon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"></path><path d="M21 8h-3a2 2 0 0 1-2-2V3"></path><path d="M3 16h3a2 2 0 0 1 2 2v3"></path><path d="M16 21v-3a2 2 0 0 1 2-2h3"></path></svg>
+                    </button>
+
+                    <!-- 悬浮视频控制条 -->
+                    <div id="videoControls" class="absolute bottom-8 left-1/2 -translate-x-1/2 w-11/12 max-w-2xl neu-panel px-8 py-4 hidden flex-col gap-2 z-10 border-2 border-white/40">
+                        <div class="flex items-center gap-5">
+                            <button id="playPauseBtn" class="neu-btn w-12 h-12 rounded-full flex-shrink-0 text-[var(--accent)]">
+                                <svg id="playIcon" class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
+                                <svg id="pauseIcon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zM12.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z"/></svg>
+                            </button>
+                            <button id="prevFrameBtn" class="neu-btn w-10 h-10 rounded-full flex-shrink-0" title="上一帧">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                            </button>
+                            <button id="nextFrameBtn" class="neu-btn w-10 h-10 rounded-full flex-shrink-0" title="下一帧">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                            
+                            <div class="relative flex-1 flex items-center h-10">
+                                <div id="keyframeContainer" class="absolute left-[13px] right-[13px] top-0 h-full pointer-events-none z-30"></div>
+                                <input type="range" id="videoScrubber" min="0" max="100" step="0.01" value="0" class="w-full z-20 relative">
+                            </div>
+                            <span id="timeDisplay" class="text-xs font-mono font-black text-[var(--text-muted)] w-24 text-right">0:00 / 0:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-6 text-[var(--text-muted)] text-[11px] font-black uppercase tracking-widest px-8 py-3 neu-panel rounded-full">
+                    <span>Target Resolution: <span id="resDisplay" class="text-[var(--text-dark)] ml-1">-</span></span>
+                    <span class="w-[2px] rounded-full bg-[var(--shadow-dark)] opacity-40"></span>
+                    <span>Engine Mode: <span id="modeDisplay" class="text-[var(--text-dark)] ml-1">-</span></span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- 导出遮罩层 -->
+    <div id="exportOverlay" class="loading-overlay">
+        <div class="neu-panel p-10 max-w-sm w-full text-center">
+            <h3 id="exportTitle" class="text-xl font-black mb-8">Rendering Frames...</h3>
+            <div class="w-full h-4 neu-inset rounded-full mb-6 overflow-hidden p-1">
+                <div id="exportProgressBar" class="h-full bg-[var(--accent)] rounded-full transition-all duration-100" style="width: 0%"></div>
+            </div>
+            <p id="exportStatus" class="text-xs font-black text-[var(--text-muted)] mb-8 tracking-wider">PREPARING (0/0)</p>
+            <button id="cancelExport" class="neu-btn px-8 py-3 text-xs font-black text-[var(--danger)]">ABORT</button>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="customModal" class="fixed inset-0 bg-[var(--shadow-dark)]/20 backdrop-blur-xl z-[100] hidden flex-col items-center justify-center">
+        <div class="neu-panel p-10 w-96 max-w-[90%] transform transition-all">
+            <h3 id="modalTitle" class="text-xl font-black mb-3">Notice</h3>
+            <p id="modalMessage" class="text-sm font-bold text-[var(--text-muted)] mb-8 leading-relaxed"></p>
+            <input type="text" id="modalInput" class="neu-input w-full mb-8 hidden" placeholder="Enter name...">
+            <div class="flex justify-end gap-4">
+                <button id="modalCancel" class="neu-btn px-6 py-2.5 text-xs font-bold text-[var(--text-muted)]">CANCEL</button>
+                <button id="modalConfirm" class="neu-btn px-6 py-2.5 text-xs font-black text-[var(--accent)] border-2 border-[var(--accent)]/10">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // --- DOM Elements Definition ---
+            const fileUpload = document.getElementById('fileUpload');
+            const gridSize = document.getElementById('gridSize');
+            const gridSizeInput = document.getElementById('gridSizeInput');
+            const dotScale = document.getElementById('dotScale');
+            const dotScaleVal = document.getElementById('dotScaleVal');
+            
+            const modeDotBtn = document.getElementById('modeDotBtn');
+            const modeAsciiBtn = document.getElementById('modeAsciiBtn');
+            const dotGeometryControls = document.getElementById('dotGeometryControls');
+            const solidColorControl = document.getElementById('solidColorControl');
+            
+            const lblGridSize = document.getElementById('lblGridSize');
+            const lblDotScale = document.getElementById('lblDotScale');
+            const dotStyleSelect = document.getElementById('dotStyleSelect');
+            const customVolumetricControls = document.getElementById('customVolumetricControls');
+            const customColorDark = document.getElementById('customColorDark');
+            const customColorMid = document.getElementById('customColorMid');
+            const customColorLight = document.getElementById('customColorLight');
+            
+            const fixedDotSize = document.getElementById('fixedDotSize');
+            const dotCutoff = document.getElementById('dotCutoff');
+            const dotCutoffVal = document.getElementById('dotCutoffVal');
+            const asciiCharsInput = document.getElementById('asciiCharsInput');
+            const asciiPresetSelect = document.getElementById('asciiPresetSelect');
+            const asciiControls = document.getElementById('asciiControls');
+            const asciiLogicSelect = document.getElementById('asciiLogicSelect'); // 新增：排版逻辑选择器
+
+            const sourceBrightness = document.getElementById('sourceBrightness');
+            const sourceContrast = document.getElementById('sourceContrast');
+            const sourceBrightnessVal = document.getElementById('sourceBrightnessVal');
+            const sourceContrastVal = document.getElementById('sourceContrastVal');
+            const brightness = document.getElementById('brightness');
+            const contrast = document.getElementById('contrast');
+            const brightnessVal = document.getElementById('brightnessVal');
+            const contrastVal = document.getElementById('contrastVal');
+            
+            const bgColorPicker = document.getElementById('bgColor');
+            const dotColorPicker = document.getElementById('dotColor');
+            const invertMapping = document.getElementById('invertMapping');
+            const smoothStep = document.getElementById('smoothStep');
+            const fpsInput = document.getElementById('fpsInput');
+            const exportResolution = document.getElementById('exportResolution');
+            const fpsVal = document.getElementById('fpsVal');
+
+            const resetGeometryBtn = document.getElementById('resetGeometryBtn');
+            const resetColorBtn = document.getElementById('resetColorBtn');
+            const resetSignalBtn = document.getElementById('resetSignalBtn');
+            const resetOutputBtn = document.getElementById('resetOutputBtn');
+            const resetButton = document.getElementById('resetButton');
+
+            const addKeyframeBtn = document.getElementById('addKeyframe');
+            const clearKeyframesBtn = document.getElementById('clearKeyframes');
+            const keyframeContainer = document.getElementById('keyframeContainer');
+            const keyframeIndicator = document.getElementById('keyframeIndicator');
+
+            const videoControls = document.getElementById('videoControls');
+            const videoScrubber = document.getElementById('videoScrubber');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevFrameBtn = document.getElementById('prevFrameBtn');
+            const nextFrameBtn = document.getElementById('nextFrameBtn');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            const timeDisplay = document.getElementById('timeDisplay');
+            
+            const exportSequence = document.getElementById('exportSequence');
+            const saveButton = document.getElementById('saveButton');
+            const cancelExportBtn = document.getElementById('cancelExport');
+            const exportOverlay = document.getElementById('exportOverlay');
+            const exportProgressBar = document.getElementById('exportProgressBar');
+            const exportStatus = document.getElementById('exportStatus');
+            const exportTitle = document.getElementById('exportTitle');
+            
+            const halftoneCanvas = document.getElementById('halftoneCanvas');
+            const previewContainer = document.getElementById('previewContainer');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const fsEnterIcon = document.getElementById('fsEnterIcon');
+            const fsExitIcon = document.getElementById('fsExitIcon');
+
+            const modeDisplay = document.getElementById('modeDisplay');
+            const resDisplay = document.getElementById('resDisplay');
+            const presetSelect = document.getElementById('presetSelect');
+            const savePresetBtn = document.getElementById('savePresetBtn');
+            const deletePresetBtn = document.getElementById('deletePresetBtn');
+            const cloudStatus = document.getElementById('cloudStatus');
+
+            // --- State Variables ---
+            let currentRenderMode = 'dot';
+            let imageElement = null;
+            let videoElement = null;
+            let isVideo = false;
+            let animationFrameId = null;
+            let isExporting = false;
+            let isScrubbing = false;
+            let wasPlaying = false;
+            let isManuallyOverridingGrid = false;
+            let keyframes = [];
+            let isCssFullscreen = false;
+
+            const defaults = { 
+                gridSize: 20, dotScale: 0.85, sourceBrightness: 0, sourceContrast: 0,
+                brightness: 20, contrast: 20, fps: 24, bgColor: "#000000", dotColor: "#ffffff", 
+                invertMapping: false, smoothStep: true, renderMode: 'dot', 
+                asciiLogic: 'density', asciiChars: " .:-=+*#%@", 
+                dotStyle: 'solid', customColorDark: "#000000", customColorMid: "#0066ff", 
+                customColorLight: "#ffffff", fixedDotSize: true, dotCutoff: 0.05
+            };
+
+            // --- Basic Utilities ---
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
+            }
+
+            // --- UI Updating Sync ---
+            function updateUIValues() {
+                if(document.activeElement !== gridSizeInput) gridSizeInput.value = parseFloat(gridSize.value).toFixed(1);
+                dotScaleVal.textContent = parseFloat(dotScale.value).toFixed(2);
+                sourceBrightnessVal.textContent = sourceBrightness.value;
+                sourceContrastVal.textContent = sourceContrast.value;
+                brightnessVal.textContent = brightness.value;
+                contrastVal.textContent = contrast.value;
+                fpsVal.textContent = fpsInput.value;
+                dotCutoffVal.textContent = parseFloat(dotCutoff.value).toFixed(2);
+            }
+
+            function updateDotStyleUI() {
+                const style = dotStyleSelect.value;
+                if (style === 'volumetric_custom') {
+                    customVolumetricControls.classList.remove('hidden');
+                    solidColorControl.classList.add('hidden');
+                } else if (style === 'solid') {
+                    customVolumetricControls.classList.add('hidden');
+                    solidColorControl.classList.remove('hidden');
+                } else {
+                    customVolumetricControls.classList.add('hidden');
+                    solidColorControl.classList.add('hidden');
+                }
+            }
+
+            function setRenderMode(mode) {
+                currentRenderMode = mode;
+                if (mode === 'dot') {
+                    modeDotBtn.classList.add('active');
+                    modeDotBtn.classList.remove('text-[var(--text-muted)]');
+                    modeAsciiBtn.classList.remove('active');
+                    modeAsciiBtn.classList.add('text-[var(--text-muted)]');
+                    
+                    asciiControls.classList.add('hidden');
+                    dotGeometryControls.classList.remove('hidden');
+                    lblGridSize.textContent = "圆点阵列密度";
+                    lblDotScale.textContent = "单元最大缩放比例 (间隙)";
+                } else {
+                    modeAsciiBtn.classList.add('active');
+                    modeAsciiBtn.classList.remove('text-[var(--text-muted)]');
+                    modeDotBtn.classList.remove('active');
+                    modeDotBtn.classList.add('text-[var(--text-muted)]');
+                    
+                    asciiControls.classList.remove('hidden');
+                    dotGeometryControls.classList.add('hidden');
+                    lblGridSize.textContent = "字符阵列排版密度";
+                    lblDotScale.textContent = "字符渲染字号大小 (间隙)";
+                }
+                updateDotStyleUI();
+                presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
+                if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+            }
+
+            function updateTimeDisplay() {
+                if(!videoElement) return;
+                timeDisplay.textContent = `${formatTime(videoElement.currentTime)} / ${formatTime(videoElement.duration)}`;
+            }
+
+            function updateKeyframeUI() {
+                keyframeContainer.innerHTML = '';
+                if (!videoElement) return;
+                keyframes.forEach(k => {
+                    const pos = (k.time / videoElement.duration) * 100;
+                    const marker = document.createElement('div');
+                    marker.className = 'keyframe-marker';
+                    marker.style.left = `${pos}%`;
+                    keyframeContainer.appendChild(marker);
+                });
+            }
+
+            function setupCanvasDimensions(w, h) {
+                const isFS = !!document.fullscreenElement || isCssFullscreen;
+                const padding = isFS ? 0 : 64; 
+                const containerWidth = isFS ? window.innerWidth : previewContainer.clientWidth - padding;
+                const containerHeight = isFS ? window.innerHeight : window.innerHeight * 0.7;
+                const scaleX = containerWidth / w;
+                const scaleY = containerHeight / h;
+                const scale = isFS ? Math.min(scaleX, scaleY) : Math.min(scaleX, 1);
+                halftoneCanvas.width = w * scale;
+                halftoneCanvas.height = h * scale;
+            }
+
+            function triggerResize() {
+                if (imageElement || videoElement) {
+                    const w = isVideo ? videoElement.videoWidth : imageElement.width;
+                    const h = isVideo ? videoElement.videoHeight : imageElement.height;
+                    setupCanvasDimensions(w, h);
+                    if (!isVideo || videoElement.paused) processFrame();
+                }
+            }
+
+            // --- Rendering Math ---
+            function getVolumetricColor(lum, style) {
+                let palette;
+                let stops; 
+                if (style === 'volumetric_custom') {
+                    palette = [ hexToRgb(customColorDark.value), hexToRgb(customColorMid.value), hexToRgb(customColorLight.value) ];
+                    stops = [0.0, 0.45, 0.80];
+                } else {
+                    const palettes = {
+                        'volumetric_blue': [[0,0,0], [0,20,80], [160,200,255], [255,255,255]], 
+                        'volumetric_mono': [[0,0,0], [80,80,80], [180,180,180], [255,255,255]]
+                    };
+                    palette = palettes[style];
+                    stops = [0.0, 0.25, 0.6, 1.0];
+                }
+                if (!palette) return null;
+                lum = Math.max(0, Math.min(1, lum));
+                let closestIdx = 0; let minDiff = Infinity;
+                for (let i = 0; i < stops.length; i++) {
+                    let diff = Math.abs(lum - stops[i]);
+                    if (diff < minDiff) { minDiff = diff; closestIdx = i; }
+                }
+                return `rgb(${palette[closestIdx][0]},${palette[closestIdx][1]},${palette[closestIdx][2]})`;
+            }
+
+            function getInterpolatedGridSize(time) {
+                if (keyframes.length === 0) return parseFloat(gridSize.value);
+                const sorted = [...keyframes].sort((a, b) => a.time - b.time);
+                if (time <= sorted[0].time) return sorted[0].value;
+                if (time >= sorted[sorted.length - 1].time) return sorted[sorted.length - 1].value;
+                for (let i = 0; i < sorted.length - 1; i++) {
+                    const start = sorted[i]; const end = sorted[i+1];
+                    if (time >= start.time && time <= end.time) {
+                        const t = (time - start.time) / (end.time - start.time);
+                        return start.value + (end.value - start.value) * t;
+                    }
+                }
+                return parseFloat(gridSize.value);
+            }
+
+            function generateHalftone(targetCanvas, currentScale, source, gridValue) {
+                if(!targetCanvas) return;
+                const ctx = targetCanvas.getContext('2d', { alpha: false });
+                const procW = targetCanvas.width;
+                const procH = targetCanvas.height;
+
+                let offscreen, oCtx;
+                if (typeof OffscreenCanvas !== 'undefined') {
+                    offscreen = new OffscreenCanvas(procW, procH); oCtx = offscreen.getContext('2d', { alpha: false });
+                } else {
+                    offscreen = document.createElement('canvas'); offscreen.width = procW; offscreen.height = procH; oCtx = offscreen.getContext('2d', { alpha: false });
+                }
+                
+                oCtx.fillStyle = '#ffffff'; oCtx.fillRect(0, 0, procW, procH);
+                
+                const sW = source.videoWidth || source.width;
+                const sH = source.videoHeight || source.height;
+                const srcRatio = sW / sH; const dstRatio = procW / procH;
+                let drawW = procW, drawH = procH, drawX = 0, drawY = 0;
+                if (srcRatio > dstRatio) { drawH = procW / srcRatio; drawY = (procH - drawH) / 2; } 
+                else { drawW = procH * srcRatio; drawX = (procW - drawW) / 2; }
+                
+                const srcB = parseInt(sourceBrightness.value, 10);
+                const srcC = parseInt(sourceContrast.value, 10);
+                oCtx.filter = `brightness(${100 + srcB}%) contrast(${100 + srcC}%)`;
+                oCtx.drawImage(source, drawX, drawY, drawW, drawH);
+                oCtx.filter = 'none';
+
+                const imgData = oCtx.getImageData(0, 0, procW, procH);
+                const data = imgData.data;
+
+                const bAdj = parseInt(brightness.value, 10);
+                const cAdj = parseInt(contrast.value, 10);
+                const cFactor = (259 * (cAdj + 255)) / (255 * (259 - cAdj));
+
+                const baseGrid = Math.max(1, gridValue * currentScale);
+                const maxRadiusScale = parseFloat(dotScale.value);
+                const isMappingInverted = invertMapping.checked;
+                const useSmooth = smoothStep.checked;
+                const rMode = currentRenderMode;
+                const aChars = asciiCharsInput.value || " ";
+                const aLogic = asciiLogicSelect ? asciiLogicSelect.value : 'density';
+                const dStyle = dotStyleSelect.value;
+                const isFixedSize = fixedDotSize.checked;
+                const cutoff = parseFloat(dotCutoff.value);
+
+                ctx.fillStyle = bgColorPicker.value;
+                ctx.fillRect(0, 0, procW, procH);
+                
+                const numCols = Math.floor(procW / baseGrid);
+                const numRows = Math.floor(procH / baseGrid);
+                const offsetX = (procW - (numCols * baseGrid)) / 2;
+                const offsetY = (procH - (numRows * baseGrid)) / 2;
+
+                let textIdx = 0; // 掩码模式全局序列索引
+
+                for (let row = 0; row < numRows; row++) {
+                    for (let col = 0; col < numCols; col++) {
+                        
+                        // 预先抽取遮罩字符，确保排版不管明暗都严格遵守行列连续性
+                        let maskChar = '';
+                        if (rMode === 'ascii' && aLogic === 'mask' && aChars.length > 0) {
+                            maskChar = aChars[textIdx % aChars.length];
+                            textIdx++;
+                        }
+
+                        let totalLum = 0, totalR = 0, totalG = 0, totalB = 0, count = 0;
+                        const startX = Math.floor(offsetX + col * baseGrid);
+                        const startY = Math.floor(offsetY + row * baseGrid);
+                        const endX = Math.min(Math.floor(offsetX + (col + 1) * baseGrid), procW);
+                        const endY = Math.min(Math.floor(offsetY + (row + 1) * baseGrid), procH);
+
+                        for (let py = startY; py < endY; py++) {
+                            for (let px = startX; px < endX; px++) {
+                                const idx = (py * procW + px) * 4;
+                                const r = data[idx], g = data[idx+1], b = data[idx+2];
+                                let lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                                lum = cFactor * (lum - 128) + 128 + bAdj;
+                                totalLum += Math.max(0, Math.min(255, lum));
+                                if (dStyle === 'original') { totalR += r; totalG += g; totalB += b; }
+                                count++;
+                            }
+                        }
+
+                        if (count > 0) {
+                            const avgLum = totalLum / count;
+                            let normalizedLum = avgLum / 255;
+                            let renderRatio = isMappingInverted ? normalizedLum : (1 - normalizedLum);
+
+                            if (useSmooth) {
+                                renderRatio = Math.max(0, Math.min(1, renderRatio));
+                                renderRatio = renderRatio * renderRatio * (3 - 2 * renderRatio);
+                            }
+
+                            const centerX = offsetX + col * baseGrid + baseGrid / 2;
+                            const centerY = offsetY + row * baseGrid + baseGrid / 2;
+
+                            if (rMode === 'dot') {
+                                const maxRadius = (baseGrid / 2) * maxRadiusScale;
+                                let radius = 0;
+                                if (isFixedSize) { if (renderRatio > cutoff) radius = maxRadius; } 
+                                else { if (renderRatio > cutoff) radius = maxRadius * renderRatio; }
+
+                                if (radius > 0.3) {
+                                    if (dStyle === 'original') { ctx.fillStyle = `rgb(${Math.round(totalR/count)}, ${Math.round(totalG/count)}, ${Math.round(totalB/count)})`; } 
+                                    else if (dStyle.startsWith('volumetric')) { ctx.fillStyle = getVolumetricColor(normalizedLum, dStyle); } 
+                                    else { ctx.fillStyle = dotColorPicker.value; }
+                                    ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.fill();
+                                }
+                            } else {
+                                // ---- ASCII 引擎升级：完美支持色彩遮罩与密度双模式 ---
+                                
+                                // 设置统一的颜色获取逻辑
+                                if (dStyle === 'original') { ctx.fillStyle = `rgb(${Math.round(totalR/count)}, ${Math.round(totalG/count)}, ${Math.round(totalB/count)})`; } 
+                                else if (dStyle.startsWith('volumetric')) { ctx.fillStyle = getVolumetricColor(normalizedLum, dStyle); } 
+                                else { ctx.fillStyle = dotColorPicker.value; }
+
+                                const fontSize = baseGrid * maxRadiusScale * 1.2;
+                                ctx.font = `900 ${fontSize}px "JetBrains Mono", "Courier New", Courier, monospace`;
+                                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+
+                                if (aLogic === 'mask') {
+                                    // 【核心算法】文本遮罩模式：靠透明度隐现底层内容
+                                    if (renderRatio > cutoff && maskChar !== ' ') {
+                                        ctx.globalAlpha = Math.max(0, Math.min(1, renderRatio));
+                                        ctx.fillText(maskChar, centerX, centerY);
+                                        ctx.globalAlpha = 1.0;
+                                    }
+                                } else {
+                                    // 传统的密度替换模式
+                                    if (renderRatio > cutoff) {
+                                        const charIdx = Math.floor(renderRatio * 0.999 * aChars.length);
+                                        const char = aChars[charIdx];
+                                        if (char && char !== ' ') {
+                                            ctx.fillText(char, centerX, centerY);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function processFrame() {
+                if (!imageElement && !videoElement) return;
+                const source = isVideo ? videoElement : imageElement;
+                if (!source || (isVideo && videoElement.readyState < 2)) return;
+
+                const sourceWidth = isVideo ? videoElement.videoWidth : imageElement.width;
+                let currentGridValue = parseFloat(gridSize.value);
+                
+                if (isVideo && keyframes.length > 0) {
+                    if (!isManuallyOverridingGrid) {
+                        currentGridValue = getInterpolatedGridSize(videoElement.currentTime);
+                        gridSize.value = currentGridValue;
+                        if(document.activeElement !== gridSizeInput) gridSizeInput.value = currentGridValue.toFixed(1);
+                        keyframeIndicator.classList.remove('hidden');
+                    } else { keyframeIndicator.classList.add('hidden'); }
+                } else { keyframeIndicator.classList.add('hidden'); }
+
+                const scaleCanvas = halftoneCanvas && sourceWidth > 0 ? (halftoneCanvas.width / sourceWidth) : 1;
+                generateHalftone(halftoneCanvas, scaleCanvas, source, currentGridValue);
+                
+                if (isVideo && !isScrubbing && videoElement) {
+                    videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0;
+                    updateTimeDisplay();
+                }
+            }
+
+            function renderLoop() {
+                try { if (isVideo && !isExporting && videoElement && !videoElement.paused) processFrame(); } 
+                catch(e) { console.error("Render Loop Error:", e); }
+                animationFrameId = requestAnimationFrame(renderLoop);
+            }
+
+            // --- Event Bindings ---
+            modeDotBtn.addEventListener('click', () => setRenderMode('dot'));
+            modeAsciiBtn.addEventListener('click', () => setRenderMode('ascii'));
+            dotStyleSelect.addEventListener('change', () => { updateDotStyleUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            
+            [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput].forEach(el => {
+                el.addEventListener('input', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            });
+
+            [invertMapping, smoothStep, fixedDotSize].forEach(el => {
+                el.addEventListener('change', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            });
+
+            asciiLogicSelect.addEventListener('change', () => {
+                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); 
+                if (asciiLogicSelect.value === 'mask' && asciiCharsInput.value.length < 20) {
+                    asciiCharsInput.value = "THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ";
+                    asciiPresetSelect.value = "custom";
+                }
+                if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+            });
+
+            asciiPresetSelect.addEventListener('change', (e) => {
+                if (e.target.value !== 'custom') { asciiCharsInput.value = e.target.value; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
+            });
+            
+            asciiCharsInput.addEventListener('input', () => { asciiPresetSelect.value = 'custom'; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+
+            gridSize.addEventListener('input', () => { isManuallyOverridingGrid = true; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); gridSizeInput.value = parseFloat(gridSize.value).toFixed(1); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            gridSizeInput.addEventListener('input', () => { isManuallyOverridingGrid = true; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); let val = parseFloat(gridSizeInput.value); if (!isNaN(val)) { gridSize.value = val; if (!isVideo || (videoElement && videoElement.paused)) processFrame(); } });
+
+            function handleSubReset() { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
+            
+            resetGeometryBtn.addEventListener('click', () => { gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff; isManuallyOverridingGrid = false; handleSubReset(); });
+            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; updateDotStyleUI(); handleSubReset(); });
+            resetSignalBtn.addEventListener('click', () => { sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast; brightness.value = defaults.brightness; contrast.value = defaults.contrast; invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; handleSubReset(); });
+            resetOutputBtn.addEventListener('click', () => { exportResolution.value = 'source'; fpsInput.value = defaults.fps; updateUIValues(); });
+
+            if(addKeyframeBtn) {
+                addKeyframeBtn.addEventListener('click', () => {
+                    if (!isVideo || !videoElement) {
+                        showModal({ title: "温馨提示", message: "只有上传视频序列后才能打关键帧哦！", hideCancel: true });
+                        return; 
+                    }
+                    const time = videoElement.currentTime; 
+                    const value = parseFloat(gridSize.value); 
+                    keyframes = keyframes.filter(k => Math.abs(k.time - time) > 0.1); 
+                    keyframes.push({ time, value }); 
+                    isManuallyOverridingGrid = false; 
+                    updateKeyframeUI(); 
+                    processFrame(); 
+                    
+                    const oldText = addKeyframeBtn.innerHTML;
+                    addKeyframeBtn.innerHTML = "✅ 记录成功";
+                    setTimeout(() => { addKeyframeBtn.innerHTML = oldText; }, 1500);
+                });
+            }
+
+            if(clearKeyframesBtn) {
+                clearKeyframesBtn.addEventListener('click', () => {
+                    keyframes = []; 
+                    updateKeyframeUI(); 
+                    if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+                });
+            }
+
+            const startScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = true; isManuallyOverridingGrid = false; wasPlaying = !videoElement.paused; videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); };
+            const stopScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = false; if (wasPlaying) { videoElement.play().catch(console.error); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); } };
+            
+            videoScrubber.addEventListener('mousedown', startScrubbing); videoScrubber.addEventListener('touchstart', startScrubbing, {passive: true}); videoScrubber.addEventListener('mouseup', stopScrubbing); videoScrubber.addEventListener('touchend', stopScrubbing);
+            videoScrubber.addEventListener('input', () => { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.currentTime = (videoScrubber.value / 100) * videoElement.duration; updateTimeDisplay(); });
+            document.addEventListener('mouseup', () => { if (isScrubbing) stopScrubbing(); });
+
+            playPauseBtn.onclick = () => { isManuallyOverridingGrid = false; if (videoElement) { if (videoElement.paused) { videoElement.play().catch(console.error); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); } else { videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); } } };
+            function stepFrame(direction) { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); videoElement.currentTime = Math.max(0, Math.min(videoElement.duration, videoElement.currentTime + (direction * (1 / (parseInt(fpsInput.value) || 24))))); videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0; updateTimeDisplay(); }
+            prevFrameBtn.onclick = () => stepFrame(-1); nextFrameBtn.onclick = () => stepFrame(1);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isCssFullscreen) { exitCssFullscreen(); return; } if (!isVideo || !videoElement || isExporting || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); playPauseBtn.click(); } else if (e.code === 'ArrowLeft') { e.preventDefault(); stepFrame(-1); } else if (e.code === 'ArrowRight') { e.preventDefault(); stepFrame(1); } });
+
+            // --- File Upload ---
+            fileUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0]; if (!file) return;
+                
+                document.getElementById('fileNameDisplay').textContent = file.name;
+                
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                if (videoElement) { videoElement.pause(); videoElement.src = ""; }
+
+                const fileURL = URL.createObjectURL(file);
+                if (file.type.startsWith('video/')) {
+                    isVideo = true; imageElement = null; modeDisplay.textContent = "视频序列"; videoControls.classList.remove('hidden');
+                    if (!videoElement) {
+                        videoElement = document.createElement('video'); videoElement.muted = true; videoElement.playsInline = true; videoElement.loop = true; videoElement.crossOrigin = "anonymous"; videoElement.autoplay = true;
+                        videoElement.addEventListener('seeked', () => { if (videoElement.paused && !isExporting) processFrame(); });
+                        videoElement.addEventListener('play', () => { playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); });
+                        videoElement.addEventListener('pause', () => { playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); });
+                    }
+                    videoElement.src = fileURL;
+                    videoElement.onloadedmetadata = () => {
+                        resDisplay.textContent = `${videoElement.videoWidth} x ${videoElement.videoHeight}`; setupCanvasDimensions(videoElement.videoWidth, videoElement.videoHeight);
+                        videoElement.play().catch(e => console.log("Auto-play prevented", e));
+                        keyframes = []; updateKeyframeUI(); if(animationFrameId) cancelAnimationFrame(animationFrameId); renderLoop();
+                    };
+                } else {
+                    isVideo = false; videoElement = null; videoControls.classList.add('hidden'); modeDisplay.textContent = "静态图像";
+                    imageElement = new Image(); imageElement.src = fileURL;
+                    imageElement.onload = () => { resDisplay.textContent = `${imageElement.width} x ${imageElement.height}`; setupCanvasDimensions(imageElement.width, imageElement.height); processFrame(); };
+                }
+            });
+
+            // --- Fullscreen ---
+            fullscreenBtn.addEventListener('click', () => { if (!document.fullscreenElement && !isCssFullscreen) { if (previewContainer.requestFullscreen) previewContainer.requestFullscreen().catch(() => enterCssFullscreen()); else enterCssFullscreen(); } else { if (document.fullscreenElement) document.exitFullscreen(); else if (isCssFullscreen) exitCssFullscreen(); } });
+            document.addEventListener('fullscreenchange', () => { if (document.fullscreenElement) { fsEnterIcon.classList.add('hidden'); fsExitIcon.classList.remove('hidden'); previewContainer.classList.replace('relative', 'fixed'); previewContainer.classList.remove('p-8', 'rounded-2xl', 'min-h-[500px]', 'lg:min-h-[calc(100vh-160px)]'); previewContainer.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } else { fsEnterIcon.classList.remove('hidden'); fsExitIcon.classList.add('hidden'); previewContainer.classList.replace('fixed', 'relative'); previewContainer.classList.add('p-8', 'rounded-2xl', 'min-h-[500px]', 'lg:min-h-[calc(100vh-160px)]'); previewContainer.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } triggerResize(); });
+            window.addEventListener('resize', triggerResize);
+            function enterCssFullscreen() { isCssFullscreen = true; previewContainer.classList.replace('relative', 'fixed'); previewContainer.classList.remove('p-8', 'rounded-2xl', 'min-h-[500px]', 'lg:min-h-[calc(100vh-160px)]'); previewContainer.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); fsEnterIcon.classList.add('hidden'); fsExitIcon.classList.remove('hidden'); triggerResize(); }
+            function exitCssFullscreen() { isCssFullscreen = false; previewContainer.classList.replace('fixed', 'relative'); previewContainer.classList.add('p-8', 'rounded-2xl', 'min-h-[500px]', 'lg:min-h-[calc(100vh-160px)]'); previewContainer.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); fsEnterIcon.classList.remove('hidden'); fsExitIcon.classList.add('hidden'); triggerResize(); }
+
+            // --- Exporting & Saving ---
+            cancelExportBtn.onclick = () => { isExporting = false; };
+            saveButton.onclick = () => {
+                const source = isVideo ? videoElement : imageElement;
+                if(!source) { showModal({ title: "提示", message: "请先上传图片或视频！", hideCancel: true }); return; }
+                const c = document.createElement('canvas'); const resVal = exportResolution.value; let exportW = isVideo ? videoElement.videoWidth : imageElement.width; let exportH = isVideo ? videoElement.videoHeight : imageElement.height;
+                if (resVal !== 'source') [exportW, exportH] = resVal.split('x').map(Number); c.width = exportW; c.height = exportH;
+                generateHalftone(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : parseFloat(gridSize.value));
+                c.toBlob((blob) => {
+                    if (!blob) { showModal({ title: "出错", message: "生成失败，尝试调低分辨率。", hideCancel: true }); return; }
+                    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.style.display = 'none'; a.href = url; a.download = `matrix_frame_${Date.now()}.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+
+            exportSequence.addEventListener('click', async () => {
+                if (!videoElement || !isVideo) { showModal({ message: "请先上传视频文件再导出序列。", hideCancel: true }); return; }
+                isExporting = true; videoElement.pause(); exportOverlay.style.display = 'flex';
+                const zip = new JSZip(); const fps = parseInt(fpsInput.value) || 24; const totalFrames = Math.ceil(videoElement.duration * fps); const timeStep = 1 / fps;
+                const resVal = exportResolution.value; let exportWidth = videoElement.videoWidth, exportHeight = videoElement.videoHeight;
+                if (resVal !== 'source') [exportWidth, exportHeight] = resVal.split('x').map(Number);
+                const exportCanvas = document.createElement('canvas'); exportCanvas.width = exportWidth; exportCanvas.height = exportHeight; const scale = exportWidth / videoElement.videoWidth;
+
+                try {
+                    for (let i = 0; i < totalFrames; i++) {
+                        if (!isExporting) break;
+                        const targetTime = i * timeStep;
+                        if (Math.abs(videoElement.currentTime - targetTime) > 0.01) {
+                            await new Promise(resolve => {
+                                let fired = false;
+                                const handler = () => { if(fired) return; fired = true; videoElement.removeEventListener('seeked', handler); resolve(); };
+                                videoElement.addEventListener('seeked', handler);
+                                videoElement.currentTime = targetTime;
+                                setTimeout(() => { if(!fired){ fired = true; videoElement.removeEventListener('seeked', handler); resolve(); } }, 500);
+                            });
+                        }
+                        generateHalftone(exportCanvas, scale, videoElement, getInterpolatedGridSize(targetTime));
+                        const blob = await new Promise(res => exportCanvas.toBlob(res, 'image/png'));
+                        if (blob) zip.file(`frame_${i.toString().padStart(5, '0')}.png`, blob);
+                        exportProgressBar.style.width = `${((i + 1) / totalFrames) * 100}%`; exportStatus.textContent = `Rendering Engine: ${i + 1} / ${totalFrames}`;
+                    }
+                    if (isExporting) {
+                        exportTitle.textContent = "Packaging ZIP archive...";
+                        const content = await zip.generateAsync({ type: "blob" }, (meta) => { exportProgressBar.style.width = `${Math.max(meta.percent, ((totalFrames-1)/totalFrames)*100)}%`; exportStatus.textContent = `Compressing: ${Math.round(meta.percent)}%`; });
+                        const link = document.createElement('a'); link.href = URL.createObjectURL(content); link.download = `matrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
+                    }
+                } catch (e) { showModal({ title: "导出出错", message: "导出过程中断，请重试。", hideCancel: true }); } finally { isExporting = false; exportOverlay.style.display = 'none'; videoElement.play().catch(e=>console.log(e)); }
+            });
+
+            resetButton.onclick = () => {
+                gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast;
+                brightness.value = defaults.brightness; contrast.value = defaults.contrast; fpsInput.value = defaults.fps; exportResolution.value = 'source'; bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor;
+                invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
+                setRenderMode(defaults.renderMode); dotStyleSelect.value = defaults.dotStyle; updateDotStyleUI();
+                asciiLogicSelect.value = defaults.asciiLogic;
+                customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight;
+                asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars;
+                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); isManuallyOverridingGrid = false; keyframes = []; aiResultBox.classList.add('hidden');
+                updateKeyframeUI(); updateUIValues(); if (!isVideo) processFrame();
+            };
+
+            // --- Modals, Firebase & AI ---
+            const customModal = document.getElementById('customModal'), modalTitle = document.getElementById('modalTitle'), modalMessage = document.getElementById('modalMessage'), modalInput = document.getElementById('modalInput'), modalCancel = document.getElementById('modalCancel'), modalConfirm = document.getElementById('modalConfirm');
+            let modalResolve = null;
+            function showModal({ title = "提示", message, showInput = false, hideCancel = false }) { return new Promise((resolve) => { modalTitle.textContent = title; modalMessage.textContent = message; if (showInput) { modalInput.classList.remove('hidden'); modalInput.value = ''; setTimeout(() => modalInput.focus(), 50); } else { modalInput.classList.add('hidden'); } if (hideCancel) modalCancel.classList.add('hidden'); else modalCancel.classList.remove('hidden'); customModal.classList.remove('hidden'); customModal.classList.add('flex'); modalResolve = resolve; }); }
+            function closeModal(value) { customModal.classList.add('hidden'); customModal.classList.remove('flex'); if (modalResolve) { modalResolve(value); modalResolve = null; } }
+            modalCancel.onclick = () => closeModal(null); modalConfirm.onclick = () => { if (!modalInput.classList.contains('hidden')) closeModal(modalInput.value.trim() || null); else closeModal(true); }; modalInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') modalConfirm.click(); });
+
+            let userPresets = {}; let currentUser = null; let db = null; let currentAppId = 'default-app-id';
+            function updatePresetDropdown() { const currentSelection = presetSelect.value; presetSelect.innerHTML = '<option value="">-- 自定义参数 (未保存) --</option>'; for (const name in userPresets) { const opt = document.createElement('option'); opt.value = name; opt.textContent = name; presetSelect.appendChild(opt); } if (userPresets[currentSelection]) presetSelect.value = currentSelection; }
+            if (typeof __firebase_config !== 'undefined') { cloudStatus.textContent = "连接中..."; cloudStatus.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full"; try { const firebaseConfig = JSON.parse(__firebase_config); currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; const app = initializeApp(firebaseConfig); const auth = getAuth(app); db = getFirestore(app); const initAuth = async () => { if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token); else await signInAnonymously(auth); }; initAuth().then(() => { onAuthStateChanged(auth, (user) => { currentUser = user; if (user) { onSnapshot(collection(db, 'artifacts', currentAppId, 'users', user.uid, 'presets'), (snapshot) => { userPresets = {}; snapshot.forEach(doc => userPresets[doc.id] = doc.data()); updatePresetDropdown(); cloudStatus.textContent = "已同步云端"; cloudStatus.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full"; }, () => { cloudStatus.textContent = "同步失败"; cloudStatus.className = "text-[9px] text-red-500 font-bold px-3 py-1 neu-inset rounded-full"; }); } }); }).catch(e => loadLocalPresets()); } catch (e) { loadLocalPresets(); } } else { loadLocalPresets(); }
+            function loadLocalPresets() { cloudStatus.textContent = "本地存储"; cloudStatus.className = "text-[9px] text-[var(--text-muted)] font-bold px-3 py-1 neu-inset rounded-full"; try { userPresets = JSON.parse(localStorage.getItem('halftone_user_presets') || '{}'); } catch (e) { userPresets = {}; } updatePresetDropdown(); }
+
+            presetSelect.addEventListener('change', (e) => {
+                const name = e.target.value;
+                if (name && userPresets[name]) {
+                    const p = userPresets[name];
+                    gridSize.value = p.gridSize; gridSizeInput.value = parseFloat(p.gridSize).toFixed(1); dotScale.value = p.dotScale; sourceBrightness.value = p.sourceBrightness; sourceContrast.value = p.sourceContrast; brightness.value = p.brightness; contrast.value = p.contrast; fpsInput.value = p.fps || defaults.fps; bgColorPicker.value = p.bgColor || defaults.bgColor; dotColorPicker.value = p.dotColor || defaults.dotColor; invertMapping.checked = p.invertMapping; smoothStep.checked = p.smoothStep !== undefined ? p.smoothStep : defaults.smoothStep; fixedDotSize.checked = p.fixedDotSize !== undefined ? p.fixedDotSize : defaults.fixedDotSize; dotCutoff.value = p.dotCutoff !== undefined ? p.dotCutoff : defaults.dotCutoff;
+                    if (p.renderMode) setRenderMode(p.renderMode);
+                    if (p.dotStyle) { dotStyleSelect.value = p.dotStyle; if (p.dotStyle === 'volumetric_custom') { customColorDark.value = p.customColorDark || "#000000"; customColorMid.value = p.customColorMid || "#99bbff"; customColorLight.value = p.customColorLight || "#ffffff"; } updateDotStyleUI(); }
+                    if (p.asciiLogic) { asciiLogicSelect.value = p.asciiLogic; }
+                    if (p.asciiChars) { asciiCharsInput.value = p.asciiChars; const match = Array.from(asciiPresetSelect.options).find(opt => opt.value === p.asciiChars); asciiPresetSelect.value = match ? match.value : 'custom'; }
+                    deletePresetBtn.classList.remove('hidden'); isManuallyOverridingGrid = false; updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+                } else { deletePresetBtn.classList.add('hidden'); }
+            });
+
+            savePresetBtn.addEventListener('click', async () => {
+                const name = await showModal({ title: "保存预设", message: "请输入此配置的名称：", showInput: true }); if (!name) return;
+                const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value };
+                userPresets[name] = preset; presetSelect.value = name; deletePresetBtn.classList.remove('hidden');
+                if (db && currentUser) { try { await setDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), preset); } catch (e) { showModal({ title: "错误", message: "云端失败，已保存至本地。", hideCancel: true }); } } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); presetSelect.value = name; }
+            });
+
+            deletePresetBtn.addEventListener('click', async () => {
+                const name = presetSelect.value; if (!name) return;
+                if (await showModal({ title: "删除预设", message: `确定要删除预设 "${name}" 吗？`, showInput: false })) {
+                    delete userPresets[name]; presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
+                    if (db && currentUser) { try { await deleteDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name)); } catch (e) {} } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); }
+                }
+            });
+
+            // Initial calls
+            bgColorPicker.value = defaults.bgColor; dotStyleSelect.value = defaults.dotStyle; contrast.value = defaults.contrast; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
+            updateDotStyleUI(); updateUIValues();
+        });
+    </script>
+</body>
+</html>
