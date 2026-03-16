@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<!-- 优化1：将网页基础语言声明为英文 (English) -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 优化2：全球化的英文 Title -->
-    <title>ZYRONMATRIX v1.15 | Matrix Effect & ASCII Art Generator</title>
+    <title>ZYRONMATRIX v1.17 | Matrix Effect & Glassmorphism Generator</title>
     
-    <!-- 优化3：面向全球搜索的高质量纯英文描述和关键词 -->
-    <meta name="description" content="Free online advanced Matrix digital rain and ASCII art generator. Convert images and videos into cyberpunk hacker code streams and text masks. Supports WebGL high-res sequence export. Designed for creators and geeks.">
-    <meta name="keywords" content="Matrix effect, ASCII art, ASCII generator, video to ASCII, image to text, cyberpunk, hacker code stream, digital rain, WebGL, Neumorphism UI">
+    <meta name="description" content="Free online advanced Matrix digital rain, ASCII art, and Glassmorphism generator. Convert images and videos into cyberpunk hacker code streams and frosted glass refraction effects.">
+    <meta name="keywords" content="Matrix effect, ASCII art, ASCII generator, Glassmorphism, frosted glass, video to ASCII, image to text, cyberpunk, digital rain, WebGL, Neumorphism UI">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="ZyronMatrix">
     
@@ -19,20 +16,19 @@
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
 
-    <!-- 优化4：面向社交媒体分享的 Open Graph 英文名片 -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.zyronmatrix.com/">
-    <meta property="og:title" content="ZYRONMATRIX | Advanced Matrix & ASCII Art Generator">
-    <meta property="og:description" content="Convert images and videos into cyberpunk ASCII art and Matrix digital rain. Supports custom text masks and high-quality sequence exports.">
+    <meta property="og:title" content="ZYRONMATRIX | Advanced Matrix & Glassmorphism Engine">
+    <meta property="og:description" content="Convert images and videos into cyberpunk ASCII art and frosted glass effects. Supports custom masking and high-quality sequence exports.">
     
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
-      "alternateName": "Matrix Effect & ASCII Art Terminal",
+      "alternateName": "Matrix Effect & Glassmorphism Terminal",
       "url": "https://www.zyronmatrix.com/",
-      "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain and custom ASCII text art. Features real-time rendering and ZIP sequence export.",
+      "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain, custom ASCII text art, and frosted glass refraction effects.",
       "applicationCategory": "MultimediaApplication",
       "operatingSystem": "All",
       "browserRequirements": "Requires HTML5 Canvas support",
@@ -45,7 +41,7 @@
         "Image to ASCII conversion",
         "Video to ASCII sequence export",
         "Matrix digital rain effect",
-        "Custom text masking engine",
+        "Glassmorphism refraction effect",
         "Neumorphism UI"
       ]
     }
@@ -127,36 +123,27 @@
             background-clip: content-box;
             cursor: pointer;
         }
-        .control-panel::-webkit-scrollbar-thumb:hover {
-            background-color: var(--shadow-light);
-        }
-        .control-panel::-webkit-scrollbar-thumb:active {
-            background-color: var(--accent);
-            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3);
-        }
+        .control-panel::-webkit-scrollbar-thumb:hover { background-color: var(--shadow-light); }
+        .control-panel::-webkit-scrollbar-thumb:active { background-color: var(--accent); box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3); }
 
         .neu-panel {
             background: var(--bg-color);
             border-radius: 32px;
-            box-shadow: 12px 12px 24px var(--shadow-dark), 
-                       -12px -12px 24px var(--shadow-light);
+            box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
             border: 1px solid var(--border-light);
         }
 
         .neu-inset {
             background: var(--bg-color);
             border-radius: 20px;
-            box-shadow: inset 6px 6px 12px var(--shadow-dark), 
-                        inset -6px -6px 12px var(--shadow-light);
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
             border: 1px solid transparent;
         }
 
         .neu-btn {
             background: var(--bg-color);
             border-radius: 16px;
-            box-shadow: 6px 6px 12px var(--shadow-dark), 
-                       -6px -6px 12px var(--shadow-light),
-                       inset 1px 1px 2px var(--inner-highlight);
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light), inset 1px 1px 2px var(--inner-highlight);
             color: var(--text-dark);
             font-weight: 800;
             transition: all 0.2s cubic-bezier(0.15, 0.8, 0.25, 1);
@@ -166,39 +153,22 @@
         }
         .neu-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 8px 8px 16px var(--shadow-dark), 
-                       -8px -8px 16px var(--shadow-light),
-                       inset 1px 1px 2px var(--inner-highlight-strong);
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light), inset 1px 1px 2px var(--inner-highlight-strong);
         }
         .neu-btn:active, .neu-btn.active {
             transform: translateY(1px);
-            box-shadow: inset 5px 5px 10px var(--shadow-dark), 
-                        inset -5px -5px 10px var(--shadow-light);
-            border-color: transparent;
-            color: var(--accent); 
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+            border-color: transparent; color: var(--accent); 
         }
 
         .neu-input {
             background: var(--bg-color);
             border-radius: 14px;
-            box-shadow: inset 4px 4px 8px var(--shadow-dark), 
-                        inset -4px -4px 8px var(--shadow-light);
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
             border: 2px solid transparent;
-            color: var(--text-dark);
-            padding: 10px 14px;
-            font-weight: 700;
-            transition: all 0.25s ease;
-            appearance: none;
-            -webkit-appearance: none;
+            color: var(--text-dark); padding: 10px 14px; font-weight: 700; transition: all 0.25s ease; appearance: none; -webkit-appearance: none;
         }
-        .neu-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            color: var(--accent);
-            box-shadow: inset 6px 6px 12px var(--shadow-dark), 
-                        inset -6px -6px 12px var(--shadow-light), 
-                        0 0 0 4px var(--accent-glow);
-        }
+        .neu-input:focus { outline: none; border-color: var(--accent); color: var(--accent); box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light), 0 0 0 4px var(--accent-glow); }
 
         input[type="range"] { -webkit-appearance: none; width: 100%; background: transparent; padding: 10px 0; }
         input[type="range"]:focus { outline: none; }
@@ -210,54 +180,28 @@
             -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%;
             background: var(--bg-color);
             box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), inset 2px 2px 4px var(--inner-highlight-strong);
-            margin-top: -7px; cursor: pointer; transition: all 0.15s ease;
-            border: 2px solid var(--bg-color);
+            margin-top: -7px; cursor: pointer; transition: all 0.15s ease; border: 2px solid var(--bg-color);
         }
         input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
-        input[type="range"]::-webkit-slider-thumb:active { 
-            background: var(--accent);
-            box-shadow: 2px 2px 6px var(--shadow-dark), -2px -2px 6px var(--shadow-light);
-        }
+        input[type="range"]::-webkit-slider-thumb:active { background: var(--accent); box-shadow: 2px 2px 6px var(--shadow-dark), -2px -2px 6px var(--shadow-light); }
 
         input[type="color"] {
             -webkit-appearance: none; border: none; width: 40px; height: 40px; border-radius: 50%;
             padding: 0; background: var(--bg-color); cursor: pointer; overflow: hidden;
-            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-            transition: transform 0.2s;
+            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); transition: transform 0.2s;
         }
         input[type="color"]:hover { transform: scale(1.05); }
         input[type="color"]::-webkit-color-swatch-wrapper { padding: 4px; }
         input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
 
-        .keyframe-marker { 
-            position: absolute; 
-            width: 12px; 
-            height: 12px; 
-            background: #ffb703; 
-            border-radius: 50%; 
-            top: 50%; 
-            transform: translate(-50%, -50%); 
-            pointer-events: none; 
-            border: 2px solid var(--shadow-light); 
-            box-shadow: 0 0 8px rgba(255, 183, 3, 0.8), 2px 2px 4px var(--shadow-dark); 
-            z-index: 40; 
-        }
+        .keyframe-marker { position: absolute; width: 12px; height: 12px; background: #ffb703; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; border: 2px solid var(--shadow-light); box-shadow: 0 0 8px rgba(255, 183, 3, 0.8), 2px 2px 4px var(--shadow-dark); z-index: 40; }
 
         canvas { 
-            border-radius: 24px;
-            background: var(--bg-color);
-            image-rendering: auto; 
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            box-shadow: 12px 12px 24px var(--shadow-dark), 
-                       -12px -12px 24px var(--shadow-light);
-            border: 1px solid var(--border-light);
-            transition: all 0.4s ease;
+            border-radius: 24px; background: var(--bg-color); image-rendering: auto; max-width: 100%; max-height: 100%; object-fit: contain;
+            box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); border: 1px solid var(--border-light); transition: all 0.4s ease;
         }
 
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
         .loading-overlay { display: none; position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(12px); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         .modal-overlay-bg { background: var(--modal-bg); }
         .spin { animation: spin 1s linear infinite; }
@@ -267,10 +211,9 @@
 <body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white">
     
     <div class="sr-only">
-        <h1>ZYRONMATRIX: Online Matrix Effect & ASCII Art Video Generator</h1>
-        <p>How to make a Matrix digital rain effect or convert video to ASCII art? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D dot matrix designs.</p>
-        <p>Features include text masking (overlaying continuous English prose over images), custom character dictionaries, Neumorphism dark/light mode UI, and rendering sequences directly into ZIP archives for After Effects (AE) and Premiere (PR) compositing. Best tool for cyberpunk aesthetics and generative typography design.</p>
-        <p>如何制作黑客帝国代码雨特效？如何把视频转换成字符画？ZYRONMATRIX 是一款强大的在线矩阵特效与 ASCII 艺术生成器。支持动态连续文本遮罩、自定义字符字典、体积光色阶映射，并可一键导出透明通道的序列帧供后期软件合成使用。完全免费，前端直接渲染，保护隐私。</p>
+        <h1>ZYRONMATRIX: Online Matrix Effect & Glassmorphism Video Generator</h1>
+        <p>How to make a Matrix digital rain effect, convert video to ASCII art, or create stunning frosted glass refraction loops? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D frosted glass / claymorphism designs.</p>
+        <p>Features include text masking, custom character dictionaries, dynamic LUT color mapping, refractive stripe displacement, Neumorphism dark/light mode UI, and rendering sequences directly into ZIP archives for After Effects (AE) and Premiere (PR) compositing. Best tool for cyberpunk aesthetics, motion graphics, and generative typography design.</p>
     </div>
 
     <!-- I18N Language Switcher -->
@@ -280,29 +223,22 @@
     </div>
 
     <div class="w-full max-w-[1920px] mx-auto">
-        <!-- 页面顶栏 -->
         <header class="mb-8 text-center flex flex-col items-center pt-8 md:pt-2">
             <div class="inline-flex items-center gap-4 mb-3 px-8 py-4 neu-panel">
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.15</span></h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.17</span></h1>
                 
                 <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full ml-2 flex items-center justify-center" data-i18n-title="tip_theme">
-                    <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg id="themeIconMoon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
+                    <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    <svg id="themeIconMoon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                 </button>
 
                 <a href="/guide.html" target="_blank" class="neu-btn h-10 px-4 rounded-full ml-1 flex items-center justify-center text-[11px] font-black tracking-widest gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     <span data-i18n="btn_guide">GUIDE</span>
                 </a>
-
-                <span class="text-xs font-black px-4 py-1.5 rounded-full neu-inset text-[var(--accent)] tracking-widest hidden lg:inline-block" data-i18n="app_subtitle">ASCII ENGINE</span>
             </div>
             <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Tactile Elements • Organic Claymorphism • High Quality Render</p>
         </header>
@@ -312,9 +248,10 @@
                 <div class="h-full overflow-y-auto control-panel lg:-mr-[28px] lg:pr-[28px]">
                     <div class="p-6 lg:p-8 space-y-8 pb-10">
                         
-                        <div class="neu-inset p-2 flex gap-2 rounded-2xl relative z-10">
-                            <button id="modeDotBtn" class="neu-btn active flex-1 py-3.5 text-sm uppercase tracking-wider" data-i18n="tab_dot">Dot Matrix</button>
-                            <button id="modeAsciiBtn" class="neu-btn flex-1 py-3.5 text-sm uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii Art</button>
+                        <div class="neu-inset p-2 flex flex-col xl:flex-row gap-2 rounded-2xl relative z-10">
+                            <button id="modeDotBtn" class="neu-btn active flex-1 py-3 text-[11px] xl:text-xs font-black uppercase tracking-wider" data-i18n="tab_dot">Dot Matrix</button>
+                            <button id="modeAsciiBtn" class="neu-btn flex-1 py-3 text-[11px] xl:text-xs font-black uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii Art</button>
+                            <button id="modeGlassBtn" class="neu-btn flex-1 py-3 text-[11px] xl:text-xs font-black uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_glass">Frosted Glass</button>
                         </div>
 
                         <div class="space-y-5">
@@ -338,13 +275,15 @@
                             </div>
                         </div>
 
+                        <!-- CATEGORY 1: GEOMETRY -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
                                 <button id="resetGeometryBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
                             
-                            <div class="space-y-6">
+                            <!-- Matrix/ASCII 专有 Geometry 控件 -->
+                            <div id="matrixGeometryControls" class="space-y-6">
                                 <div>
                                     <div class="flex justify-between items-center text-xs mb-3">
                                         <span id="lblGridSize" class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_grid">Grid Density</span>
@@ -386,15 +325,62 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Glass 专有 Geometry 控件 -->
+                            <div id="glassGeometryControls" class="space-y-6 hidden">
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_img_scale">Image Scale</span><span id="glassImgScaleVal" class="font-mono text-[var(--accent)]">100%</span></div>
+                                        <input type="range" id="glassImgScale" min="0.1" max="3" step="0.05" value="1">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_img_off_x">Horizontal Offset</span><span id="glassImgOffsetXVal" class="font-mono text-[var(--accent)]">0px</span></div>
+                                        <input type="range" id="glassImgOffsetX" min="-1000" max="1000" step="5" value="0">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_img_off_y">Vertical Offset</span><span id="glassImgOffsetYVal" class="font-mono text-[var(--accent)]">0px</span></div>
+                                        <input type="range" id="glassImgOffsetY" min="-1000" max="1000" step="5" value="0">
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t border-white/30">
+                                    <div class="text-xs font-extrabold text-[var(--text-muted)] mb-3" data-i18n="lbl_extract">Edge Extraction</div>
+                                    <select id="glassExtract" class="neu-input w-full text-[11px] font-bold cursor-pointer">
+                                        <option value="auto" selected data-i18n="opt_ext_auto">Auto (Recommended)</option>
+                                        <option value="alpha" data-i18n="opt_ext_alpha">By Alpha (No BG)</option>
+                                        <option value="luma" data-i18n="opt_ext_luma">By Luma (Black BG)</option>
+                                    </select>
+                                </div>
+                                <div class="pt-3 border-t border-white/30 space-y-4">
+                                    <div class="text-xs font-extrabold text-[var(--text-muted)] mb-2" data-i18n="lbl_mask">Lens Mask (Reveal)</div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_mask_w">Mask Width</span><span id="glassMaskWVal" class="font-mono text-[var(--accent)]">100%</span></div>
+                                        <input type="range" id="glassMaskW" min="0" max="100" value="100">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_mask_h">Mask Height</span><span id="glassMaskHVal" class="font-mono text-[var(--accent)]">100%</span></div>
+                                        <input type="range" id="glassMaskH" min="0" max="100" value="100">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_mask_x">Mask X Offset</span><span id="glassMaskXVal" class="font-mono text-[var(--accent)]">0%</span></div>
+                                        <input type="range" id="glassMaskX" min="-100" max="100" value="0">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_mask_y">Mask Y Offset</span><span id="glassMaskYVal" class="font-mono text-[var(--accent)]">0%</span></div>
+                                        <input type="range" id="glassMaskY" min="-100" max="100" value="0">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- CATEGORY 2: STYLE & COLOR -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
                                 <button id="resetColorBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
 
-                            <div class="space-y-6">
+                            <!-- Matrix/ASCII 专有 Color 控件 -->
+                            <div id="matrixColorControls" class="space-y-6">
                                 <div class="flex items-center justify-between p-3 neu-inset rounded-2xl">
                                     <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_bg">Global BG Color</span>
                                     <input type="color" id="bgColor" value="#000000">
@@ -488,15 +474,91 @@
                                     <input type="color" id="dotColor" value="#ffffff">
                                 </div>
                             </div>
+
+                            <!-- Glass 专有 Color 控件 -->
+                            <div id="glassColorControls" class="space-y-6 hidden">
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_light_int">Light Intensity</span><span id="glassLightVal" class="font-mono text-[var(--accent)]">1.2x</span></div>
+                                    <input type="range" id="glassLight" min="0.1" max="3" step="0.1" value="1.2">
+                                </div>
+
+                                <div class="flex bg-[var(--bg-color)] rounded-xl p-1 shadow-inner border border-white/20">
+                                    <button id="glassModeLut" class="flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]" data-i18n="opt_lut">Global LUT</button>
+                                    <button id="glassModeSpatial" class="flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]" data-i18n="opt_spatial">Spatial Gradient</button>
+                                </div>
+                                <input type="hidden" id="glassColorMode" value="spatial">
+
+                                <div id="glassSpatialControls" class="space-y-4">
+                                    <div class="flex gap-4">
+                                        <div class="flex-1 flex flex-col items-center p-3 neu-inset">
+                                            <input type="color" id="glassSpatial1" value="#b500ff">
+                                            <span class="text-[10px] text-[var(--text-muted)] font-bold mt-2" data-i18n="lbl_col1">Primary A</span>
+                                        </div>
+                                        <div class="flex-1 flex flex-col items-center p-3 neu-inset">
+                                            <input type="color" id="glassSpatial2" value="#00e5ff">
+                                            <span class="text-[10px] text-[var(--text-muted)] font-bold mt-2" data-i18n="lbl_col2">Secondary B</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_angle">Gradient Angle</span><span id="glassAngleVal" class="font-mono text-[var(--accent)]">135°</span></div>
+                                        <input type="range" id="glassAngle" min="0" max="360" value="135">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_offset">Gradient Offset</span><span id="glassOffsetVal" class="font-mono text-[var(--accent)]">0%</span></div>
+                                        <input type="range" id="glassOffset" min="-100" max="100" value="0">
+                                    </div>
+                                </div>
+
+                                <div id="glassLutControls" class="hidden space-y-3">
+                                    <div class="text-[10px] font-bold text-[var(--text-muted)] flex justify-between">
+                                        <span data-i18n="lbl_lut_cols">LUT Colors (Dark to Bright)</span>
+                                    </div>
+                                    
+                                    <!-- LUT Presets -->
+                                    <div class="grid grid-cols-2 gap-2 mb-2">
+                                        <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer" data-colors="#000000,#0a2db5,#16a6d1,#f06d18,#ffffff">
+                                            <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #f06d18"></div>
+                                            <span class="truncate font-bold" data-i18n="lut_p1">Classic Blue/Orange</span>
+                                        </button>
+                                        <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer" data-colors="#000000,#2a0044,#b500ff,#00e5ff,#ffffff">
+                                            <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #b500ff"></div>
+                                            <span class="truncate font-bold" data-i18n="lut_p2">Cyberpunk</span>
+                                        </button>
+                                        <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer" data-colors="#000000,#002200,#00aa00,#aaff00,#ffffff">
+                                            <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #aaff00"></div>
+                                            <span class="truncate font-bold" data-i18n="lut_p3">Toxic</span>
+                                        </button>
+                                        <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer" data-colors="#000000,#2b0018,#990044,#ff8800,#ffffff">
+                                            <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #ff8800"></div>
+                                            <span class="truncate font-bold" data-i18n="lut_p4">Sunset</span>
+                                        </button>
+                                        <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer col-span-2 justify-center" data-colors="#000000,#001a22,#0066aa,#00ffaa,#ffffff">
+                                            <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #00ffaa"></div>
+                                            <span class="truncate font-bold" data-i18n="lut_p5">Aurora</span>
+                                        </button>
+                                    </div>
+
+                                    <div id="glassLutPreview" class="h-6 w-full rounded-md shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)] border border-white/10"></div>
+                                    <div class="flex justify-between">
+                                        <input type="color" id="glassLut1" value="#000000" class="w-6 h-6 p-0 border-0 rounded-full cursor-pointer shadow-md">
+                                        <input type="color" id="glassLut2" value="#0a2db5" class="w-6 h-6 p-0 border-0 rounded-full cursor-pointer shadow-md">
+                                        <input type="color" id="glassLut3" value="#16a6d1" class="w-6 h-6 p-0 border-0 rounded-full cursor-pointer shadow-md">
+                                        <input type="color" id="glassLut4" value="#f06d18" class="w-6 h-6 p-0 border-0 rounded-full cursor-pointer shadow-md">
+                                        <input type="color" id="glassLut5" value="#ffffff" class="w-6 h-6 p-0 border-0 rounded-full cursor-pointer shadow-md">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- CATEGORY 3: FILTERS & PHYSICS -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
                                 <button id="resetSignalBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
                             
-                            <div class="space-y-6">
+                            <!-- Matrix 专有信号处理 -->
+                            <div id="matrixFilterControls" class="space-y-6">
                                 <div>
                                     <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_b">Source: Exposure Bias</span><span id="sourceBrightnessVal">0</span></div>
                                     <input type="range" id="sourceBrightness" min="-100" max="100" value="0">
@@ -534,8 +596,37 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Glass 专有物理特效 -->
+                            <div id="glassPhysicsControls" class="space-y-4 hidden">
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_blur">Glow Blur</span><span id="glassBlurVal" class="font-mono text-[var(--accent)]">45px</span></div>
+                                    <input type="range" id="glassBlur" min="5" max="150" value="45">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_sharp">Subject Sharpness</span><span id="glassSharpVal" class="font-mono text-[var(--accent)]">0%</span></div>
+                                    <input type="range" id="glassSharp" min="0" max="100" value="0">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_stripe">Stripe Width</span><span id="glassStripeVal" class="font-mono text-[var(--accent)]">24px</span></div>
+                                    <input type="range" id="glassStripe" min="4" max="80" value="24">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_disp">Refraction Disp.</span><span id="glassDispVal" class="font-mono text-[var(--accent)]">15</span></div>
+                                    <input type="range" id="glassDisp" min="0" max="60" value="15">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_shading">Glass Shading</span><span id="glassShadingVal" class="font-mono text-[var(--accent)]">60%</span></div>
+                                    <input type="range" id="glassShading" min="0" max="1" step="0.05" value="0.6">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_noise">Film Noise</span><span id="glassNoiseVal" class="font-mono text-[var(--accent)]">15</span></div>
+                                    <input type="range" id="glassNoise" min="0" max="60" value="15">
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- CATEGORY 4: OUTPUT -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
@@ -568,7 +659,7 @@
             </aside>
 
             <main class="flex-1 min-w-0 flex flex-col items-center justify-start">
-                <div id="previewContainer" class="w-full flex justify-center items-center neu-inset p-4 md:p-8 h-[50vh] lg:h-[calc(100vh-140px)] relative group overflow-hidden">
+                <div id="previewContainer" class="w-full flex justify-center items-center neu-inset p-4 md:p-8 h-[50vh] lg:h-[calc(100vh-140px)] relative group overflow-hidden z-10">
                     <canvas id="halftoneCanvas"></canvas>
                     
                     <button id="fullscreenBtn" class="absolute top-6 right-6 p-3 neu-btn opacity-0 group-hover:opacity-100 transition-opacity z-10 rounded-full" title="全屏预览">
@@ -598,7 +689,7 @@
                     </div>
                 </div>
 
-                <div class="mt-6 flex gap-6 text-[var(--text-muted)] text-[11px] font-black uppercase tracking-widest px-8 py-3 neu-panel rounded-full">
+                <div class="mt-6 flex gap-6 text-[var(--text-muted)] text-[11px] font-black uppercase tracking-widest px-8 py-3 neu-panel rounded-full z-10">
                     <span><span data-i18n="status_res">Target Resolution</span>: <span id="resDisplay" class="text-[var(--text-dark)] ml-1">-</span></span>
                     <span class="w-[2px] rounded-full bg-[var(--shadow-dark)] opacity-40"></span>
                     <span><span data-i18n="status_mode">Engine Mode</span>: <span id="modeDisplay" class="text-[var(--text-dark)] ml-1">-</span></span>
@@ -637,11 +728,11 @@
 
         document.addEventListener('DOMContentLoaded', async function() {
             
-            // --- I18N Engine (国际化词典) ---
+            // --- I18N Engine ---
             const translations = {
                 en: {
                     app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
-                    tab_dot: "Dot Matrix", tab_ascii: "Ascii Art", lbl_source: "Source & Preset", status_synced: "Synced", status_local: "Local Storage", status_sync_err: "Sync Failed", status_conn: "Connecting...",
+                    tab_dot: "Dot Matrix", tab_ascii: "Ascii Art", tab_glass: "Frosted Glass", lbl_source: "Source & Preset", status_synced: "Synced", status_local: "Local Storage", status_sync_err: "Sync Failed", status_conn: "Connecting...",
                     btn_load: "Load Media", no_file: "No file selected...", no_file_preview: "NO MEDIA UPLOADED", opt_custom_preset: "-- Custom (Unsaved) --", tip_save_preset: "Save Preset", tip_del_preset: "Delete Preset", tip_theme: "Toggle Dark/Light Theme",
                     lbl_geometry: "Geometry", btn_reset: "⟲ Reset", lbl_grid: "Grid Density", lbl_keyed: "(KEYED)", btn_add_key: "📍 Add Keyframe", btn_clear_key: "Clear Anims", 
                     lbl_scale: "Unit Scale (Gap)", lbl_scale_ascii: "Line Spacing & Scale", lbl_lock_dot: "Lock Dot Size (LED Look)", lbl_cutoff: "Darkness Cutoff",
@@ -659,11 +750,19 @@
                     msg_sys_notice: "Notice", msg_err: "Error", msg_key_added: "✅ Recorded", msg_err_keyframe: "You must upload a video first to add keyframes!",
                     msg_err_upload: "Please upload image or video first!", msg_err_render: "Render failed, try lower resolution.", msg_err_export_req: "Upload a video to export sequence.", msg_err_export: "Export interrupted, please retry.",
                     msg_save_preset: "Save Preset", msg_enter_name: "Enter preset name:", msg_err_cloud: "Cloud failed, saved locally.", msg_del_preset: "Delete Preset", msg_confirm_del: "Are you sure you want to delete preset: ",
-                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE & ART", tip_guide: "Read tutorials and learn about ASCII art"
+                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE & ART", tip_guide: "Read tutorials and learn about ASCII art",
+                    
+                    // Glass specific translations
+                    lbl_img_scale: "Image Scale", lbl_img_off_x: "Horizontal Offset", lbl_img_off_y: "Vertical Offset",
+                    lbl_extract: "Edge Extraction", opt_ext_auto: "Auto (Recommended)", opt_ext_alpha: "By Alpha (No BG)", opt_ext_luma: "By Luma (Black BG)",
+                    lbl_mask: "Lens Mask (Reveal)", lbl_mask_w: "Mask Width", lbl_mask_h: "Mask Height", lbl_mask_x: "Mask X Offset", lbl_mask_y: "Mask Y Offset",
+                    lbl_blur: "Glow Blur", lbl_sharp: "Subject Sharpness", lbl_stripe: "Stripe Width", lbl_disp: "Refraction Disp.", lbl_shading: "Glass Shading", lbl_noise: "Film Noise",
+                    lbl_light_int: "Light Intensity", opt_lut: "Global LUT Mapping", opt_spatial: "Spatial Gradient", lbl_col1: "Primary A", lbl_col2: "Secondary B", lbl_angle: "Gradient Angle", lbl_offset: "Gradient Offset", lbl_lut_cols: "LUT Colors (Dark to Bright)",
+                    lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora"
                 },
                 zh: {
                     app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
-                    tab_dot: "圆点矩阵 (Dot)", tab_ascii: "ASCII 字符", lbl_source: "Source & Preset", status_synced: "已同步", status_local: "本地存储", status_sync_err: "同步失败", status_conn: "连接中...",
+                    tab_dot: "圆点矩阵 (Dot)", tab_ascii: "ASCII 字符", tab_glass: "长虹毛玻璃", lbl_source: "Source & Preset", status_synced: "已同步", status_local: "本地存储", status_sync_err: "同步失败", status_conn: "连接中...",
                     btn_load: "载入媒体", no_file: "未选择文件...", no_file_preview: "等待载入媒体", opt_custom_preset: "-- 自定义参数 (未保存) --", tip_save_preset: "保存预设", tip_del_preset: "删除预设", tip_theme: "切换深浅色主题",
                     lbl_geometry: "Geometry", btn_reset: "⟲ 恢复", lbl_grid: "阵列排版密度", lbl_keyed: "(KEYED)", btn_add_key: "📍 打关键帧", btn_clear_key: "清空动画", 
                     lbl_scale: "单元缩放 (间隙)", lbl_scale_ascii: "字符纵向行间距缩放", lbl_lock_dot: "锁定等大圆点 (LED化)", lbl_cutoff: "背景暗部剔除阈值",
@@ -681,7 +780,15 @@
                     msg_sys_notice: "提示", msg_err: "出错", msg_key_added: "✅ 记录成功", msg_err_keyframe: "只有上传视频序列后才能打关键帧哦！",
                     msg_err_upload: "请先上传图片或视频！", msg_err_render: "生成失败，尝试调低分辨率。", msg_err_export_req: "请先上传视频文件再导出序列。", msg_err_export: "导出过程中断，请重试。",
                     msg_save_preset: "保存预设", msg_enter_name: "请输入此配置的名称：", msg_err_cloud: "云端失败，已保存至本地。", msg_del_preset: "删除预设", msg_confirm_del: "确定要删除预设 ",
-                    msg_compressing: "正在压缩打包...", msg_engine: "引擎渲染中: ", btn_guide: "教程与原理", tip_guide: "阅读详细教程与 ASCII 艺术原理解析"
+                    msg_compressing: "正在压缩打包...", msg_engine: "引擎渲染中: ", btn_guide: "教程与原理", tip_guide: "阅读详细教程与原理解析",
+                    
+                    // Glass specific translations
+                    lbl_img_scale: "图片缩放", lbl_img_off_x: "水平偏移", lbl_img_off_y: "垂直偏移",
+                    lbl_extract: "边缘提取模式", opt_ext_auto: "自动识别 (推荐)", opt_ext_alpha: "按透明度 (去底图)", opt_ext_luma: "按亮度 (黑底图)",
+                    lbl_mask: "透镜遮罩 (局部露出)", lbl_mask_w: "光栅覆盖宽度", lbl_mask_h: "光栅覆盖高度", lbl_mask_x: "遮罩 X轴偏移", lbl_mask_y: "遮罩 Y轴偏移",
+                    lbl_blur: "高斯模糊发光扩散", lbl_sharp: "发光体清晰度", lbl_stripe: "长虹玻璃槽宽", lbl_disp: "折射扭曲度 (位移)", lbl_shading: "玻璃阴影衰减", lbl_noise: "胶片噪点质感",
+                    lbl_light_int: "发光光源亮度强度", opt_lut: "全局映射 (LUT)", opt_spatial: "空间光源 (一半一半)", lbl_col1: "主色彩 A", lbl_col2: "副色彩 B", lbl_angle: "交界角度", lbl_offset: "渐变色彩偏移", lbl_lut_cols: "全局映射色彩预设 (LUT Presets)",
+                    lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境"
                 }
             };
 
@@ -713,7 +820,7 @@
                 if(currentRenderMode === 'dot') {
                     document.getElementById('lblGridSize').textContent = t('lbl_grid');
                     document.getElementById('lblDotScale').textContent = t('lbl_scale');
-                } else {
+                } else if(currentRenderMode === 'ascii') {
                     document.getElementById('lblGridSize').textContent = translations[currentLang]['lbl_grid'].replace('圆点', '字符').replace('Dot', 'Char');
                     document.getElementById('lblDotScale').textContent = t('lbl_scale_ascii');
                 }
@@ -721,7 +828,7 @@
                 if (videoElement || imageElement) {
                     document.getElementById('modeDisplay').textContent = isVideo ? t('status_video') : t('status_image');
                 } else {
-                    initEmptyCanvas(); // Refresh placeholder text language
+                    initEmptyCanvas(); 
                 }
             }
 
@@ -752,9 +859,8 @@
                     themeIconMoon.classList.remove('hidden');
                     localStorage.setItem('matrix_ui_theme', 'dark');
                 }
-                // Refresh empty canvas style if no media is loaded
                 if (!imageElement && !videoElement) {
-                    setTimeout(initEmptyCanvas, 50); // slight delay to allow CSS var to update
+                    setTimeout(initEmptyCanvas, 50);
                 }
             });
 
@@ -767,11 +873,16 @@
             
             const modeDotBtn = document.getElementById('modeDotBtn');
             const modeAsciiBtn = document.getElementById('modeAsciiBtn');
+            const modeGlassBtn = document.getElementById('modeGlassBtn');
+            
+            const matrixGeometryControls = document.getElementById('matrixGeometryControls');
+            const glassGeometryControls = document.getElementById('glassGeometryControls');
             const dotGeometryControls = document.getElementById('dotGeometryControls');
+            
+            const matrixColorControls = document.getElementById('matrixColorControls');
+            const glassColorControls = document.getElementById('glassColorControls');
             const solidColorControl = document.getElementById('solidColorControl');
             
-            const lblGridSize = document.getElementById('lblGridSize');
-            const lblDotScale = document.getElementById('lblDotScale');
             const dotStyleSelect = document.getElementById('dotStyleSelect');
             const customVolumetricControls = document.getElementById('customVolumetricControls');
             const customColorDark = document.getElementById('customColorDark');
@@ -781,6 +892,7 @@
             const fixedDotSize = document.getElementById('fixedDotSize');
             const dotCutoff = document.getElementById('dotCutoff');
             const dotCutoffVal = document.getElementById('dotCutoffVal');
+            
             const asciiCharsInput = document.getElementById('asciiCharsInput');
             const asciiPresetSelect = document.getElementById('asciiPresetSelect');
             const asciiControls = document.getElementById('asciiControls');
@@ -791,14 +903,13 @@
             const asciiIntensityVal = document.getElementById('asciiIntensityVal');
             const asciiRemoveSpaces = document.getElementById('asciiRemoveSpaces');
 
+            const matrixFilterControls = document.getElementById('matrixFilterControls');
+            const glassPhysicsControls = document.getElementById('glassPhysicsControls');
+
             const sourceBrightness = document.getElementById('sourceBrightness');
             const sourceContrast = document.getElementById('sourceContrast');
-            const sourceBrightnessVal = document.getElementById('sourceBrightnessVal');
-            const sourceContrastVal = document.getElementById('sourceContrastVal');
             const brightness = document.getElementById('brightness');
             const contrast = document.getElementById('contrast');
-            const brightnessVal = document.getElementById('brightnessVal');
-            const contrastVal = document.getElementById('contrastVal');
             
             const bgColorPicker = document.getElementById('bgColor');
             const dotColorPicker = document.getElementById('dotColor');
@@ -806,7 +917,37 @@
             const smoothStep = document.getElementById('smoothStep');
             const fpsInput = document.getElementById('fpsInput');
             const exportResolution = document.getElementById('exportResolution');
-            const fpsVal = document.getElementById('fpsVal');
+
+            // Glass Specific Controls
+            const glassImgScale = document.getElementById('glassImgScale');
+            const glassImgOffsetX = document.getElementById('glassImgOffsetX');
+            const glassImgOffsetY = document.getElementById('glassImgOffsetY');
+            const glassExtract = document.getElementById('glassExtract');
+            const glassMaskW = document.getElementById('glassMaskW');
+            const glassMaskH = document.getElementById('glassMaskH');
+            const glassMaskX = document.getElementById('glassMaskX');
+            const glassMaskY = document.getElementById('glassMaskY');
+            const glassLight = document.getElementById('glassLight');
+            const glassColorMode = document.getElementById('glassColorMode');
+            const glassModeLutBtn = document.getElementById('glassModeLut');
+            const glassModeSpatialBtn = document.getElementById('glassModeSpatial');
+            const glassSpatialControls = document.getElementById('glassSpatialControls');
+            const glassLutControls = document.getElementById('glassLutControls');
+            const glassSpatial1 = document.getElementById('glassSpatial1');
+            const glassSpatial2 = document.getElementById('glassSpatial2');
+            const glassAngle = document.getElementById('glassAngle');
+            const glassOffset = document.getElementById('glassOffset');
+            const glassLut1 = document.getElementById('glassLut1');
+            const glassLut2 = document.getElementById('glassLut2');
+            const glassLut3 = document.getElementById('glassLut3');
+            const glassLut4 = document.getElementById('glassLut4');
+            const glassLut5 = document.getElementById('glassLut5');
+            const glassBlur = document.getElementById('glassBlur');
+            const glassSharp = document.getElementById('glassSharp');
+            const glassStripe = document.getElementById('glassStripe');
+            const glassDisp = document.getElementById('glassDisp');
+            const glassShading = document.getElementById('glassShading');
+            const glassNoise = document.getElementById('glassNoise');
 
             const resetGeometryBtn = document.getElementById('resetGeometryBtn');
             const resetColorBtn = document.getElementById('resetColorBtn');
@@ -850,7 +991,7 @@
             const cloudStatus = document.getElementById('cloudStatus');
 
             // --- State Variables ---
-            let currentRenderMode = 'dot';
+            let currentRenderMode = 'dot'; // dot, ascii, glass
             let imageElement = null;
             let videoElement = null;
             let isVideo = false;
@@ -868,8 +1009,28 @@
                 invertMapping: false, smoothStep: true, renderMode: 'dot', 
                 asciiLogic: 'mask', asciiChars: "THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ", asciiRatio: 0.6, asciiIntensity: 1, asciiRemoveSpaces: true,
                 dotStyle: 'solid', customColorDark: "#000000", customColorMid: "#0066ff", 
-                customColorLight: "#ffffff", fixedDotSize: false, dotCutoff: 0.05
+                customColorLight: "#ffffff", fixedDotSize: false, dotCutoff: 0.05,
+                // Glass Defaults
+                glassImgScale: 1.0, glassImgOffsetX: 0, glassImgOffsetY: 0,
+                glassExtract: 'auto', glassMaskW: 100, glassMaskH: 100, glassMaskX: 0, glassMaskY: 0,
+                glassLight: 1.2, glassColorMode: 'spatial', glassSpatial1: '#b500ff', glassSpatial2: '#00e5ff',
+                glassAngle: 135, glassOffset: 0, glassLut1: '#000000', glassLut2: '#0a2db5', glassLut3: '#16a6d1', glassLut4: '#f06d18', glassLut5: '#ffffff',
+                glassBlur: 45, glassSharp: 0, glassStripe: 24, glassDisp: 15, glassShading: 0.6, glassNoise: 15
             };
+
+            // LUT Pre-defined Presets Click Listener
+            document.querySelectorAll('.glass-preset-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const colors = btn.getAttribute('data-colors').split(',');
+                    glassLut1.value = colors[0];
+                    glassLut2.value = colors[1];
+                    glassLut3.value = colors[2];
+                    glassLut4.value = colors[3];
+                    glassLut5.value = colors[4];
+                    updateUIValues();
+                    if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+                });
+            });
 
             // --- Basic Utilities ---
             function formatTime(seconds) {
@@ -887,15 +1048,41 @@
             // --- UI Updating Sync ---
             function updateUIValues() {
                 if(document.activeElement !== gridSizeInput) gridSizeInput.value = parseFloat(gridSize.value).toFixed(1);
-                dotScaleVal.textContent = parseFloat(dotScale.value).toFixed(2);
-                sourceBrightnessVal.textContent = sourceBrightness.value;
-                sourceContrastVal.textContent = sourceContrast.value;
-                brightnessVal.textContent = brightness.value;
-                contrastVal.textContent = contrast.value;
-                fpsVal.textContent = fpsInput.value;
-                dotCutoffVal.textContent = parseFloat(dotCutoff.value).toFixed(2);
+                document.getElementById('dotScaleVal').textContent = parseFloat(dotScale.value).toFixed(2);
+                document.getElementById('sourceBrightnessVal').textContent = sourceBrightness.value;
+                document.getElementById('sourceContrastVal').textContent = sourceContrast.value;
+                document.getElementById('brightnessVal').textContent = brightness.value;
+                document.getElementById('contrastVal').textContent = contrast.value;
+                document.getElementById('fpsVal').textContent = fpsInput.value;
+                document.getElementById('dotCutoffVal').textContent = parseFloat(dotCutoff.value).toFixed(2);
                 if(asciiRatioVal && asciiRatio) asciiRatioVal.textContent = parseFloat(asciiRatio.value).toFixed(2);
                 if(asciiIntensityVal && asciiIntensity) asciiIntensityVal.textContent = asciiIntensity.value;
+                
+                // Glass Values
+                document.getElementById('glassImgScaleVal').textContent = Math.round(parseFloat(glassImgScale.value) * 100) + '%';
+                document.getElementById('glassImgOffsetXVal').textContent = glassImgOffsetX.value + 'px';
+                document.getElementById('glassImgOffsetYVal').textContent = glassImgOffsetY.value + 'px';
+
+                document.getElementById('glassMaskWVal').textContent = glassMaskW.value + '%';
+                document.getElementById('glassMaskHVal').textContent = glassMaskH.value + '%';
+                document.getElementById('glassMaskXVal').textContent = glassMaskX.value + '%';
+                document.getElementById('glassMaskYVal').textContent = glassMaskY.value + '%';
+                document.getElementById('glassLightVal').textContent = parseFloat(glassLight.value).toFixed(1) + 'x';
+                document.getElementById('glassAngleVal').textContent = glassAngle.value + '°';
+                document.getElementById('glassOffsetVal').textContent = glassOffset.value + '%';
+                document.getElementById('glassBlurVal').textContent = glassBlur.value + 'px';
+                document.getElementById('glassSharpVal').textContent = glassSharp.value + '%';
+                document.getElementById('glassStripeVal').textContent = glassStripe.value + 'px';
+                document.getElementById('glassDispVal').textContent = glassDisp.value;
+                document.getElementById('glassShadingVal').textContent = Math.round(glassShading.value * 100) + '%';
+                document.getElementById('glassNoiseVal').textContent = glassNoise.value;
+
+                updateLutPreview();
+            }
+
+            function updateLutPreview() {
+                const preview = document.getElementById('glassLutPreview');
+                preview.style.background = `linear-gradient(to right, ${glassLut1.value}, ${glassLut2.value} 20%, ${glassLut3.value} 50%, ${glassLut4.value} 80%, ${glassLut5.value})`;
             }
 
             function updateDotStyleUI() {
@@ -912,27 +1099,61 @@
                 }
             }
 
+            function updateGlassColorModeUI() {
+                if (glassColorMode.value === 'spatial') {
+                    glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
+                    glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
+                    glassSpatialControls.classList.remove('hidden');
+                    glassLutControls.classList.add('hidden');
+                } else {
+                    glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
+                    glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
+                    glassLutControls.classList.remove('hidden');
+                    glassSpatialControls.classList.add('hidden');
+                }
+            }
+
             function setRenderMode(mode) {
                 currentRenderMode = mode;
+                
+                [modeDotBtn, modeAsciiBtn, modeGlassBtn].forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.classList.add('text-[var(--text-muted)]');
+                });
+                
+                matrixGeometryControls.classList.add('hidden');
+                glassGeometryControls.classList.add('hidden');
+                asciiControls.classList.add('hidden');
+                dotGeometryControls.classList.add('hidden');
+                
+                matrixColorControls.classList.add('hidden');
+                glassColorControls.classList.add('hidden');
+                
+                matrixFilterControls.classList.add('hidden');
+                glassPhysicsControls.classList.add('hidden');
+
                 if (mode === 'dot') {
-                    modeDotBtn.classList.add('active');
-                    modeDotBtn.classList.remove('text-[var(--text-muted)]');
-                    modeAsciiBtn.classList.remove('active');
-                    modeAsciiBtn.classList.add('text-[var(--text-muted)]');
-                    
-                    asciiControls.classList.add('hidden');
+                    modeDotBtn.classList.add('active'); modeDotBtn.classList.remove('text-[var(--text-muted)]');
+                    matrixGeometryControls.classList.remove('hidden');
                     dotGeometryControls.classList.remove('hidden');
-                } else {
-                    modeAsciiBtn.classList.add('active');
-                    modeAsciiBtn.classList.remove('text-[var(--text-muted)]');
-                    modeDotBtn.classList.remove('active');
-                    modeDotBtn.classList.add('text-[var(--text-muted)]');
-                    
+                    matrixColorControls.classList.remove('hidden');
+                    matrixFilterControls.classList.remove('hidden');
+                } else if (mode === 'ascii') {
+                    modeAsciiBtn.classList.add('active'); modeAsciiBtn.classList.remove('text-[var(--text-muted)]');
+                    matrixGeometryControls.classList.remove('hidden');
                     asciiControls.classList.remove('hidden');
-                    dotGeometryControls.classList.add('hidden');
+                    matrixColorControls.classList.remove('hidden');
+                    matrixFilterControls.classList.remove('hidden');
+                } else if (mode === 'glass') {
+                    modeGlassBtn.classList.add('active'); modeGlassBtn.classList.remove('text-[var(--text-muted)]');
+                    glassGeometryControls.classList.remove('hidden');
+                    glassColorControls.classList.remove('hidden');
+                    glassPhysicsControls.classList.remove('hidden');
                 }
-                applyI18n(); // Ensure labels match language
+                
+                applyI18n();
                 updateDotStyleUI();
+                updateGlassColorModeUI();
                 presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
                 if (!isVideo || (videoElement && videoElement.paused)) processFrame();
             }
@@ -954,12 +1175,10 @@
                 });
             }
 
-            // Initializes empty canvas UI perfectly scaled into its responsive container
             function initEmptyCanvas() {
                 if (imageElement || videoElement) return;
                 const container = document.getElementById('previewContainer');
                 
-                // Safety Math.max to prevent 0-width canvas bug on slow Flexbox rendering
                 const w = Math.max(10, container.clientWidth - 64);
                 const h = Math.max(10, container.clientHeight - 64);
                 
@@ -969,7 +1188,6 @@
                 
                 ctx.clearRect(0, 0, halftoneCanvas.width, halftoneCanvas.height);
 
-                // 绘制极具美感的排版占位符
                 const txtColor = getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || 'rgba(0,0,0,0.3)';
                 ctx.fillStyle = txtColor;
                 ctx.font = '900 32px Nunito, sans-serif';
@@ -979,19 +1197,16 @@
             }
 
             function setupCanvasDimensions(w, h) {
-                if (!w || !h) return; // Prevent NaN errors if image data isn't fully ready
-                
+                if (!w || !h) return;
                 const isFS = !!document.fullscreenElement || isCssFullscreen;
                 const container = document.getElementById('previewContainer');
                 const padding = isFS ? 0 : 64; 
                 
-                // Prevent negative calculations
                 const containerWidth = Math.max(1, isFS ? window.innerWidth : container.clientWidth - padding);
                 const containerHeight = Math.max(1, isFS ? window.innerHeight : container.clientHeight - padding);
                 
                 const scaleX = containerWidth / w;
                 const scaleY = containerHeight / h;
-                
                 const scale = Math.min(scaleX, scaleY);
                 
                 halftoneCanvas.width = Math.max(1, w * scale);
@@ -1009,14 +1224,221 @@
                 }
             }
 
-            // Initialize the canvas visuals properly on page load
             initEmptyCanvas();
-            setTimeout(initEmptyCanvas, 300); // Fail-safe to redraw placeholder after fonts/css load
+            setTimeout(initEmptyCanvas, 300);
 
-            // --- Rendering Math ---
+            // --- Rendering Core Algorithms ---
+            
+            // 1. Glassmorphism Engine
+            function generateGlass(targetCanvas, currentScale, source) {
+                if(!targetCanvas) return;
+                const ctx = targetCanvas.getContext('2d', { alpha: false });
+                const procW = targetCanvas.width;
+                const procH = targetCanvas.height;
+
+                let tempCanvas, tempCtx;
+                if (typeof OffscreenCanvas !== 'undefined') {
+                    tempCanvas = new OffscreenCanvas(procW, procH); tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+                } else {
+                    tempCanvas = document.createElement('canvas'); tempCanvas.width = procW; tempCanvas.height = procH; tempCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+                }
+
+                let fillStyle = 'white';
+                const colMode = glassColorMode.value;
+                const lightInt = parseFloat(glassLight.value);
+
+                if (colMode === 'spatial') {
+                    const spCol1 = glassSpatial1.value;
+                    const spCol2 = glassSpatial2.value;
+                    const rad = (parseFloat(glassAngle.value) - 90) * Math.PI / 180;
+                    const diag = Math.sqrt(procW * procW + procH * procH);
+                    const shiftAmount = (parseFloat(glassOffset.value) / 100) * (diag / 2);
+                    const cx = procW / 2 + Math.cos(rad) * shiftAmount;
+                    const cy = procH / 2 + Math.sin(rad) * shiftAmount;
+
+                    const x1 = cx - Math.cos(rad) * (diag / 2);
+                    const y1 = cy - Math.sin(rad) * (diag / 2);
+                    const x2 = cx + Math.cos(rad) * (diag / 2);
+                    const y2 = cy + Math.sin(rad) * (diag / 2);
+
+                    const grad = tempCtx.createLinearGradient(x1, y1, x2, y2);
+                    grad.addColorStop(0, spCol1);
+                    grad.addColorStop(1, spCol2);
+                    fillStyle = grad;
+                }
+
+                const sW = source.videoWidth || source.width;
+                const sH = source.videoHeight || source.height;
+                const srcRatio = sW / sH; const dstRatio = procW / procH;
+                let drawW = procW, drawH = procH;
+                if (srcRatio > dstRatio) { drawH = procW / srcRatio; } 
+                else { drawW = procH * srcRatio; }
+                
+                // 应用图片变形 (Scale & Offset)
+                const gScale = parseFloat(glassImgScale.value);
+                drawW *= gScale;
+                drawH *= gScale;
+                // 将面板设定的位移(px)根据目前的画布缩放倍率自适应，确保多分辨率下表现一致
+                const drawX = (procW - drawW) / 2 + (parseFloat(glassImgOffsetX.value) * currentScale);
+                const drawY = (procH - drawH) / 2 + (parseFloat(glassImgOffsetY.value) * currentScale);
+                
+                tempCtx.drawImage(source, drawX, drawY, drawW, drawH);
+
+                let isLumaExtract = glassExtract.value === 'luma';
+                if (glassExtract.value === 'auto') {
+                    const checkCanvas = document.createElement('canvas'); checkCanvas.width = 64; checkCanvas.height = 64;
+                    const checkCtx = checkCanvas.getContext('2d', { willReadFrequently: true });
+                    checkCtx.drawImage(source, 0, 0, 64, 64);
+                    const checkData = checkCtx.getImageData(0, 0, 64, 64).data;
+                    let hasTrans = false;
+                    for (let i = 3; i < checkData.length; i += 4) { if (checkData[i] < 250) { hasTrans = true; break; } }
+                    isLumaExtract = !hasTrans;
+                }
+
+                const imgData = tempCtx.getImageData(0, 0, procW, procH);
+                const data = imgData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    if (isLumaExtract) {
+                        const brightness = data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114;
+                        data[i] = 255; data[i+1] = 255; data[i+2] = 255;
+                        data[i+3] = brightness * (data[i+3] / 255);
+                    } else {
+                        data[i] = 255; data[i+1] = 255; data[i+2] = 255;
+                    }
+                }
+                tempCtx.putImageData(imgData, 0, 0);
+
+                if (colMode === 'spatial') {
+                    tempCtx.globalCompositeOperation = 'source-in';
+                    tempCtx.fillStyle = fillStyle;
+                    tempCtx.fillRect(0, 0, procW, procH);
+                    tempCtx.globalCompositeOperation = 'source-over';
+                }
+
+                let baseCanvas, baseCtx;
+                if (typeof OffscreenCanvas !== 'undefined') {
+                    baseCanvas = new OffscreenCanvas(procW, procH); baseCtx = baseCanvas.getContext('2d', { willReadFrequently: true });
+                } else {
+                    baseCanvas = document.createElement('canvas'); baseCanvas.width = procW; baseCanvas.height = procH; baseCtx = baseCanvas.getContext('2d', { willReadFrequently: true });
+                }
+                
+                baseCtx.fillStyle = 'black';
+                baseCtx.fillRect(0, 0, procW, procH);
+                baseCtx.filter = `blur(${glassBlur.value}px)`;
+                baseCtx.drawImage(tempCanvas, 0, 0);
+                baseCtx.filter = 'none';
+
+                let lutCanvas, lutCtx;
+                if (typeof OffscreenCanvas !== 'undefined') {
+                    lutCanvas = new OffscreenCanvas(256, 1); lutCtx = lutCanvas.getContext('2d', { willReadFrequently: true });
+                } else {
+                    lutCanvas = document.createElement('canvas'); lutCanvas.width = 256; lutCanvas.height = 1; lutCtx = lutCanvas.getContext('2d', { willReadFrequently: true });
+                }
+                const gradLut = lutCtx.createLinearGradient(0, 0, 256, 0);
+                gradLut.addColorStop(0, glassLut1.value);
+                gradLut.addColorStop(0.15, glassLut2.value);
+                gradLut.addColorStop(0.45, glassLut3.value);
+                gradLut.addColorStop(0.75, glassLut4.value);
+                gradLut.addColorStop(1, glassLut5.value);
+                lutCtx.fillStyle = gradLut;
+                lutCtx.fillRect(0, 0, 256, 1);
+                const lutData = lutCtx.getImageData(0, 0, 256, 1).data;
+
+                const baseData = baseCtx.getImageData(0, 0, procW, procH);
+                const tempData = tempCtx.getImageData(0, 0, procW, procH).data;
+                const outData = new ImageData(procW, procH);
+
+                const mWidth = (procW * parseFloat(glassMaskW.value)) / 100;
+                const mHeight = (procH * parseFloat(glassMaskH.value)) / 100;
+                const maskCenterX = procW / 2 + (procW * parseFloat(glassMaskX.value)) / 100;
+                const maskCenterY = procH / 2 + (procH * parseFloat(glassMaskY.value)) / 100;
+                const mLeft = maskCenterX - mWidth / 2;
+                const mRight = maskCenterX + mWidth / 2;
+                const mTop = maskCenterY - mHeight / 2;
+                const mBottom = maskCenterY + mHeight / 2;
+
+                const stpW = parseFloat(glassStripe.value);
+                const disp = parseFloat(glassDisp.value);
+                const shd = parseFloat(glassShading.value);
+                const nse = parseFloat(glassNoise.value);
+                const shpFactor = parseFloat(glassSharp.value) / 100;
+                const blrFactor = 1 - shpFactor;
+
+                for (let y = 0; y < procH; y++) {
+                    for (let x = 0; x < procW; x++) {
+                        const i = (y * procW + x) * 4;
+                        const inMask = x >= mLeft && x <= mRight && y >= mTop && y <= mBottom;
+                        const noiseVal = (Math.random() - 0.5) * nse;
+
+                        if (!inMask) {
+                            const alpha = tempData[i+3] / 255;
+                            let r, g, b;
+
+                            if (colMode === 'lut') {
+                                const rawBrightness = Math.min(255, baseData.data[i] * lightInt);
+                                const lutIdx = Math.floor(rawBrightness) * 4;
+                                r = lutData[lutIdx]; g = lutData[lutIdx+1]; b = lutData[lutIdx+2];
+                            } else {
+                                r = Math.min(255, baseData.data[i] * lightInt);
+                                g = Math.min(255, baseData.data[i+1] * lightInt);
+                                b = Math.min(255, baseData.data[i+2] * lightInt);
+                            }
+
+                            r = tempData[i] * alpha + r * (1 - alpha);
+                            g = tempData[i+1] * alpha + g * (1 - alpha);
+                            b = tempData[i+2] * alpha + b * (1 - alpha);
+
+                            outData.data[i] = Math.min(255, Math.max(0, r + noiseVal));
+                            outData.data[i+1] = Math.min(255, Math.max(0, g + noiseVal));
+                            outData.data[i+2] = Math.min(255, Math.max(0, b + noiseVal));
+                            outData.data[i+3] = 255;
+                            continue;
+                        }
+
+                        let rx = x - maskCenterX;
+                        let phase = (((rx % stpW) + stpW) % stpW) / stpW;
+                        const dx = Math.round(Math.sin(phase * Math.PI * 2) * disp);
+
+                        let sampleX = Math.max(0, Math.min(procW - 1, x + dx));
+                        const sampleI = (y * procW + sampleX) * 4;
+
+                        const shadingPhase = Math.cos(phase * Math.PI * 2);
+                        const shadowFactor = 1 - (1 - ((shadingPhase + 1) / 2)) * shd;
+
+                        if (colMode === 'lut') {
+                            const blurVal = baseData.data[sampleI];
+                            const sharpVal = tempData[sampleI] * (tempData[sampleI+3] / 255);
+                            const rawBrightness = Math.min(255, (blurVal * blrFactor + sharpVal * shpFactor) * lightInt);
+                            const finalBrightness = Math.min(255, Math.max(0, Math.floor(rawBrightness * shadowFactor)));
+                            const lutIdx = finalBrightness * 4;
+
+                            outData.data[i] = Math.min(255, Math.max(0, lutData[lutIdx] + noiseVal));
+                            outData.data[i+1] = Math.min(255, Math.max(0, lutData[lutIdx+1] + noiseVal));
+                            outData.data[i+2] = Math.min(255, Math.max(0, lutData[lutIdx+2] + noiseVal));
+                            outData.data[i+3] = 255;
+                        } else {
+                            const alphaNorm = tempData[sampleI+3] / 255;
+                            const mixR = baseData.data[sampleI] * blrFactor + (tempData[sampleI] * alphaNorm) * shpFactor;
+                            const mixG = baseData.data[sampleI+1] * blrFactor + (tempData[sampleI+1] * alphaNorm) * shpFactor;
+                            const mixB = baseData.data[sampleI+2] * blrFactor + (tempData[sampleI+2] * alphaNorm) * shpFactor;
+
+                            const rBase = Math.min(255, mixR * lightInt);
+                            const gBase = Math.min(255, mixG * lightInt);
+                            const bBase = Math.min(255, mixB * lightInt);
+
+                            outData.data[i] = Math.min(255, Math.max(0, Math.floor(rBase * shadowFactor) + noiseVal));
+                            outData.data[i+1] = Math.min(255, Math.max(0, Math.floor(gBase * shadowFactor) + noiseVal));
+                            outData.data[i+2] = Math.min(255, Math.max(0, Math.floor(bBase * shadowFactor) + noiseVal));
+                            outData.data[i+3] = 255;
+                        }
+                    }
+                }
+                ctx.putImageData(outData, 0, 0);
+            }
+
+            // 2. Original Matrix / ASCII Engine
             function getVolumetricColor(lum, style) {
-                let palette;
-                let stops; 
+                let palette; let stops; 
                 if (style === 'volumetric_custom') {
                     palette = [ hexToRgb(customColorDark.value), hexToRgb(customColorMid.value), hexToRgb(customColorLight.value) ];
                     stops = [0.0, 0.45, 0.80];
@@ -1025,8 +1447,7 @@
                         'volumetric_blue': [[0,0,0], [0,20,80], [160,200,255], [255,255,255]], 
                         'volumetric_mono': [[0,0,0], [80,80,80], [180,180,180], [255,255,255]]
                     };
-                    palette = palettes[style];
-                    stops = [0.0, 0.25, 0.6, 1.0];
+                    palette = palettes[style]; stops = [0.0, 0.25, 0.6, 1.0];
                 }
                 if (!palette) return null;
                 lum = Math.max(0, Math.min(1, lum));
@@ -1036,21 +1457,6 @@
                     if (diff < minDiff) { minDiff = diff; closestIdx = i; }
                 }
                 return `rgb(${palette[closestIdx][0]},${palette[closestIdx][1]},${palette[closestIdx][2]})`;
-            }
-
-            function getInterpolatedGridSize(time) {
-                if (keyframes.length === 0) return parseFloat(gridSize.value);
-                const sorted = [...keyframes].sort((a, b) => a.time - b.time);
-                if (time <= sorted[0].time) return sorted[0].value;
-                if (time >= sorted[sorted.length - 1].time) return sorted[sorted.length - 1].value;
-                for (let i = 0; i < sorted.length - 1; i++) {
-                    const start = sorted[i]; const end = sorted[i+1];
-                    if (time >= start.time && time <= end.time) {
-                        const t = (time - start.time) / (end.time - start.time);
-                        return start.value + (end.value - start.value) * t;
-                    }
-                }
-                return parseFloat(gridSize.value);
             }
 
             function generateHalftone(targetCanvas, currentScale, source, gridValue) {
@@ -1123,7 +1529,6 @@
 
                 for (let row = 0; row < numRows; row++) {
                     for (let col = 0; col < numCols; col++) {
-                        
                         let maskChar = '';
                         if (rMode === 'ascii' && aLogic === 'mask') {
                             maskChar = safeChars[textIdx % safeChars.length];
@@ -1225,7 +1630,13 @@
                 } else { keyframeIndicator.classList.add('hidden'); }
 
                 const scaleCanvas = halftoneCanvas && sourceWidth > 0 ? (halftoneCanvas.width / sourceWidth) : 1;
-                generateHalftone(halftoneCanvas, scaleCanvas, source, currentGridValue);
+                
+                // Branch Rendering Engine based on selected Mode
+                if (currentRenderMode === 'glass') {
+                    generateGlass(halftoneCanvas, scaleCanvas, source);
+                } else {
+                    generateHalftone(halftoneCanvas, scaleCanvas, source, currentGridValue);
+                }
                 
                 if (isVideo && !isScrubbing && videoElement) {
                     videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0;
@@ -1242,9 +1653,17 @@
             // --- Event Bindings ---
             modeDotBtn.addEventListener('click', () => setRenderMode('dot'));
             modeAsciiBtn.addEventListener('click', () => setRenderMode('ascii'));
-            dotStyleSelect.addEventListener('change', () => { updateDotStyleUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            modeGlassBtn.addEventListener('click', () => setRenderMode('glass'));
             
-            [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput, asciiRatio, asciiIntensity].forEach(el => {
+            dotStyleSelect.addEventListener('change', () => { updateDotStyleUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            glassColorMode.addEventListener('change', () => { updateGlassColorModeUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            
+            glassModeLutBtn.addEventListener('click', () => { glassColorMode.value = 'lut'; glassColorMode.dispatchEvent(new Event('change')); });
+            glassModeSpatialBtn.addEventListener('click', () => { glassColorMode.value = 'spatial'; glassColorMode.dispatchEvent(new Event('change')); });
+
+            [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput, asciiRatio, asciiIntensity,
+             glassImgScale, glassImgOffsetX, glassImgOffsetY, glassExtract, glassMaskW, glassMaskH, glassMaskX, glassMaskY, glassLight, glassSpatial1, glassSpatial2, glassAngle, glassOffset, glassLut1, glassLut2, glassLut3, glassLut4, glassLut5, glassBlur, glassSharp, glassStripe, glassDisp, glassShading, glassNoise
+            ].forEach(el => {
                 if(el) el.addEventListener('input', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             });
 
@@ -1272,9 +1691,9 @@
 
             function handleSubReset() { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
             
-            resetGeometryBtn.addEventListener('click', () => { gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff; isManuallyOverridingGrid = false; handleSubReset(); });
-            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces; updateDotStyleUI(); handleSubReset(); });
-            resetSignalBtn.addEventListener('click', () => { sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast; brightness.value = defaults.brightness; contrast.value = defaults.contrast; invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; handleSubReset(); });
+            resetGeometryBtn.addEventListener('click', () => { gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff; glassImgScale.value = defaults.glassImgScale; glassImgOffsetX.value = defaults.glassImgOffsetX; glassImgOffsetY.value = defaults.glassImgOffsetY; glassExtract.value = defaults.glassExtract; glassMaskW.value = defaults.glassMaskW; glassMaskH.value = defaults.glassMaskH; glassMaskX.value = defaults.glassMaskX; glassMaskY.value = defaults.glassMaskY; isManuallyOverridingGrid = false; handleSubReset(); });
+            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces; glassLight.value = defaults.glassLight; glassColorMode.value = defaults.glassColorMode; glassSpatial1.value = defaults.glassSpatial1; glassSpatial2.value = defaults.glassSpatial2; glassAngle.value = defaults.glassAngle; glassOffset.value = defaults.glassOffset; glassLut1.value = defaults.glassLut1; glassLut2.value = defaults.glassLut2; glassLut3.value = defaults.glassLut3; glassLut4.value = defaults.glassLut4; glassLut5.value = defaults.glassLut5; updateDotStyleUI(); updateGlassColorModeUI(); handleSubReset(); });
+            resetSignalBtn.addEventListener('click', () => { sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast; brightness.value = defaults.brightness; contrast.value = defaults.contrast; invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; glassBlur.value = defaults.glassBlur; glassSharp.value = defaults.glassSharp; glassStripe.value = defaults.glassStripe; glassDisp.value = defaults.glassDisp; glassShading.value = defaults.glassShading; glassNoise.value = defaults.glassNoise; handleSubReset(); });
             resetOutputBtn.addEventListener('click', () => { exportResolution.value = 'source'; fpsInput.value = defaults.fps; updateUIValues(); });
 
             if(addKeyframeBtn) {
@@ -1362,10 +1781,16 @@
                 if(!source) { showModal({ title: t('msg_sys_notice'), message: t('msg_err_upload'), hideCancel: true }); return; }
                 const c = document.createElement('canvas'); const resVal = exportResolution.value; let exportW = isVideo ? videoElement.videoWidth : imageElement.width; let exportH = isVideo ? videoElement.videoHeight : imageElement.height;
                 if (resVal !== 'source') [exportW, exportH] = resVal.split('x').map(Number); c.width = exportW; c.height = exportH;
-                generateHalftone(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : parseFloat(gridSize.value));
+                
+                if (currentRenderMode === 'glass') {
+                    generateGlass(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source);
+                } else {
+                    generateHalftone(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : parseFloat(gridSize.value));
+                }
+
                 c.toBlob((blob) => {
                     if (!blob) { showModal({ title: t('msg_err'), message: t('msg_err_render'), hideCancel: true }); return; }
-                    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.style.display = 'none'; a.href = url; a.download = `matrix_frame_${Date.now()}.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+                    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.style.display = 'none'; a.href = url; a.download = `zyronmatrix_frame_${Date.now()}.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
                 }, 'image/png');
             };
 
@@ -1390,7 +1815,13 @@
                                 setTimeout(() => { if(!fired){ fired = true; videoElement.removeEventListener('seeked', handler); resolve(); } }, 500);
                             });
                         }
-                        generateHalftone(exportCanvas, scale, videoElement, getInterpolatedGridSize(targetTime));
+                        
+                        if (currentRenderMode === 'glass') {
+                            generateGlass(exportCanvas, scale, videoElement);
+                        } else {
+                            generateHalftone(exportCanvas, scale, videoElement, getInterpolatedGridSize(targetTime));
+                        }
+
                         const blob = await new Promise(res => exportCanvas.toBlob(res, 'image/png'));
                         if (blob) zip.file(`frame_${i.toString().padStart(5, '0')}.png`, blob);
                         exportProgressBar.style.width = `${((i + 1) / totalFrames) * 100}%`; exportStatus.textContent = `${t('msg_engine')} ${i + 1} / ${totalFrames}`;
@@ -1398,7 +1829,7 @@
                     if (isExporting) {
                         exportTitle.textContent = t('msg_compressing');
                         const content = await zip.generateAsync({ type: "blob" }, (meta) => { exportProgressBar.style.width = `${Math.max(meta.percent, ((totalFrames-1)/totalFrames)*100)}%`; exportStatus.textContent = `Compressing: ${Math.round(meta.percent)}%`; });
-                        const link = document.createElement('a'); link.href = URL.createObjectURL(content); link.download = `matrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
+                        const link = document.createElement('a'); link.href = URL.createObjectURL(content); link.download = `zyronmatrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
                     }
                 } catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_export'), hideCancel: true }); } finally { isExporting = false; exportOverlay.style.display = 'none'; videoElement.play().catch(e=>console.log(e)); }
             });
@@ -1407,10 +1838,15 @@
                 gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast;
                 brightness.value = defaults.brightness; contrast.value = defaults.contrast; fpsInput.value = defaults.fps; exportResolution.value = 'source'; bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor;
                 invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
-                setRenderMode(defaults.renderMode); dotStyleSelect.value = defaults.dotStyle; updateDotStyleUI();
                 asciiLogicSelect.value = defaults.asciiLogic; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces;
                 customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight;
                 asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars;
+                
+                glassImgScale.value = defaults.glassImgScale; glassImgOffsetX.value = defaults.glassImgOffsetX; glassImgOffsetY.value = defaults.glassImgOffsetY;
+                glassExtract.value = defaults.glassExtract; glassMaskW.value = defaults.glassMaskW; glassMaskH.value = defaults.glassMaskH; glassMaskX.value = defaults.glassMaskX; glassMaskY.value = defaults.glassMaskY; glassLight.value = defaults.glassLight; glassColorMode.value = defaults.glassColorMode; glassSpatial1.value = defaults.glassSpatial1; glassSpatial2.value = defaults.glassSpatial2; glassAngle.value = defaults.glassAngle; glassOffset.value = defaults.glassOffset; glassLut1.value = defaults.glassLut1; glassLut2.value = defaults.glassLut2; glassLut3.value = defaults.glassLut3; glassLut4.value = defaults.glassLut4; glassLut5.value = defaults.glassLut5; glassBlur.value = defaults.glassBlur; glassSharp.value = defaults.glassSharp; glassStripe.value = defaults.glassStripe; glassDisp.value = defaults.glassDisp; glassShading.value = defaults.glassShading; glassNoise.value = defaults.glassNoise;
+
+                setRenderMode(defaults.renderMode); dotStyleSelect.value = defaults.dotStyle; updateDotStyleUI(); updateGlassColorModeUI();
+                
                 presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); isManuallyOverridingGrid = false; keyframes = []; updateKeyframeUI(); updateUIValues(); if (!isVideo) processFrame();
             };
 
@@ -1431,6 +1867,33 @@
                 if (name && userPresets[name]) {
                     const p = userPresets[name];
                     gridSize.value = p.gridSize; gridSizeInput.value = parseFloat(p.gridSize).toFixed(1); dotScale.value = p.dotScale; sourceBrightness.value = p.sourceBrightness; sourceContrast.value = p.sourceContrast; brightness.value = p.brightness; contrast.value = p.contrast; fpsInput.value = p.fps || defaults.fps; bgColorPicker.value = p.bgColor || defaults.bgColor; dotColorPicker.value = p.dotColor || defaults.dotColor; invertMapping.checked = p.invertMapping; smoothStep.checked = p.smoothStep !== undefined ? p.smoothStep : defaults.smoothStep; fixedDotSize.checked = p.fixedDotSize !== undefined ? p.fixedDotSize : defaults.fixedDotSize; dotCutoff.value = p.dotCutoff !== undefined ? p.dotCutoff : defaults.dotCutoff;
+                    
+                    if (p.glassImgScale !== undefined) glassImgScale.value = p.glassImgScale;
+                    if (p.glassImgOffsetX !== undefined) glassImgOffsetX.value = p.glassImgOffsetX;
+                    if (p.glassImgOffsetY !== undefined) glassImgOffsetY.value = p.glassImgOffsetY;
+                    if (p.glassExtract) glassExtract.value = p.glassExtract;
+                    if (p.glassMaskW !== undefined) glassMaskW.value = p.glassMaskW;
+                    if (p.glassMaskH !== undefined) glassMaskH.value = p.glassMaskH;
+                    if (p.glassMaskX !== undefined) glassMaskX.value = p.glassMaskX;
+                    if (p.glassMaskY !== undefined) glassMaskY.value = p.glassMaskY;
+                    if (p.glassLight !== undefined) glassLight.value = p.glassLight;
+                    if (p.glassColorMode) glassColorMode.value = p.glassColorMode;
+                    if (p.glassSpatial1) glassSpatial1.value = p.glassSpatial1;
+                    if (p.glassSpatial2) glassSpatial2.value = p.glassSpatial2;
+                    if (p.glassAngle !== undefined) glassAngle.value = p.glassAngle;
+                    if (p.glassOffset !== undefined) glassOffset.value = p.glassOffset;
+                    if (p.glassLut1) glassLut1.value = p.glassLut1;
+                    if (p.glassLut2) glassLut2.value = p.glassLut2;
+                    if (p.glassLut3) glassLut3.value = p.glassLut3;
+                    if (p.glassLut4) glassLut4.value = p.glassLut4;
+                    if (p.glassLut5) glassLut5.value = p.glassLut5;
+                    if (p.glassBlur !== undefined) glassBlur.value = p.glassBlur;
+                    if (p.glassSharp !== undefined) glassSharp.value = p.glassSharp;
+                    if (p.glassStripe !== undefined) glassStripe.value = p.glassStripe;
+                    if (p.glassDisp !== undefined) glassDisp.value = p.glassDisp;
+                    if (p.glassShading !== undefined) glassShading.value = p.glassShading;
+                    if (p.glassNoise !== undefined) glassNoise.value = p.glassNoise;
+
                     if (p.renderMode) setRenderMode(p.renderMode);
                     if (p.dotStyle) { dotStyleSelect.value = p.dotStyle; if (p.dotStyle === 'volumetric_custom') { customColorDark.value = p.customColorDark || "#000000"; customColorMid.value = p.customColorMid || "#99bbff"; customColorLight.value = p.customColorLight || "#ffffff"; } updateDotStyleUI(); }
                     if (p.asciiLogic) { asciiLogicSelect.value = p.asciiLogic; }
@@ -1438,13 +1901,14 @@
                     if (p.asciiIntensity && asciiIntensity) { asciiIntensity.value = p.asciiIntensity; }
                     if (p.asciiRemoveSpaces !== undefined && asciiRemoveSpaces) { asciiRemoveSpaces.checked = p.asciiRemoveSpaces; }
                     if (p.asciiChars) { asciiCharsInput.value = p.asciiChars; const match = Array.from(asciiPresetSelect.options).find(opt => opt.value === p.asciiChars); asciiPresetSelect.value = match ? match.value : 'custom'; }
-                    deletePresetBtn.classList.remove('hidden'); isManuallyOverridingGrid = false; updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+                    deletePresetBtn.classList.remove('hidden'); isManuallyOverridingGrid = false; updateUIValues(); updateGlassColorModeUI(); if (!isVideo || (videoElement && videoElement.paused)) processFrame();
                 } else { deletePresetBtn.classList.add('hidden'); }
             });
 
             savePresetBtn.addEventListener('click', async () => {
                 const name = await showModal({ title: t('msg_save_preset'), message: t('msg_enter_name'), showInput: true }); if (!name) return;
-                const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, asciiRatio: asciiRatio ? parseFloat(asciiRatio.value) : 0.6, asciiIntensity: asciiIntensity ? parseInt(asciiIntensity.value) : 1, asciiRemoveSpaces: asciiRemoveSpaces ? asciiRemoveSpaces.checked : true, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value };
+                const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, asciiRatio: asciiRatio ? parseFloat(asciiRatio.value) : 0.6, asciiIntensity: asciiIntensity ? parseInt(asciiIntensity.value) : 1, asciiRemoveSpaces: asciiRemoveSpaces ? asciiRemoveSpaces.checked : true, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value,
+                glassImgScale: parseFloat(glassImgScale.value), glassImgOffsetX: parseFloat(glassImgOffsetX.value), glassImgOffsetY: parseFloat(glassImgOffsetY.value), glassExtract: glassExtract.value, glassMaskW: parseFloat(glassMaskW.value), glassMaskH: parseFloat(glassMaskH.value), glassMaskX: parseFloat(glassMaskX.value), glassMaskY: parseFloat(glassMaskY.value), glassLight: parseFloat(glassLight.value), glassColorMode: glassColorMode.value, glassSpatial1: glassSpatial1.value, glassSpatial2: glassSpatial2.value, glassAngle: parseFloat(glassAngle.value), glassOffset: parseFloat(glassOffset.value), glassLut1: glassLut1.value, glassLut2: glassLut2.value, glassLut3: glassLut3.value, glassLut4: glassLut4.value, glassLut5: glassLut5.value, glassBlur: parseFloat(glassBlur.value), glassSharp: parseFloat(glassSharp.value), glassStripe: parseFloat(glassStripe.value), glassDisp: parseFloat(glassDisp.value), glassShading: parseFloat(glassShading.value), glassNoise: parseFloat(glassNoise.value) };
                 userPresets[name] = preset; presetSelect.value = name; deletePresetBtn.classList.remove('hidden');
                 if (db && currentUser) { try { await setDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), preset); } catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_cloud'), hideCancel: true }); } } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); presetSelect.value = name; }
             });
@@ -1459,13 +1923,12 @@
 
             // Initial calls
             bgColorPicker.value = defaults.bgColor; dotStyleSelect.value = defaults.dotStyle; contrast.value = defaults.contrast; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
-            applyI18n(); // Load language first
+            glassColorMode.value = defaults.glassColorMode; updateGlassColorModeUI();
+            applyI18n(); 
             updateDotStyleUI(); updateUIValues();
         });
     </script>
     
-    <!-- Cloudflare Web Analytics -->
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "80492b511f694f53adba72aec1c1cdaa"}'></script>
-    <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
