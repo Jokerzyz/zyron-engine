@@ -4,27 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 优化1：针对 AI 和传统搜索引擎双优化的 Title -->
-    <title>矩阵特效与 ASCII 艺术终端 v1.10 | 在线视频转字符画 (Matrix & ASCII Generator)</title>
+    <title>矩阵特效与 ASCII 艺术终端 v1.13 | 在线视频转字符画 (Matrix & ASCII Generator)</title>
     
-    <!-- 优化2：富含自然语言语境的 Description，极其适合 AI 抓取并生成摘要 -->
     <meta name="description" content="免费的在线高级矩阵特效与 ASCII 艺术生成器终端。无需下载，一键将图片与视频序列转化为赛博朋克风格的黑客代码流或纯文本遮罩效果。支持 WebGL 高清序列帧导出，专为设计师与极客打造。Free online Matrix digital rain and ASCII art generator for images and videos.">
     <meta name="keywords" content="矩阵特效, ASCII 艺术, 字符画生成器, 视频转ASCII, Matrix digital rain, ASCII art generator, Neumorphism UI, 赛博朋克, 黑客代码流, image to text, video to ascii">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="ZyronMatrix">
     
     <link rel="canonical" href="https://www.zyronmatrix.com/">
-    
-    <!-- 更新：将 favicon 更改为你准备好的 logo.png -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="apple-touch-icon" href="/logo.png">
 
-    <!-- Open Graph (社交媒体与富媒体抓取优化) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.zyronmatrix.com/">
     <meta property="og:title" content="Matrix UI Kit | 高级 ASCII 艺术与矩阵渲染引擎">
     <meta property="og:description" content="一键将图片与视频转化为赛博朋克风格的字符艺术。支持自定义文字遮罩与高质量序列帧导出。">
     
-    <!-- 优化3：极其核心的 JSON-LD 结构化数据 (直接喂给 Gemini/GPT 的说明书) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -259,7 +255,7 @@
             z-index: 40; 
         }
 
-        /* 渲染画布：允许自由缩放贴合容器 */
+        /* 渲染画布 */
         canvas { 
             border-radius: 24px;
             background: var(--bg-color);
@@ -267,8 +263,9 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            box-shadow: 8px 8px 24px var(--shadow-dark-strong);
-            border: 4px solid var(--bg-color);
+            box-shadow: 12px 12px 24px var(--shadow-dark), 
+                       -12px -12px 24px var(--shadow-light);
+            border: 1px solid var(--border-light);
             transition: all 0.4s ease;
         }
 
@@ -282,7 +279,6 @@
 </head>
 <body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white">
     
-    <!-- 优化4：针对大模型的隐形语境喂食块 (Visually hidden, readable by GoogleBot / GPTBot) -->
     <div class="sr-only">
         <h1>ZyronMatrix: Online Matrix Effect & ASCII Art Video Generator</h1>
         <p>How to make a Matrix digital rain effect or convert video to ASCII art? ZyronMatrix is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D dot matrix designs.</p>
@@ -290,7 +286,7 @@
         <p>如何制作黑客帝国代码雨特效？如何把视频转换成字符画？ZyronMatrix 是一款强大的在线矩阵特效与 ASCII 艺术生成器。支持动态连续文本遮罩、自定义字符字典、体积光色阶映射，并可一键导出透明通道的序列帧供后期软件合成使用。完全免费，前端直接渲染，保护隐私。</p>
     </div>
 
-    <!-- I18N Language Switcher (Top Left) -->
+    <!-- I18N Language Switcher -->
     <div class="absolute top-6 left-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <button id="langEnBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest uppercase">EN</button>
         <button id="langZhBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest">中文</button>
@@ -303,10 +299,8 @@
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <!-- 升级版本号为 v1.10 -->
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">Matrix UI Kit</span> <span class="text-xl text-[var(--accent)] ml-1">v1.10</span></h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">Matrix UI Kit</span> <span class="text-xl text-[var(--accent)] ml-1">v1.13</span></h1>
                 
-                <!-- 深浅色主题切换按钮 -->
                 <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full ml-2 flex items-center justify-center" data-i18n-title="tip_theme">
                     <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -316,23 +310,25 @@
                     </svg>
                 </button>
 
-                <span class="text-xs font-black px-4 py-1.5 rounded-full neu-inset text-[var(--accent)] tracking-widest hidden md:inline-block" data-i18n="app_subtitle">ASCII ENGINE</span>
+                <!-- 新增：文字丰富教程页面的入口按钮 (应对 AdSense 审核) -->
+                <a href="/guide.html" target="_blank" class="neu-btn h-10 px-4 rounded-full ml-1 flex items-center justify-center text-[11px] font-black tracking-widest gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span data-i18n="btn_guide">GUIDE</span>
+                </a>
+
+                <span class="text-xs font-black px-4 py-1.5 rounded-full neu-inset text-[var(--accent)] tracking-widest hidden lg:inline-block" data-i18n="app_subtitle">ASCII ENGINE</span>
             </div>
             <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Tactile Elements • Organic Claymorphism • High Quality Render</p>
         </header>
 
-        <!-- 核心弹性布局：左侧固定，右侧贪婪拉伸 -->
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-10">
-            <!-- 左侧精细化控制台 (固定/最大宽度) -->
             <aside class="w-full lg:w-[360px] xl:w-[420px] flex-shrink-0 neu-panel p-6 lg:p-8 overflow-y-auto h-[auto] lg:h-[calc(100vh-140px)] control-panel space-y-8">
                 
-                <!-- 1. 顶部：模式大开关 Tabs -->
                 <div class="neu-inset p-2 flex gap-2 rounded-2xl relative z-10">
                     <button id="modeDotBtn" class="neu-btn active flex-1 py-3.5 text-sm uppercase tracking-wider" data-i18n="tab_dot">Dot Matrix</button>
                     <button id="modeAsciiBtn" class="neu-btn flex-1 py-3.5 text-sm uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii Art</button>
                 </div>
 
-                <!-- 2. 文件与预设卡片 -->
                 <div class="space-y-5">
                     <div class="flex items-center justify-between">
                         <label class="text-xs font-black text-[var(--text-muted)] uppercase tracking-widest" data-i18n="lbl_source">Source & Preset</label>
@@ -354,7 +350,6 @@
                     </div>
                 </div>
 
-                <!-- 3. 几何分布卡片 (Geometry) -->
                 <div class="space-y-5 pt-4 border-t-2 border-white/40">
                     <div class="flex justify-between items-center">
                         <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
@@ -385,7 +380,6 @@
                             <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
                         </div>
 
-                        <!-- 圆点专属：排布算法控制 -->
                         <div id="dotGeometryControls" class="space-y-5 pt-5 border-t border-white/30">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-extrabold text-[var(--text-dark)]" data-i18n="lbl_lock_dot">锁定等大圆点 (LED化)</span>
@@ -406,7 +400,6 @@
                     </div>
                 </div>
 
-                <!-- 4. 色彩与风格 (Style & Color) -->
                 <div class="space-y-5 pt-4 border-t-2 border-white/40">
                     <div class="flex justify-between items-center">
                         <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
@@ -419,7 +412,6 @@
                             <input type="color" id="bgColor" value="#000000">
                         </div>
 
-                        <!-- Color Mapping Controls (Universal for Dot & ASCII) -->
                         <div id="colorMappingControls" class="space-y-4">
                             <div>
                                 <div class="text-xs font-extrabold text-[var(--text-muted)] mb-3" data-i18n="lbl_mapping">色彩渲染模式 (Mapping)</div>
@@ -432,7 +424,6 @@
                                 </select>
                             </div>
                             
-                            <!-- 动态显隐的三色调色盘 -->
                             <div id="customVolumetricControls" class="hidden space-y-3 p-4 neu-inset rounded-2xl">
                                 <div class="flex items-center justify-between">
                                     <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_shadow">阴影深色</span>
@@ -449,7 +440,6 @@
                             </div>
                         </div>
 
-                        <!-- ASCII Controls -->
                         <div id="asciiControls" class="hidden space-y-4 pt-3 border-t border-white/40">
                             <div>
                                 <div class="flex justify-between items-center text-xs font-extrabold text-[var(--text-muted)] mb-3">
@@ -477,7 +467,6 @@
                                 <input type="text" id="asciiCharsInput" value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " class="neu-input w-full text-[10px] font-mono tracking-wider">
                             </div>
                             
-                            <!-- 新增：强制剔除空格功能 (消除竖向断层) -->
                             <div class="pt-3 border-t border-white/30">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[10px] font-bold text-[var(--text-muted)]" data-i18n="lbl_no_space">强制无缝排版 (剔除空格)</span>
@@ -489,7 +478,6 @@
                                 </div>
                             </div>
 
-                            <!-- 字符横向紧凑度修正功能 -->
                             <div class="pt-3 border-t border-white/30">
                                 <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
                                     <span data-i18n="lbl_aspect">字符横向紧凑度 (挤压列间距)</span>
@@ -498,7 +486,6 @@
                                 <input type="range" id="asciiRatio" min="0.3" max="1.5" step="0.05" value="0.6">
                             </div>
 
-                            <!-- 字符亮度强化功能 (解决高密度变暗问题) -->
                             <div class="pt-3 border-t border-white/30">
                                 <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
                                     <span data-i18n="lbl_intensity">字符亮度强化 (Overdraw)</span>
@@ -508,7 +495,6 @@
                             </div>
                         </div>
 
-                        <!-- 单色选择器 -->
                         <div id="solidColorControl" class="flex items-center justify-between p-3 neu-inset rounded-2xl">
                             <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_dot_color">单元发光颜色</span>
                             <input type="color" id="dotColor" value="#ffffff">
@@ -516,7 +502,6 @@
                     </div>
                 </div>
 
-                <!-- 5. 信号处理 (Processing) -->
                 <div class="space-y-5 pt-4 border-t-2 border-white/40">
                     <div class="flex justify-between items-center">
                         <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
@@ -563,7 +548,6 @@
                     </div>
                 </div>
 
-                <!-- 6. 导出面板 -->
                 <div class="space-y-5 pt-4 border-t-2 border-white/40">
                     <div class="flex justify-between items-center">
                         <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
@@ -584,7 +568,6 @@
                     </div>
                 </div>
 
-                <!-- 底部操作大按钮 -->
                 <div class="pt-8 space-y-5 pb-4">
                     <div class="flex gap-4">
                         <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]"><span data-i18n="btn_reset_all">清空重置</span></button>
@@ -594,18 +577,15 @@
                 </div>
             </aside>
 
-            <!-- 预览主视图区 (弹性伸缩，贪婪占满剩余空间) -->
             <main class="flex-1 min-w-0 flex flex-col items-center justify-start">
                 <div id="previewContainer" class="w-full flex justify-center items-center neu-inset p-4 md:p-8 h-[50vh] lg:h-[calc(100vh-140px)] relative group overflow-hidden">
                     <canvas id="halftoneCanvas"></canvas>
                     
-                    <!-- 全屏切换按钮 -->
                     <button id="fullscreenBtn" class="absolute top-6 right-6 p-3 neu-btn opacity-0 group-hover:opacity-100 transition-opacity z-10 rounded-full" title="全屏预览">
                         <svg id="fsEnterIcon" class="w-5 h-5 text-[var(--text-dark)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M21 8V5a2 2 0 0 0-2-2h-3"></path><path d="M3 16v3a2 2 0 0 0 2 2h3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
                         <svg id="fsExitIcon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3"></path><path d="M21 8h-3a2 2 0 0 1-2-2V3"></path><path d="M3 16h3a2 2 0 0 1 2 2v3"></path><path d="M16 21v-3a2 2 0 0 1 2-2h3"></path></svg>
                     </button>
 
-                    <!-- 悬浮视频控制条 -->
                     <div id="videoControls" class="absolute bottom-8 left-1/2 -translate-x-1/2 w-11/12 max-w-2xl neu-panel px-8 py-4 hidden flex-col gap-2 z-10 border-2 border-white/40">
                         <div class="flex items-center gap-5">
                             <button id="playPauseBtn" class="neu-btn w-12 h-12 rounded-full flex-shrink-0 text-[var(--accent)]">
@@ -637,7 +617,6 @@
         </div>
     </div>
 
-    <!-- 导出遮罩层 -->
     <div id="exportOverlay" class="loading-overlay">
         <div class="neu-panel p-10 max-w-sm w-full text-center">
             <h2 id="exportTitle" class="text-xl font-black mb-8" data-i18n="modal_exp_title">Rendering Frames...</h2>
@@ -649,7 +628,6 @@
         </div>
     </div>
 
-    <!-- 弹窗 -->
     <div id="customModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[100] hidden flex-col items-center justify-center">
         <div class="neu-panel p-10 w-96 max-w-[90%] transform transition-all">
             <h2 id="modalTitle" class="text-xl font-black mb-3">Notice</h2>
@@ -674,7 +652,7 @@
                 en: {
                     app_title: "Matrix UI Kit", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
                     tab_dot: "Dot Matrix", tab_ascii: "Ascii Art", lbl_source: "Source & Preset", status_synced: "Synced", status_local: "Local Storage", status_sync_err: "Sync Failed", status_conn: "Connecting...",
-                    btn_load: "Load Media", no_file: "No file selected...", opt_custom_preset: "-- Custom (Unsaved) --", tip_save_preset: "Save Preset", tip_del_preset: "Delete Preset", tip_theme: "Toggle Dark/Light Theme",
+                    btn_load: "Load Media", no_file: "No file selected...", no_file_preview: "NO MEDIA UPLOADED", opt_custom_preset: "-- Custom (Unsaved) --", tip_save_preset: "Save Preset", tip_del_preset: "Delete Preset", tip_theme: "Toggle Dark/Light Theme",
                     lbl_geometry: "Geometry", btn_reset: "⟲ Reset", lbl_grid: "Grid Density", lbl_keyed: "(KEYED)", btn_add_key: "📍 Add Keyframe", btn_clear_key: "Clear Anims", 
                     lbl_scale: "Unit Scale (Gap)", lbl_scale_ascii: "Line Spacing & Scale", lbl_lock_dot: "Lock Dot Size (LED Look)", lbl_cutoff: "Darkness Cutoff",
                     lbl_style: "Style & Color", lbl_bg: "Global BG Color", lbl_mapping: "Color Mapping", 
@@ -691,12 +669,12 @@
                     msg_sys_notice: "Notice", msg_err: "Error", msg_key_added: "✅ Recorded", msg_err_keyframe: "You must upload a video first to add keyframes!",
                     msg_err_upload: "Please upload image or video first!", msg_err_render: "Render failed, try lower resolution.", msg_err_export_req: "Upload a video to export sequence.", msg_err_export: "Export interrupted, please retry.",
                     msg_save_preset: "Save Preset", msg_enter_name: "Enter preset name:", msg_err_cloud: "Cloud failed, saved locally.", msg_del_preset: "Delete Preset", msg_confirm_del: "Are you sure you want to delete preset: ",
-                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: "
+                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE & ART", tip_guide: "Read tutorials and learn about ASCII art"
                 },
                 zh: {
                     app_title: "Matrix UI Kit", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
                     tab_dot: "圆点矩阵 (Dot)", tab_ascii: "ASCII 字符", lbl_source: "Source & Preset", status_synced: "已同步", status_local: "本地存储", status_sync_err: "同步失败", status_conn: "连接中...",
-                    btn_load: "载入媒体", no_file: "未选择文件...", opt_custom_preset: "-- 自定义参数 (未保存) --", tip_save_preset: "保存预设", tip_del_preset: "删除预设", tip_theme: "切换深浅色主题",
+                    btn_load: "载入媒体", no_file: "未选择文件...", no_file_preview: "等待载入媒体", opt_custom_preset: "-- 自定义参数 (未保存) --", tip_save_preset: "保存预设", tip_del_preset: "删除预设", tip_theme: "切换深浅色主题",
                     lbl_geometry: "Geometry", btn_reset: "⟲ 恢复", lbl_grid: "阵列排版密度", lbl_keyed: "(KEYED)", btn_add_key: "📍 打关键帧", btn_clear_key: "清空动画", 
                     lbl_scale: "单元缩放 (间隙)", lbl_scale_ascii: "字符纵向行间距缩放", lbl_lock_dot: "锁定等大圆点 (LED化)", lbl_cutoff: "背景暗部剔除阈值",
                     lbl_style: "Style & Color", lbl_bg: "全局底板颜色", lbl_mapping: "色彩渲染模式 (Mapping)", 
@@ -713,11 +691,11 @@
                     msg_sys_notice: "提示", msg_err: "出错", msg_key_added: "✅ 记录成功", msg_err_keyframe: "只有上传视频序列后才能打关键帧哦！",
                     msg_err_upload: "请先上传图片或视频！", msg_err_render: "生成失败，尝试调低分辨率。", msg_err_export_req: "请先上传视频文件再导出序列。", msg_err_export: "导出过程中断，请重试。",
                     msg_save_preset: "保存预设", msg_enter_name: "请输入此配置的名称：", msg_err_cloud: "云端失败，已保存至本地。", msg_del_preset: "删除预设", msg_confirm_del: "确定要删除预设 ",
-                    msg_compressing: "正在压缩打包...", msg_engine: "引擎渲染中: "
+                    msg_compressing: "正在压缩打包...", msg_engine: "引擎渲染中: ", btn_guide: "教程与原理", tip_guide: "阅读详细教程与 ASCII 艺术原理解析"
                 }
             };
 
-            let currentLang = localStorage.getItem('matrix_ui_lang') || (navigator.language.startsWith('zh') ? 'zh' : 'en');
+            let currentLang = localStorage.getItem('matrix_ui_lang') || (navigator.language && navigator.language.startsWith('zh') ? 'zh' : 'en');
             const t = (key) => translations[currentLang][key] || key;
 
             const langEnBtn = document.getElementById('langEnBtn');
@@ -752,6 +730,8 @@
                 
                 if (videoElement || imageElement) {
                     document.getElementById('modeDisplay').textContent = isVideo ? t('status_video') : t('status_image');
+                } else {
+                    initEmptyCanvas(); // Refresh placeholder text language
                 }
             }
 
@@ -781,6 +761,10 @@
                     themeIconSun.classList.add('hidden');
                     themeIconMoon.classList.remove('hidden');
                     localStorage.setItem('matrix_ui_theme', 'dark');
+                }
+                // Refresh empty canvas style if no media is loaded
+                if (!imageElement && !videoElement) {
+                    setTimeout(initEmptyCanvas, 50); // slight delay to allow CSS var to update
                 }
             });
 
@@ -984,33 +968,44 @@
             function initEmptyCanvas() {
                 if (imageElement || videoElement) return;
                 const container = document.getElementById('previewContainer');
-                const w = container.clientWidth - 64;
-                const h = container.clientHeight - 64;
+                
+                // Safety Math.max to prevent 0-width canvas bug on slow Flexbox rendering
+                const w = Math.max(10, container.clientWidth - 64);
+                const h = Math.max(10, container.clientHeight - 64);
                 
                 halftoneCanvas.width = Math.max(800, w);
                 halftoneCanvas.height = Math.max(600, h);
                 const ctx = halftoneCanvas.getContext('2d');
                 
-                // 优化：清空画布使其透明，让 CSS 里的 var(--bg-color) 主题色能够透出来，而不是写死的纯白色
                 ctx.clearRect(0, 0, halftoneCanvas.width, halftoneCanvas.height);
+
+                // 绘制极具美感的排版占位符
+                const txtColor = getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || 'rgba(0,0,0,0.3)';
+                ctx.fillStyle = txtColor;
+                ctx.font = '900 32px Nunito, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(t('no_file_preview'), halftoneCanvas.width / 2, halftoneCanvas.height / 2);
             }
 
             function setupCanvasDimensions(w, h) {
+                if (!w || !h) return; // Prevent NaN errors if image data isn't fully ready
+                
                 const isFS = !!document.fullscreenElement || isCssFullscreen;
                 const container = document.getElementById('previewContainer');
-                const padding = isFS ? 0 : 64; // 32px padding on each side for neu-inset
+                const padding = isFS ? 0 : 64; 
                 
-                const containerWidth = isFS ? window.innerWidth : container.clientWidth - padding;
-                const containerHeight = isFS ? window.innerHeight : container.clientHeight - padding;
+                // Prevent negative calculations
+                const containerWidth = Math.max(1, isFS ? window.innerWidth : container.clientWidth - padding);
+                const containerHeight = Math.max(1, isFS ? window.innerHeight : container.clientHeight - padding);
                 
                 const scaleX = containerWidth / w;
                 const scaleY = containerHeight / h;
                 
-                // Allow canvas resolution to match its container space perfectly
                 const scale = Math.min(scaleX, scaleY);
                 
-                halftoneCanvas.width = w * scale;
-                halftoneCanvas.height = h * scale;
+                halftoneCanvas.width = Math.max(1, w * scale);
+                halftoneCanvas.height = Math.max(1, h * scale);
             }
 
             function triggerResize() {
@@ -1026,6 +1021,7 @@
 
             // Initialize the canvas visuals properly on page load
             initEmptyCanvas();
+            setTimeout(initEmptyCanvas, 300); // Fail-safe to redraw placeholder after fonts/css load
 
             // --- Rendering Math ---
             function getVolumetricColor(lum, style) {
