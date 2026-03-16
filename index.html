@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>矩阵特效与 ASCII 艺术终端 v1.13 | 在线视频转字符画 (Matrix & ASCII Generator)</title>
+    <title>ZYRONMATRIX v1.14 | 在线视频转字符画 (Matrix & ASCII Generator)</title>
     
     <meta name="description" content="免费的在线高级矩阵特效与 ASCII 艺术生成器终端。无需下载，一键将图片与视频序列转化为赛博朋克风格的黑客代码流或纯文本遮罩效果。支持 WebGL 高清序列帧导出，专为设计师与极客打造。Free online Matrix digital rain and ASCII art generator for images and videos.">
     <meta name="keywords" content="矩阵特效, ASCII 艺术, 字符画生成器, 视频转ASCII, Matrix digital rain, ASCII art generator, Neumorphism UI, 赛博朋克, 黑客代码流, image to text, video to ascii">
@@ -18,14 +18,14 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.zyronmatrix.com/">
-    <meta property="og:title" content="Matrix UI Kit | 高级 ASCII 艺术与矩阵渲染引擎">
+    <meta property="og:title" content="ZYRONMATRIX | 高级 ASCII 艺术与矩阵渲染引擎">
     <meta property="og:description" content="一键将图片与视频转化为赛博朋克风格的字符艺术。支持自定义文字遮罩与高质量序列帧导出。">
     
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "ZyronMatrix ASCII & Matrix Effect Generator",
+      "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
       "alternateName": "矩阵特效与 ASCII 艺术终端",
       "url": "https://www.zyronmatrix.com/",
       "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain and custom ASCII text art. Features real-time rendering and ZIP sequence export.",
@@ -52,51 +52,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 浅灰蓝拟态主色调 (Light Theme) */
             --bg-color: #E0E5EC;
             --shadow-dark: #a3b1c6;
             --shadow-light: #ffffff;
             --shadow-dark-strong: rgba(163, 177, 198, 0.6);
             --shadow-dark-faint: rgba(184, 198, 217, 0.15);
             
-            /* 文本与高亮 */
             --text-dark: #000000;
             --text-muted: rgba(0, 0, 0, 0.45); 
             --accent: #0066ff; 
             --accent-glow: rgba(0, 102, 255, 0.15);
 
-            /* 材质光泽 */
             --border-light: rgba(255, 255, 255, 0.4);
             --border-light-faint: rgba(255, 255, 255, 0.2);
             --inner-highlight: rgba(255, 255, 255, 0.8);
             --inner-highlight-strong: rgba(255, 255, 255, 0.9);
             
-            /* 遮罩背景 */
             --overlay-bg: rgba(224, 229, 236, 0.85);
             --modal-bg: rgba(163, 177, 198, 0.2);
         }
 
         body.dark-mode {
-            /* 极客炭黑拟态主色调 (Dark Theme) */
             --bg-color: #2b2e33;
             --shadow-dark: #1d1f23;
             --shadow-light: #393d43;
             --shadow-dark-strong: rgba(0, 0, 0, 0.6);
             --shadow-dark-faint: rgba(0, 0, 0, 0.2);
             
-            /* 文本与高亮 */
             --text-dark: #f0f0f0;
             --text-muted: rgba(255, 255, 255, 0.5); 
             --accent: #4d88ff;
             --accent-glow: rgba(77, 136, 255, 0.15);
 
-            /* 材质光泽调暗，避免过曝 */
             --border-light: rgba(255, 255, 255, 0.05);
             --border-light-faint: rgba(255, 255, 255, 0.02);
             --inner-highlight: rgba(255, 255, 255, 0.05);
             --inner-highlight-strong: rgba(255, 255, 255, 0.08);
             
-            /* 遮罩背景 */
             --overlay-bg: rgba(43, 46, 51, 0.85);
             --modal-bg: rgba(0, 0, 0, 0.5);
         }
@@ -110,19 +102,20 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* --- 专属定制的拟态物理滑槽 (Scrollbar Slot) --- */
-        .control-panel {
-            padding-right: 14px;
-        }
+        /* --- 完美重构的独立悬浮滚动条 (Floating Scrollbar Track) --- */
         .control-panel::-webkit-scrollbar { 
-            width: 20px;
+            width: 18px; /* 轨道更厚实，更有独立硬件感 */
         }
         .control-panel::-webkit-scrollbar-track { 
-            background: var(--bg-color); 
+            background: transparent; 
             border-radius: 20px; 
+            /* 刻画出一个拟态凹槽，由于设置在外侧，它就像是一个独立的组件 */
             box-shadow: inset 3px 3px 6px var(--shadow-dark), 
                         inset -3px -3px 6px var(--shadow-light); 
-            border: 6px solid var(--bg-color); 
+            border: 4px solid var(--bg-color); 
+            /* 核心：限制轨道上下边缘，绝对避免与面板 32px 的大圆角相交穿帮！ */
+            margin-top: 36px;
+            margin-bottom: 36px;
         }
         .control-panel::-webkit-scrollbar-thumb { 
             background: var(--bg-color); 
@@ -255,7 +248,7 @@
             z-index: 40; 
         }
 
-        /* 渲染画布 */
+        /* 渲染画布：允许自由缩放贴合容器 */
         canvas { 
             border-radius: 24px;
             background: var(--bg-color);
@@ -280,10 +273,10 @@
 <body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white">
     
     <div class="sr-only">
-        <h1>ZyronMatrix: Online Matrix Effect & ASCII Art Video Generator</h1>
-        <p>How to make a Matrix digital rain effect or convert video to ASCII art? ZyronMatrix is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D dot matrix designs.</p>
+        <h1>ZYRONMATRIX: Online Matrix Effect & ASCII Art Video Generator</h1>
+        <p>How to make a Matrix digital rain effect or convert video to ASCII art? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D dot matrix designs.</p>
         <p>Features include text masking (overlaying continuous English prose over images), custom character dictionaries, Neumorphism dark/light mode UI, and rendering sequences directly into ZIP archives for After Effects (AE) and Premiere (PR) compositing. Best tool for cyberpunk aesthetics and generative typography design.</p>
-        <p>如何制作黑客帝国代码雨特效？如何把视频转换成字符画？ZyronMatrix 是一款强大的在线矩阵特效与 ASCII 艺术生成器。支持动态连续文本遮罩、自定义字符字典、体积光色阶映射，并可一键导出透明通道的序列帧供后期软件合成使用。完全免费，前端直接渲染，保护隐私。</p>
+        <p>如何制作黑客帝国代码雨特效？如何把视频转换成字符画？ZYRONMATRIX 是一款强大的在线矩阵特效与 ASCII 艺术生成器。支持动态连续文本遮罩、自定义字符字典、体积光色阶映射，并可一键导出透明通道的序列帧供后期软件合成使用。完全免费，前端直接渲染，保护隐私。</p>
     </div>
 
     <!-- I18N Language Switcher -->
@@ -299,7 +292,7 @@
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">Matrix UI Kit</span> <span class="text-xl text-[var(--accent)] ml-1">v1.13</span></h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.14</span></h1>
                 
                 <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full ml-2 flex items-center justify-center" data-i18n-title="tip_theme">
                     <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -310,7 +303,6 @@
                     </svg>
                 </button>
 
-                <!-- 新增：文字丰富教程页面的入口按钮 (应对 AdSense 审核) -->
                 <a href="/guide.html" target="_blank" class="neu-btn h-10 px-4 rounded-full ml-1 flex items-center justify-center text-[11px] font-black tracking-widest gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     <span data-i18n="btn_guide">GUIDE</span>
@@ -321,259 +313,267 @@
             <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Tactile Elements • Organic Claymorphism • High Quality Render</p>
         </header>
 
-        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8 xl:gap-10">
-            <aside class="w-full lg:w-[360px] xl:w-[420px] flex-shrink-0 neu-panel p-6 lg:p-8 overflow-y-auto h-[auto] lg:h-[calc(100vh-140px)] control-panel space-y-8">
-                
-                <div class="neu-inset p-2 flex gap-2 rounded-2xl relative z-10">
-                    <button id="modeDotBtn" class="neu-btn active flex-1 py-3.5 text-sm uppercase tracking-wider" data-i18n="tab_dot">Dot Matrix</button>
-                    <button id="modeAsciiBtn" class="neu-btn flex-1 py-3.5 text-sm uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii Art</button>
-                </div>
-
-                <div class="space-y-5">
-                    <div class="flex items-center justify-between">
-                        <label class="text-xs font-black text-[var(--text-muted)] uppercase tracking-widest" data-i18n="lbl_source">Source & Preset</label>
-                        <span id="cloudStatus" class="text-[9px] font-bold px-3 py-1 neu-inset rounded-full text-green-600" data-i18n="status_synced">已同步</span>
-                    </div>
-                    
-                    <div class="relative overflow-hidden neu-inset p-2 flex items-center rounded-2xl group">
-                        <input type="file" id="fileUpload" accept="video/*,image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                        <div class="neu-btn px-5 py-3 text-xs font-bold pointer-events-none group-hover:text-[var(--accent)] transition-all">📂 <span data-i18n="btn_load">载入媒体</span></div>
-                        <span id="fileNameDisplay" class="ml-4 text-xs font-bold text-[var(--text-muted)] truncate pointer-events-none pr-2" data-i18n="no_file">未选择文件...</span>
-                    </div>
-
-                    <div class="flex gap-3">
-                        <select id="presetSelect" class="neu-input flex-1 text-xs h-[48px] cursor-pointer">
-                            <option value="" data-i18n="opt_custom_preset">-- 自定义参数 (未保存) --</option>
-                        </select>
-                        <button id="savePresetBtn" class="neu-btn px-5 h-[48px] text-sm" data-i18n-title="tip_save_preset">💾</button>
-                        <button id="deletePresetBtn" class="neu-btn px-5 h-[48px] text-sm text-[var(--danger)] hidden" data-i18n-title="tip_del_preset">🗑️</button>
-                    </div>
-                </div>
-
-                <div class="space-y-5 pt-4 border-t-2 border-white/40">
-                    <div class="flex justify-between items-center">
-                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
-                        <button id="resetGeometryBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between items-center text-xs mb-3">
-                                <span id="lblGridSize" class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_grid">阵列排版密度</span>
-                                <div class="flex items-center gap-2">
-                                    <span id="keyframeIndicator" class="text-[9px] hidden font-black px-2 py-1 neu-inset rounded-lg text-[var(--accent)]" data-i18n="lbl_keyed">(KEYED)</span>
-                                    <input type="number" id="gridSizeInput" min="4" max="200" step="0.5" value="20" class="w-16 neu-input py-1.5 px-2 text-right">
-                                </div>
-                            </div>
-                            <input type="range" id="gridSize" min="4" max="200" value="20" step="0.5">
-                            <div class="flex gap-3 mt-5">
-                                <button id="addKeyframe" class="neu-btn flex-1 py-2.5 text-xs font-bold text-[var(--text-dark)]"><span data-i18n="btn_add_key">📍 打关键帧</span></button>
-                                <button id="clearKeyframes" class="neu-btn flex-1 py-2.5 text-xs text-[var(--text-muted)]" data-i18n="btn_clear_key">清空动画</button>
-                            </div>
+        <!-- 加大 Gap 以便给外置悬浮滑轨腾出完美的空间 -->
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-14">
+            
+            <!-- 核心修复：左侧工具栏 (去除了外层溢出隐藏，容纳负边距) -->
+            <aside class="w-full lg:w-[360px] xl:w-[420px] flex-shrink-0 neu-panel relative lg:h-[calc(100vh-140px)] z-20">
+                <!-- 内置滚动层：通过负右边距将滚动条强制推到主面板之外，彻底解决圆角穿帮！ -->
+                <div class="h-full overflow-y-auto control-panel lg:-mr-[28px] lg:pr-[28px]">
+                    <div class="p-6 lg:p-8 space-y-8 pb-10">
+                        
+                        <div class="neu-inset p-2 flex gap-2 rounded-2xl relative z-10">
+                            <button id="modeDotBtn" class="neu-btn active flex-1 py-3.5 text-sm uppercase tracking-wider" data-i18n="tab_dot">Dot Matrix</button>
+                            <button id="modeAsciiBtn" class="neu-btn flex-1 py-3.5 text-sm uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii Art</button>
                         </div>
 
-                        <div class="pt-2">
-                            <div class="flex justify-between items-center text-xs mb-3">
-                                <span id="lblDotScale" class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_scale">单元缩放 (间隙)</span>
-                                <span id="dotScaleVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.85</span>
-                            </div>
-                            <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
-                        </div>
-
-                        <div id="dotGeometryControls" class="space-y-5 pt-5 border-t border-white/30">
+                        <div class="space-y-5">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-extrabold text-[var(--text-dark)]" data-i18n="lbl_lock_dot">锁定等大圆点 (LED化)</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="fixedDotSize" class="sr-only peer">
-                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
-                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
-                                </label>
-                            </div>
-                            <div>
-                                <div class="flex justify-between items-center text-xs mb-3">
-                                    <span class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_cutoff">背景暗部剔除阈值</span>
-                                    <span id="dotCutoffVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.05</span>
-                                </div>
-                                <input type="range" id="dotCutoff" min="0" max="1" step="0.01" value="0.05">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-5 pt-4 border-t-2 border-white/40">
-                    <div class="flex justify-between items-center">
-                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
-                        <button id="resetColorBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div class="flex items-center justify-between p-3 neu-inset rounded-2xl">
-                            <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_bg">全局底板颜色</span>
-                            <input type="color" id="bgColor" value="#000000">
-                        </div>
-
-                        <div id="colorMappingControls" class="space-y-4">
-                            <div>
-                                <div class="text-xs font-extrabold text-[var(--text-muted)] mb-3" data-i18n="lbl_mapping">色彩渲染模式 (Mapping)</div>
-                                <select id="dotStyleSelect" class="neu-input w-full text-xs cursor-pointer">
-                                    <option value="volumetric_blue" data-i18n="opt_vol_blue">立体蓝调 (黑/深蓝/浅蓝/白)</option>
-                                    <option value="solid" selected data-i18n="opt_solid">单色扁平填充 (统一发光色)</option>
-                                    <option value="original" data-i18n="opt_origin">像素化采样原片色彩 (真彩矩阵)</option>
-                                    <option value="volumetric_mono" data-i18n="opt_vol_mono">立体灰阶 (复古素描风格)</option>
-                                    <option value="volumetric_custom" data-i18n="opt_vol_custom">自定义三阶发光立体色</option>
-                                </select>
+                                <label class="text-xs font-black text-[var(--text-muted)] uppercase tracking-widest" data-i18n="lbl_source">Source & Preset</label>
+                                <span id="cloudStatus" class="text-[9px] font-bold px-3 py-1 neu-inset rounded-full text-green-600" data-i18n="status_synced">已同步</span>
                             </div>
                             
-                            <div id="customVolumetricControls" class="hidden space-y-3 p-4 neu-inset rounded-2xl">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_shadow">阴影深色</span>
-                                    <input type="color" id="customColorDark" value="#000000">
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_midtone">中间漫反射</span>
-                                    <input type="color" id="customColorMid" value="#0066ff">
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_high">高光亮色</span>
-                                    <input type="color" id="customColorLight" value="#ffffff">
-                                </div>
+                            <div class="relative overflow-hidden neu-inset p-2 flex items-center rounded-2xl group">
+                                <input type="file" id="fileUpload" accept="video/*,image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="neu-btn px-5 py-3 text-xs font-bold pointer-events-none group-hover:text-[var(--accent)] transition-all">📂 <span data-i18n="btn_load">载入媒体</span></div>
+                                <span id="fileNameDisplay" class="ml-4 text-xs font-bold text-[var(--text-muted)] truncate pointer-events-none pr-2" data-i18n="no_file">未选择文件...</span>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <select id="presetSelect" class="neu-input flex-1 text-xs h-[48px] cursor-pointer">
+                                    <option value="" data-i18n="opt_custom_preset">-- 自定义参数 (未保存) --</option>
+                                </select>
+                                <button id="savePresetBtn" class="neu-btn px-5 h-[48px] text-sm" data-i18n-title="tip_save_preset">💾</button>
+                                <button id="deletePresetBtn" class="neu-btn px-5 h-[48px] text-sm text-[var(--danger)] hidden" data-i18n-title="tip_del_preset">🗑️</button>
                             </div>
                         </div>
 
-                        <div id="asciiControls" class="hidden space-y-4 pt-3 border-t border-white/40">
-                            <div>
-                                <div class="flex justify-between items-center text-xs font-extrabold text-[var(--text-muted)] mb-3">
-                                    <span data-i18n="lbl_logic">排版与渲染逻辑</span>
-                                </div>
-                                <select id="asciiLogicSelect" class="neu-input w-full text-[11px] font-bold cursor-pointer">
-                                    <option value="density" data-i18n="opt_density">亮度密度映射 (依明暗匹配不同字符)</option>
-                                    <option value="mask" selected data-i18n="opt_mask">连续文本遮罩 (原文覆盖+透明度遮罩)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
-                                    <span data-i18n="lbl_dict">字符字典或长文本 (暗 ➔ 亮)</span>
-                                    <select id="asciiPresetSelect" class="neu-input py-1.5 px-2 text-[10px] w-[130px]">
-                                        <option value=" .:-=+*#%@" data-i18n="opt_std">标准灰度</option>
-                                        <option value=" .'`^&quot;,:;Il!i&gt;&lt;~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$" data-i18n="opt_extreme">极限细节</option>
-                                        <option value=" 01" data-i18n="opt_hacker">黑客代码</option>
-                                        <option value=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*" data-i18n="opt_rgb">彩色赛博代码</option>
-                                        <option value="  VCXZNOQSA#" data-i18n="opt_retro">复古排字</option>
-                                        <option value=" ░▒▓█" data-i18n="opt_block">像素块</option>
-                                        <option value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " selected data-i18n="opt_prose">英文散文遮罩</option>
-                                        <option value="custom" data-i18n="opt_custom">自定义...</option>
-                                    </select>
-                                </div>
-                                <input type="text" id="asciiCharsInput" value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " class="neu-input w-full text-[10px] font-mono tracking-wider">
+                        <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
+                                <button id="resetGeometryBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
                             </div>
                             
-                            <div class="pt-3 border-t border-white/30">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] font-bold text-[var(--text-muted)]" data-i18n="lbl_no_space">强制无缝排版 (剔除空格)</span>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" id="asciiRemoveSpaces" class="sr-only peer" checked>
-                                        <div class="w-10 h-5 neu-inset rounded-full transition-colors duration-300"></div>
-                                        <div class="absolute left-1 top-1 w-3 h-3 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-5 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
-                                    </label>
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between items-center text-xs mb-3">
+                                        <span id="lblGridSize" class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_grid">阵列排版密度</span>
+                                        <div class="flex items-center gap-2">
+                                            <span id="keyframeIndicator" class="text-[9px] hidden font-black px-2 py-1 neu-inset rounded-lg text-[var(--accent)]" data-i18n="lbl_keyed">(KEYED)</span>
+                                            <input type="number" id="gridSizeInput" min="4" max="200" step="0.5" value="20" class="w-16 neu-input py-1.5 px-2 text-right">
+                                        </div>
+                                    </div>
+                                    <input type="range" id="gridSize" min="4" max="200" value="20" step="0.5">
+                                    <div class="flex gap-3 mt-5">
+                                        <button id="addKeyframe" class="neu-btn flex-1 py-2.5 text-xs font-bold text-[var(--text-dark)]"><span data-i18n="btn_add_key">📍 打关键帧</span></button>
+                                        <button id="clearKeyframes" class="neu-btn flex-1 py-2.5 text-xs text-[var(--text-muted)]" data-i18n="btn_clear_key">清空动画</button>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2">
+                                    <div class="flex justify-between items-center text-xs mb-3">
+                                        <span id="lblDotScale" class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_scale">单元缩放 (间隙)</span>
+                                        <span id="dotScaleVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.85</span>
+                                    </div>
+                                    <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
+                                </div>
+
+                                <div id="dotGeometryControls" class="space-y-5 pt-5 border-t border-white/30">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-extrabold text-[var(--text-dark)]" data-i18n="lbl_lock_dot">锁定等大圆点 (LED化)</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="fixedDotSize" class="sr-only peer">
+                                            <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                            <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center text-xs mb-3">
+                                            <span class="font-extrabold text-[var(--text-muted)]" data-i18n="lbl_cutoff">背景暗部剔除阈值</span>
+                                            <span id="dotCutoffVal" class="font-mono text-xs font-bold neu-inset px-3 py-1 rounded-lg">0.05</span>
+                                        </div>
+                                        <input type="range" id="dotCutoff" min="0" max="1" step="0.01" value="0.05">
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="pt-3 border-t border-white/30">
-                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
-                                    <span data-i18n="lbl_aspect">字符横向紧凑度 (挤压列间距)</span>
-                                    <span id="asciiRatioVal" class="font-mono text-[var(--accent)]">0.60</span>
+                        <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
+                                <button id="resetColorBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between p-3 neu-inset rounded-2xl">
+                                    <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_bg">全局底板颜色</span>
+                                    <input type="color" id="bgColor" value="#000000">
                                 </div>
-                                <input type="range" id="asciiRatio" min="0.3" max="1.5" step="0.05" value="0.6">
-                            </div>
 
-                            <div class="pt-3 border-t border-white/30">
-                                <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
-                                    <span data-i18n="lbl_intensity">字符亮度强化 (Overdraw)</span>
-                                    <span id="asciiIntensityVal" class="font-mono text-[var(--accent)]">1</span>
+                                <div id="colorMappingControls" class="space-y-4">
+                                    <div>
+                                        <div class="text-xs font-extrabold text-[var(--text-muted)] mb-3" data-i18n="lbl_mapping">色彩渲染模式 (Mapping)</div>
+                                        <select id="dotStyleSelect" class="neu-input w-full text-xs cursor-pointer">
+                                            <option value="volumetric_blue" data-i18n="opt_vol_blue">立体蓝调 (黑/深蓝/浅蓝/白)</option>
+                                            <option value="solid" selected data-i18n="opt_solid">单色扁平填充 (统一发光色)</option>
+                                            <option value="original" data-i18n="opt_origin">像素化采样原片色彩 (真彩矩阵)</option>
+                                            <option value="volumetric_mono" data-i18n="opt_vol_mono">立体灰阶 (复古素描风格)</option>
+                                            <option value="volumetric_custom" data-i18n="opt_vol_custom">自定义三阶发光立体色</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div id="customVolumetricControls" class="hidden space-y-3 p-4 neu-inset rounded-2xl">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_shadow">阴影深色</span>
+                                            <input type="color" id="customColorDark" value="#000000">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_midtone">中间漫反射</span>
+                                            <input type="color" id="customColorMid" value="#0066ff">
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-extrabold text-[var(--text-muted)]" data-i18n="lbl_high">高光亮色</span>
+                                            <input type="color" id="customColorLight" value="#ffffff">
+                                        </div>
+                                    </div>
                                 </div>
-                                <input type="range" id="asciiIntensity" min="1" max="5" step="1" value="1">
+
+                                <div id="asciiControls" class="hidden space-y-4 pt-3 border-t border-white/40">
+                                    <div>
+                                        <div class="flex justify-between items-center text-xs font-extrabold text-[var(--text-muted)] mb-3">
+                                            <span data-i18n="lbl_logic">排版与渲染逻辑</span>
+                                        </div>
+                                        <select id="asciiLogicSelect" class="neu-input w-full text-[11px] font-bold cursor-pointer">
+                                            <option value="density" data-i18n="opt_density">亮度密度映射 (依明暗匹配不同字符)</option>
+                                            <option value="mask" selected data-i18n="opt_mask">连续文本遮罩 (原文覆盖+透明度遮罩)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                            <span data-i18n="lbl_dict">字符字典或长文本 (暗 ➔ 亮)</span>
+                                            <select id="asciiPresetSelect" class="neu-input py-1.5 px-2 text-[10px] w-[130px]">
+                                                <option value=" .:-=+*#%@" data-i18n="opt_std">标准灰度</option>
+                                                <option value=" .'`^&quot;,:;Il!i&gt;&lt;~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&amp;8%B@$" data-i18n="opt_extreme">极限细节</option>
+                                                <option value=" 01" data-i18n="opt_hacker">黑客代码</option>
+                                                <option value=" 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&*" data-i18n="opt_rgb">彩色赛博代码</option>
+                                                <option value="  VCXZNOQSA#" data-i18n="opt_retro">复古排字</option>
+                                                <option value=" ░▒▓█" data-i18n="opt_block">像素块</option>
+                                                <option value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " selected data-i18n="opt_prose">英文散文遮罩</option>
+                                                <option value="custom" data-i18n="opt_custom">自定义...</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" id="asciiCharsInput" value="THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. " class="neu-input w-full text-[10px] font-mono tracking-wider">
+                                    </div>
+                                    
+                                    <div class="pt-3 border-t border-white/30">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-[10px] font-bold text-[var(--text-muted)]" data-i18n="lbl_no_space">强制无缝排版 (剔除空格)</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="asciiRemoveSpaces" class="sr-only peer" checked>
+                                                <div class="w-10 h-5 neu-inset rounded-full transition-colors duration-300"></div>
+                                                <div class="absolute left-1 top-1 w-3 h-3 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-5 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="pt-3 border-t border-white/30">
+                                        <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                            <span data-i18n="lbl_aspect">字符横向紧凑度 (挤压列间距)</span>
+                                            <span id="asciiRatioVal" class="font-mono text-[var(--accent)]">0.60</span>
+                                        </div>
+                                        <input type="range" id="asciiRatio" min="0.3" max="1.5" step="0.05" value="0.6">
+                                    </div>
+
+                                    <div class="pt-3 border-t border-white/30">
+                                        <div class="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+                                            <span data-i18n="lbl_intensity">字符亮度强化 (Overdraw)</span>
+                                            <span id="asciiIntensityVal" class="font-mono text-[var(--accent)]">1</span>
+                                        </div>
+                                        <input type="range" id="asciiIntensity" min="1" max="5" step="1" value="1">
+                                    </div>
+                                </div>
+
+                                <div id="solidColorControl" class="flex items-center justify-between p-3 neu-inset rounded-2xl">
+                                    <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_dot_color">单元发光颜色</span>
+                                    <input type="color" id="dotColor" value="#ffffff">
+                                </div>
                             </div>
                         </div>
 
-                        <div id="solidColorControl" class="flex items-center justify-between p-3 neu-inset rounded-2xl">
-                            <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_dot_color">单元发光颜色</span>
-                            <input type="color" id="dotColor" value="#ffffff">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-5 pt-4 border-t-2 border-white/40">
-                    <div class="flex justify-between items-center">
-                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
-                        <button id="resetSignalBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
-                    </div>
-                    
-                    <div class="space-y-6">
-                        <div>
-                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_b">输入源：曝光补偿</span><span id="sourceBrightnessVal">0</span></div>
-                            <input type="range" id="sourceBrightness" min="-100" max="100" value="0">
-                        </div>
-                        <div class="pb-4 border-b border-white/30">
-                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_c">输入源：对比强化</span><span id="sourceContrastVal">0</span></div>
-                            <input type="range" id="sourceContrast" min="-100" max="100" value="0">
-                        </div>
-                        
-                        <div>
-                            <div class="flex justify-between text-xs font-extrabold mb-3"><span data-i18n="lbl_map_b">映射层：全局光感</span><span id="brightnessVal">20</span></div>
-                            <input type="range" id="brightness" min="-100" max="100" value="20">
-                        </div>
-                        <div class="pb-4 border-b border-white/30">
-                            <div class="flex justify-between text-xs font-extrabold mb-3"><span data-i18n="lbl_map_c">映射层：色阶分离度</span><span id="contrastVal">20</span></div>
-                            <input type="range" id="contrast" min="-100" max="100" value="20">
-                        </div>
-                        
-                        <div class="space-y-5 pt-2">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-extrabold" data-i18n="lbl_invert">反转明暗映射 (Invert)</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="invertMapping" class="sr-only peer">
-                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
-                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
-                                </label>
+                        <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
+                                <button id="resetSignalBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
                             </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-extrabold" data-i18n="lbl_smooth">时域平滑滤波去噪</span>
-                                <label class="relative inline-flex items-center cursor-pointer">
-                                    <input type="checkbox" id="smoothStep" class="sr-only peer" checked>
-                                    <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
-                                    <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
-                                </label>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_b">输入源：曝光补偿</span><span id="sourceBrightnessVal">0</span></div>
+                                    <input type="range" id="sourceBrightness" min="-100" max="100" value="0">
+                                </div>
+                                <div class="pb-4 border-b border-white/30">
+                                    <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_c">输入源：对比强化</span><span id="sourceContrastVal">0</span></div>
+                                    <input type="range" id="sourceContrast" min="-100" max="100" value="0">
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between text-xs font-extrabold mb-3"><span data-i18n="lbl_map_b">映射层：全局光感</span><span id="brightnessVal">20</span></div>
+                                    <input type="range" id="brightness" min="-100" max="100" value="20">
+                                </div>
+                                <div class="pb-4 border-b border-white/30">
+                                    <div class="flex justify-between text-xs font-extrabold mb-3"><span data-i18n="lbl_map_c">映射层：色阶分离度</span><span id="contrastVal">20</span></div>
+                                    <input type="range" id="contrast" min="-100" max="100" value="20">
+                                </div>
+                                
+                                <div class="space-y-5 pt-2">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-extrabold" data-i18n="lbl_invert">反转明暗映射 (Invert)</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="invertMapping" class="sr-only peer">
+                                            <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                            <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-extrabold" data-i18n="lbl_smooth">时域平滑滤波去噪</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="smoothStep" class="sr-only peer" checked>
+                                            <div class="w-14 h-7 neu-inset rounded-full transition-colors duration-300"></div>
+                                            <div class="absolute left-1.5 top-1.5 w-4 h-4 rounded-full bg-[var(--bg-color)] shadow-[2px_2px_4px_var(--shadow-dark),-2px_-2px_4px_var(--shadow-light)] peer-checked:translate-x-7 peer-checked:bg-[var(--accent)] transition-all duration-300"></div>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="space-y-5 pt-4 border-t-2 border-white/40">
-                    <div class="flex justify-between items-center">
-                        <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
-                        <button id="resetOutputBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
-                    </div>
-                    <div class="space-y-5">
-                        <select id="exportResolution" class="neu-input w-full text-xs font-bold cursor-pointer">
-                            <option value="source" data-i18n="opt_res_src">原始画布尺寸 (1:1)</option>
-                            <option value="3840x2160">超清 4K UHD (3840 x 2160)</option>
-                            <option value="2560x1440">高清 2K QHD (2560 x 1440)</option>
-                            <option value="1920x1080">全高清 1080p (1920 x 1080)</option>
-                        </select>
-                        <div class="pt-2">
-                            <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_fps">序列导出帧率 (FPS)</span><span id="fpsVal" class="font-mono text-[var(--accent)]">24</span></div>
-                            <input type="range" id="fpsInput" min="1" max="60" value="24">
-                            <p class="text-[9px] text-[var(--text-muted)] font-bold mt-3 leading-tight opacity-80" data-i18n="tip_fps">💡 提示：图片序列无帧率元数据，导入 AE/PR 时请右键素材「解释素材 ➔ 假定帧率」为该数值。</p>
+                        <div class="space-y-5 pt-4 border-t-2 border-white/40">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
+                                <button id="resetOutputBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ 恢复</span></button>
+                            </div>
+                            <div class="space-y-5">
+                                <select id="exportResolution" class="neu-input w-full text-xs font-bold cursor-pointer">
+                                    <option value="source" data-i18n="opt_res_src">原始画布尺寸 (1:1)</option>
+                                    <option value="3840x2160">超清 4K UHD (3840 x 2160)</option>
+                                    <option value="2560x1440">高清 2K QHD (2560 x 1440)</option>
+                                    <option value="1920x1080">全高清 1080p (1920 x 1080)</option>
+                                </select>
+                                <div class="pt-2">
+                                    <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_fps">序列导出帧率 (FPS)</span><span id="fpsVal" class="font-mono text-[var(--accent)]">24</span></div>
+                                    <input type="range" id="fpsInput" min="1" max="60" value="24">
+                                    <p class="text-[9px] text-[var(--text-muted)] font-bold mt-3 leading-tight opacity-80" data-i18n="tip_fps">💡 提示：图片序列无帧率元数据，导入 AE/PR 时请右键素材「解释素材 ➔ 假定帧率」为该数值。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 space-y-5 pb-4">
+                            <div class="flex gap-4">
+                                <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]"><span data-i18n="btn_reset_all">清空重置</span></button>
+                                <button id="saveButton" class="flex-[2] py-4 neu-btn text-xs font-black text-[var(--text-dark)]">📸 <span data-i18n="btn_save_frame">留存当前单帧</span></button>
+                            </div>
+                            <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 <span data-i18n="btn_export_seq">渲染导出视频帧序列</span></button>
                         </div>
                     </div>
-                </div>
-
-                <div class="pt-8 space-y-5 pb-4">
-                    <div class="flex gap-4">
-                        <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]"><span data-i18n="btn_reset_all">清空重置</span></button>
-                        <button id="saveButton" class="flex-[2] py-4 neu-btn text-xs font-black text-[var(--text-dark)]">📸 <span data-i18n="btn_save_frame">留存当前单帧</span></button>
-                    </div>
-                    <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 <span data-i18n="btn_export_seq">渲染导出视频帧序列</span></button>
                 </div>
             </aside>
 
@@ -650,7 +650,7 @@
             // --- I18N Engine (国际化词典) ---
             const translations = {
                 en: {
-                    app_title: "Matrix UI Kit", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
+                    app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
                     tab_dot: "Dot Matrix", tab_ascii: "Ascii Art", lbl_source: "Source & Preset", status_synced: "Synced", status_local: "Local Storage", status_sync_err: "Sync Failed", status_conn: "Connecting...",
                     btn_load: "Load Media", no_file: "No file selected...", no_file_preview: "NO MEDIA UPLOADED", opt_custom_preset: "-- Custom (Unsaved) --", tip_save_preset: "Save Preset", tip_del_preset: "Delete Preset", tip_theme: "Toggle Dark/Light Theme",
                     lbl_geometry: "Geometry", btn_reset: "⟲ Reset", lbl_grid: "Grid Density", lbl_keyed: "(KEYED)", btn_add_key: "📍 Add Keyframe", btn_clear_key: "Clear Anims", 
@@ -672,7 +672,7 @@
                     msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE & ART", tip_guide: "Read tutorials and learn about ASCII art"
                 },
                 zh: {
-                    app_title: "Matrix UI Kit", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
+                    app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
                     tab_dot: "圆点矩阵 (Dot)", tab_ascii: "ASCII 字符", lbl_source: "Source & Preset", status_synced: "已同步", status_local: "本地存储", status_sync_err: "同步失败", status_conn: "连接中...",
                     btn_load: "载入媒体", no_file: "未选择文件...", no_file_preview: "等待载入媒体", opt_custom_preset: "-- 自定义参数 (未保存) --", tip_save_preset: "保存预设", tip_del_preset: "删除预设", tip_theme: "切换深浅色主题",
                     lbl_geometry: "Geometry", btn_reset: "⟲ 恢复", lbl_grid: "阵列排版密度", lbl_keyed: "(KEYED)", btn_add_key: "📍 打关键帧", btn_clear_key: "清空动画", 
