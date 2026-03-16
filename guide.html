@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide & Art - Matrix UI Kit | ASCII 艺术引擎原理解析</title>
+    
+    <meta name="description" content="深入了解 Matrix UI Kit 背后的渲染原理。学习如何利用 WebGL 和 Canvas 将图片与视频转换为极具赛博朋克风格的 ASCII 艺术与矩阵代码雨特效。">
+    <meta name="keywords" content="ASCII艺术教程, 矩阵特效原理, WebGL, Canvas渲染, 极客视觉设计">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.zyronmatrix.com/guide.html">
+    <link rel="icon" type="image/png" href="/logo.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 继承主站拟态 UI 核心配色 */
+        :root {
+            --bg-color: #E0E5EC;
+            --shadow-dark: #a3b1c6;
+            --shadow-light: #ffffff;
+            --text-dark: #000000;
+            --text-muted: rgba(0, 0, 0, 0.6); 
+            --accent: #0066ff; 
+            --border-light: rgba(255, 255, 255, 0.4);
+        }
+
+        body.dark-mode {
+            --bg-color: #2b2e33;
+            --shadow-dark: #1d1f23;
+            --shadow-light: #393d43;
+            --text-dark: #f0f0f0;
+            --text-muted: rgba(255, 255, 255, 0.6); 
+            --accent: #4d88ff;
+            --border-light: rgba(255, 255, 255, 0.05);
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-dark); 
+            font-family: 'Nunito', system-ui, -apple-system, sans-serif; 
+            letter-spacing: 0.02em;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .neu-panel {
+            background: var(--bg-color);
+            border-radius: 32px;
+            box-shadow: 12px 12px 24px var(--shadow-dark), 
+                       -12px -12px 24px var(--shadow-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .neu-inset {
+            background: var(--bg-color);
+            border-radius: 16px;
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), 
+                        inset -4px -4px 8px var(--shadow-light);
+            border: 1px solid transparent;
+            padding: 16px;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--shadow-dark);
+            padding-bottom: 0.5rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+
+        .article-content p {
+            font-weight: 600;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+        
+        .article-content ul {
+            list-style-type: disc;
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-12">
+    
+    <div class="max-w-[900px] mx-auto neu-panel p-8 md:p-14">
+        
+        <!-- 头部导航与标题 -->
+        <header class="flex justify-between items-center mb-10 pb-6 border-b-2 border-[var(--shadow-dark)]">
+            <a href="/" class="text-sm font-black text-[var(--accent)] tracking-widest hover:underline uppercase flex items-center gap-2">
+                <span>←</span> 返回主工具
+            </a>
+            <h1 class="text-2xl font-black uppercase tracking-wider text-[var(--text-dark)]">Matrix UI <span class="text-[var(--accent)]">GUIDE</span></h1>
+        </header>
+
+        <!-- SEO 核心文章内容 -->
+        <article class="article-content">
+            <h2 id="what-is-ascii-art">1. 什么是 ASCII 艺术 (ASCII Art)？</h2>
+            <p>ASCII 艺术是一种基于文字的视觉艺术形式。在早期的计算机时代，由于硬件性能的限制，显示器无法渲染复杂的位图图像（如 JPEG 或 PNG）。当时的极客与黑客们便利用标准的 ASCII 字符集（包括字母、数字以及标点符号）来“拼凑”出各种图形与画面。</p>
+            <p>通过巧妙利用不同字符的“视觉密度”（例如，<code>@</code> 或 <code>M</code> 看起来比较黑、比较实，而 <code>.</code> 或 <code>-</code> 看起来比较亮、比较空），创作者可以在终端屏幕上表现出极具立体感的明暗关系。如今，ASCII 艺术已经成为赛博朋克（Cyberpunk）美学中不可或缺的灵魂符号。</p>
+
+            <h2 id="how-matrix-ui-works">2. Matrix UI Kit 的底层渲染引擎揭秘</h2>
+            <p>Matrix UI Kit 并非简单的滤镜叠加，而是运行在浏览器内的实时光栅化引擎（Rasterization Engine）。当我们上传一张图片或一段视频时，引擎在底层的处理分为以下几个精密步骤：</p>
+            
+            <h3>第一步：色彩空间采样 (Color Space Sampling)</h3>
+            <p>引擎会将视频帧绘制在一个离屏的 Canvas (Offscreen Canvas) 上，并将画面切分为无数个像素块（Grid）。通过计算每个区块内的 RGB 色彩平均值，系统能够精确提取出该区域的光度（Luminance）。</p>
+
+            <h3>第二步：动态色阶映射 (Tone Mapping)</h3>
+            <p>利用工具面板上的“曝光补偿”与“色阶分离度”参数，引擎会对光度进行非线性曲线转换（Non-linear Curve Conversion）。你可以开启“时域平滑滤波去噪”，通过抗锯齿算法让高频噪点被滤除，从而保证视频在连续播放时，代码流不会发生剧烈闪烁。</p>
+
+            <h3>第三步：连续文本遮罩 (Continuous Text Mask)</h3>
+            <p>这是本工具最硬核的功能之一。在传统的 ASCII 画中，引擎是根据亮度随机挑选字符。而在“连续文本遮罩”模式下，你输入的一段长文（比如一段英文散文）会像印刷机一样无缝铺满整个屏幕，系统仅仅利用底图的明暗来控制文字的透明度（Alpha Channel）。这种技术极大地提升了画面的信息传递量与艺术纵深感。</p>
+
+            <h2 id="best-practices">3. 创作完美黑客矩阵特效的最佳实践</h2>
+            <div class="neu-inset mb-6">
+                <p class="mb-0 text-[var(--text-dark)] font-bold">💡 高阶技巧：处理高密度字符发灰的问题</p>
+                <p class="mt-2 text-sm">当你将“阵列排版密度”调得非常高时（即字号极小），浏览器的默认抗锯齿机制会让细小的笔画边缘发虚，导致整体画面变浅。此时，请务必调高 <strong>“字符亮度强化 (Overdraw)”</strong> 参数！该功能采用多重叠印技术（Multiple Overdraw），在同一坐标点重复渲染文字，瞬间让画面恢复锋利的黑客终端质感。</p>
+            </div>
+            
+            <ul>
+                <li><strong>消除竖向断层：</strong> 当你发现排列的文字出现规律性的垂直黑线时，勾选“强制无缝排版 (剔除空格)”，引擎会自动抹除文案中的空白符。</li>
+                <li><strong>导出高质量序列：</strong> 在制作视频特效时，建议选择“高清 2K QHD”分辨率进行序列帧导出。ZIP 打包下载后，将序列帧拖入 After Effects (AE)，右键点击「解释素材」，将帧率修改为你网页上设置的 FPS，即可完美匹配原视频。</li>
+                <li><strong>巧用体积光：</strong> 在“Color Mapping”选项中选择“立体蓝调”或“自定义三阶色”，系统会赋予代码以真实的物理材质反光，产生类似黏土（Claymorphism）与玻璃结合的绝妙质感。</li>
+            </ul>
+
+            <h2 id="privacy">4. 关于您的隐私与本地渲染</h2>
+            <p>Matrix UI Kit 秉持最高级别的隐私安全原则。所有的视频解码、逐帧切片、色彩提取以及最终的高清 ZIP 打包工作，**全部在您的浏览器本地内存中完成**。没有任何一张图片或视频会被上传到云端服务器。这意味着哪怕您断开网络，在本地环境下依然可以完美运行这款强大的视觉引擎。</p>
+
+        </article>
+
+        <div class="mt-14 pt-6 border-t-2 border-[var(--shadow-dark)] text-center text-sm font-bold text-[var(--text-muted)]">
+            <p>© 2026 ZyronMatrix. Engineered for Hackers & Artists.</p>
+        </div>
+    </div>
+
+    <script>
+        // 自动继承主站缓存的深色模式状态
+        if (localStorage.getItem('matrix_ui_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>
