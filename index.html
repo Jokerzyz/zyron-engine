@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>ZYRONMATRIX v1.17 | Matrix Effect & Glassmorphism Generator</title>
+    <title>ZYRONMATRIX v1.27 | Matrix Effect & Glassmorphism Generator</title>
     
     <meta name="description" content="Free online advanced Matrix digital rain, ASCII art, and Glassmorphism generator. Convert images and videos into cyberpunk hacker code streams and frosted glass refraction effects.">
     <meta name="keywords" content="Matrix effect, ASCII art, ASCII generator, Glassmorphism, frosted glass, video to ASCII, image to text, cyberpunk, digital rain, WebGL, Neumorphism UI">
@@ -36,14 +36,7 @@
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD"
-      },
-      "featureList": [
-        "Image to ASCII conversion",
-        "Video to ASCII sequence export",
-        "Matrix digital rain effect",
-        "Glassmorphism refraction effect",
-        "Neumorphism UI"
-      ]
+      }
     }
     </script>
 
@@ -216,29 +209,40 @@
         <p>Features include text masking, custom character dictionaries, dynamic LUT color mapping, refractive stripe displacement, Neumorphism dark/light mode UI, and rendering sequences directly into ZIP archives for After Effects (AE) and Premiere (PR) compositing. Best tool for cyberpunk aesthetics, motion graphics, and generative typography design.</p>
     </div>
 
-    <!-- I18N Language Switcher -->
+    <!-- I18N Language Switcher (Top Left) -->
     <div class="absolute top-6 left-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <button id="langEnBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest uppercase">EN</button>
         <button id="langZhBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest">中文</button>
     </div>
 
+    <!-- 独立的顶部右侧悬浮 UI (教程与登录账号) -->
+    <div class="absolute top-6 right-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
+        <a href="/guide.html" target="_blank" class="neu-btn px-4 py-2 flex items-center justify-center text-[10px] font-black tracking-widest uppercase gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+            <span data-i18n="btn_guide">GUIDE</span>
+        </a>
+        <button id="headerUserBtn" class="neu-btn px-4 py-2 flex items-center justify-center text-[10px] font-black tracking-widest uppercase gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors group" data-i18n-title="tip_login">
+            <svg id="userIconUnauth" class="w-3.5 h-3.5 text-[var(--text-dark)] group-hover:text-[var(--accent)] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            <svg id="userIconAuth" class="w-3.5 h-3.5 text-[var(--accent)] hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            <span id="headerLoginText" data-i18n="btn_login_header">LOGIN</span>
+        </button>
+    </div>
+
     <div class="w-full max-w-[1920px] mx-auto">
-        <header class="mb-8 text-center flex flex-col items-center pt-8 md:pt-2">
+        <!-- 页面顶栏 -->
+        <header class="mb-8 text-center flex flex-col items-center pt-12 md:pt-4">
             <div class="inline-flex items-center gap-4 mb-3 px-8 py-4 neu-panel">
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.17</span></h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.27</span></h1>
                 
-                <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full ml-2 flex items-center justify-center" data-i18n-title="tip_theme">
-                    <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                    <svg id="themeIconMoon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                </button>
-
-                <a href="/guide.html" target="_blank" class="neu-btn h-10 px-4 rounded-full ml-1 flex items-center justify-center text-[11px] font-black tracking-widest gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span data-i18n="btn_guide">GUIDE</span>
-                </a>
+                <div class="flex items-center justify-center gap-3 ml-2">
+                    <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full flex items-center justify-center" data-i18n-title="tip_theme">
+                        <svg id="themeIconSun" class="w-5 h-5 text-[var(--text-dark)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                        <svg id="themeIconMoon" class="w-5 h-5 text-[var(--text-dark)] hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                    </button>
+                </div>
             </div>
             <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Tactile Elements • Organic Claymorphism • High Quality Render</p>
         </header>
@@ -282,7 +286,6 @@
                                 <button id="resetGeometryBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
                             
-                            <!-- Matrix/ASCII 专有 Geometry 控件 -->
                             <div id="matrixGeometryControls" class="space-y-6">
                                 <div>
                                     <div class="flex justify-between items-center text-xs mb-3">
@@ -326,7 +329,6 @@
                                 </div>
                             </div>
 
-                            <!-- Glass 专有 Geometry 控件 -->
                             <div id="glassGeometryControls" class="space-y-6 hidden">
                                 <div class="space-y-4">
                                     <div>
@@ -379,7 +381,6 @@
                                 <button id="resetColorBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
 
-                            <!-- Matrix/ASCII 专有 Color 控件 -->
                             <div id="matrixColorControls" class="space-y-6">
                                 <div class="flex items-center justify-between p-3 neu-inset rounded-2xl">
                                     <span class="text-xs font-extrabold ml-2 text-[var(--text-muted)]" data-i18n="lbl_bg">Global BG Color</span>
@@ -475,7 +476,6 @@
                                 </div>
                             </div>
 
-                            <!-- Glass 专有 Color 控件 -->
                             <div id="glassColorControls" class="space-y-6 hidden">
                                 <div>
                                     <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_light_int">Light Intensity</span><span id="glassLightVal" class="font-mono text-[var(--accent)]">1.2x</span></div>
@@ -514,7 +514,6 @@
                                         <span data-i18n="lbl_lut_cols">LUT Colors (Dark to Bright)</span>
                                     </div>
                                     
-                                    <!-- LUT Presets -->
                                     <div class="grid grid-cols-2 gap-2 mb-2">
                                         <button class="glass-preset-btn text-[10px] neu-inset hover:text-[var(--accent)] py-1.5 px-2 rounded-lg flex items-center transition-all cursor-pointer" data-colors="#000000,#0a2db5,#16a6d1,#f06d18,#ffffff">
                                             <div class="w-3 h-3 rounded-full mr-2 shadow-sm" style="background: #f06d18"></div>
@@ -557,7 +556,6 @@
                                 <button id="resetSignalBtn" class="text-[10px] text-[var(--text-muted)] hover:text-[var(--accent)] font-bold transition flex items-center gap-1 neu-btn px-3 py-1.5 rounded-xl"><span data-i18n="btn_reset">⟲ Reset</span></button>
                             </div>
                             
-                            <!-- Matrix 专有信号处理 -->
                             <div id="matrixFilterControls" class="space-y-6">
                                 <div>
                                     <div class="flex justify-between text-xs font-extrabold text-[var(--text-muted)] mb-3"><span data-i18n="lbl_src_b">Source: Exposure Bias</span><span id="sourceBrightnessVal">0</span></div>
@@ -597,7 +595,6 @@
                                 </div>
                             </div>
 
-                            <!-- Glass 专有物理特效 -->
                             <div id="glassPhysicsControls" class="space-y-4 hidden">
                                 <div>
                                     <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-1"><span data-i18n="lbl_blur">Glow Blur</span><span id="glassBlurVal" class="font-mono text-[var(--accent)]">45px</span></div>
@@ -647,13 +644,38 @@
                             </div>
                         </div>
 
-                        <div class="pt-8 space-y-5 pb-4">
-                            <div class="flex gap-4">
-                                <button id="resetButton" class="flex-1 py-4 neu-btn text-xs font-extrabold hover:text-[var(--accent)]"><span data-i18n="btn_reset_all">Reset All</span></button>
-                                <button id="saveButton" class="flex-[2] py-4 neu-btn text-xs font-black text-[var(--text-dark)]">📸 <span data-i18n="btn_save_frame">Save Single Frame</span></button>
+                        <!-- CATEGORY 5: ACTION & EXPORT UI -->
+                        <div class="pt-6 pb-4">
+                            <div class="flex flex-col gap-4 mb-5">
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="svgLoginLabel" data-i18n="lbl_login_svg">LOG IN FOR SVG</span></div>
+                                    <button id="exportSvgBtn" class="py-3 neu-btn text-sm font-black w-full flex justify-between items-center px-5 group text-[var(--text-dark)] hover:text-[var(--accent)]">
+                                        <span data-i18n="btn_svg">SVG</span>
+                                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                    </button>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="pngLimitLabel">8 LEFT BEFORE LOG IN</span></div>
+                                    <div class="flex gap-3">
+                                        <button id="exportPngBtn" class="flex-1 py-3 neu-btn text-sm font-black flex justify-center items-center gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] group">
+                                            <span>PNG</span>
+                                            <svg class="w-4 h-4 group-hover:translate-y-[2px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                        </button>
+                                        <button id="exportJpgBtn" class="flex-1 py-3 neu-btn text-sm font-black flex justify-center items-center gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] group">
+                                            <span>JPG</span>
+                                            <svg class="w-4 h-4 group-hover:translate-y-[2px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <button id="exportSequence" class="w-full py-5 neu-btn text-sm font-black tracking-widest text-[var(--accent)] border-2 border-[var(--accent)]/10">📦 <span data-i18n="btn_export_seq">Render & Export Sequence</span></button>
+
+                            <div class="flex gap-4 border-t-2 border-white/40 pt-5">
+                                <button id="resetButton" class="flex-[1] py-3 neu-btn text-[10px] font-extrabold hover:text-[var(--accent)]"><span data-i18n="btn_reset_all">Reset All</span></button>
+                                <button id="exportSequence" class="flex-[2] py-3 neu-btn text-xs font-black tracking-widest text-[var(--accent)] border-[2px] border-[var(--accent)]/10">📦 <span data-i18n="btn_export_seq">Render Sequence</span></button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </aside>
@@ -698,6 +720,7 @@
         </div>
     </div>
 
+    <!-- Export Loading Modal -->
     <div id="exportOverlay" class="loading-overlay">
         <div class="neu-panel p-10 max-w-sm w-full text-center">
             <h2 id="exportTitle" class="text-xl font-black mb-8" data-i18n="modal_exp_title">Rendering Frames...</h2>
@@ -709,7 +732,48 @@
         </div>
     </div>
 
-    <div id="customModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[100] hidden flex-col items-center justify-center">
+    <!-- Login Authentication Modal -->
+    <div id="loginModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[200] hidden flex-col items-center justify-center">
+        <div class="neu-panel p-8 w-[400px] max-w-[90%] transform transition-all text-center">
+            <div class="w-14 h-14 rounded-full bg-[var(--text-dark)] text-[var(--bg-color)] flex items-center justify-center mx-auto mb-4 shadow-xl">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+            </div>
+            <h2 class="text-2xl font-black mb-2 text-[var(--text-dark)]" data-i18n="login_title">Unlock Premium</h2>
+            <p class="text-[11px] font-bold text-[var(--text-muted)] mb-6 leading-relaxed" data-i18n="login_desc">Create an account or log in to get unlimited image exports and unlock Vector SVG downloads.</p>
+            
+            <div class="space-y-3 mb-5">
+                <input type="email" id="authEmail" class="neu-input w-full text-xs py-2.5" placeholder="Email Address" data-i18n="ph_email">
+                <input type="password" id="authPassword" class="neu-input w-full text-xs py-2.5" placeholder="Password" data-i18n="ph_password">
+                <button id="authEmailBtn" class="w-full py-3 neu-btn text-xs font-black tracking-widest text-[var(--accent)] border-[2px] border-[var(--accent)]/10 mt-2" data-i18n="btn_email_login">SIGN IN / SIGN UP</button>
+            </div>
+
+            <div class="flex items-center gap-3 mb-5">
+                <div class="h-px bg-[var(--shadow-dark)] opacity-20 flex-1"></div>
+                <span class="text-[10px] font-bold text-[var(--text-muted)] tracking-widest" data-i18n="lbl_or">OR</span>
+                <div class="h-px bg-[var(--shadow-dark)] opacity-20 flex-1"></div>
+            </div>
+
+            <div class="flex flex-col gap-3 mb-6">
+                <button id="authGoogleBtn" class="w-full py-2.5 bg-[#ffffff] text-[#757575] border border-[#d5d5d5] rounded-xl text-[11px] font-black uppercase tracking-wider flex justify-center items-center gap-3 hover:bg-[#f5f5f5] transition-colors shadow-sm dark:bg-[#1a1a1a] dark:text-[#e3e3e3] dark:border-[#333] dark:hover:bg-[#222]">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 15.01 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    <span data-i18n="btn_google_login">Continue with Google</span>
+                </button>
+                <button id="authAppleBtn" class="w-full py-2.5 bg-black text-white border border-black rounded-xl text-[11px] font-black uppercase tracking-wider flex justify-center items-center gap-3 hover:bg-gray-900 transition-colors shadow-sm dark:bg-white dark:text-black dark:hover:bg-gray-100">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.43.987 3.96.948 1.637-.026 2.62-1.48 3.608-2.934 1.15-1.688 1.624-3.326 1.66-3.411-.035-.015-3.193-1.221-3.23-4.88-.035-3.056 2.493-4.526 2.607-4.597-1.433-2.094-3.646-2.378-4.437-2.434-2.023-.198-4.103 1.192-4.493 1.192zM15.112 4.41c.84-1.018 1.406-2.435 1.252-3.834-1.188.048-2.671.79-3.535 1.828-.764.912-1.436 2.37-1.261 3.743 1.328.102 2.705-.722 3.544-1.737z"/></svg>
+                    <span data-i18n="btn_apple_login">Continue with Apple</span>
+                </button>
+                <button id="authGithubBtn" class="w-full py-2.5 bg-[#24292e] text-white rounded-xl text-[11px] font-black uppercase tracking-wider flex justify-center items-center gap-3 hover:bg-[#1b1f23] transition-colors shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.247a10 10 0 0 0-3.162 19.487c.5.088.687-.212.687-.475 0-.237-.012-1.025-.012-1.862-2.513.462-3.163-.613-3.363-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.625-.013-.637.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.012 2.412-.012 2.75 0 .262.187.575.687.475A10.005 10.005 0 0 0 12 2.247z"/></svg>
+                    <span data-i18n="btn_github_login">Continue with GitHub</span>
+                </button>
+            </div>
+            
+            <button id="loginCancelBtn" class="neu-btn px-6 py-2 text-xs font-bold text-[var(--text-muted)] border-transparent shadow-none" data-i18n="btn_cancel">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Generic Error/Notice Modal -->
+    <div id="customModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[300] hidden flex-col items-center justify-center">
         <div class="neu-panel p-10 w-96 max-w-[90%] transform transition-all">
             <h2 id="modalTitle" class="text-xl font-black mb-3">Notice</h2>
             <p id="modalMessage" class="text-sm font-bold text-[var(--text-muted)] mb-8 leading-relaxed"></p>
@@ -723,7 +787,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, GithubAuthProvider, OAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         document.addEventListener('DOMContentLoaded', async function() {
@@ -744,21 +808,23 @@
                     lbl_no_space: "Force Seamless (Remove Spaces)", lbl_aspect: "Char Aspect Ratio (Squish Width)", lbl_intensity: "Char Intensity (Overdraw Anti-blur)", lbl_dot_color: "Unit Emissive Color",
                     lbl_filters: "Filters", lbl_src_b: "Source: Exposure Bias", lbl_src_c: "Source: Contrast Boost", lbl_map_b: "Mapping: Global Brightness", lbl_map_c: "Mapping: Tone Separation", lbl_invert: "Invert Mapping (Negative)", lbl_smooth: "Temporal Smoothstep Denoise",
                     lbl_output: "Output", opt_res_src: "Original Canvas (1:1)", lbl_fps: "Sequence Export FPS", tip_fps: "💡 Tip: Image sequences lack FPS metadata. Right-click footage in AE/PR ➔ Interpret Footage ➔ Assume FPS.",
-                    btn_reset_all: "Reset All", btn_save_frame: "Save Single Frame", btn_export_seq: "Render & Export Sequence",
+                    btn_reset_all: "Reset All", btn_export_seq: "Render Sequence",
                     status_res: "Target Resolution", status_mode: "Engine Mode", status_video: "Video Sequence", status_image: "Static Image",
                     modal_exp_title: "Rendering Frames...", modal_exp_status: "PREPARING", btn_abort: "ABORT", btn_cancel: "CANCEL", btn_confirm: "CONFIRM",
                     msg_sys_notice: "Notice", msg_err: "Error", msg_key_added: "✅ Recorded", msg_err_keyframe: "You must upload a video first to add keyframes!",
                     msg_err_upload: "Please upload image or video first!", msg_err_render: "Render failed, try lower resolution.", msg_err_export_req: "Upload a video to export sequence.", msg_err_export: "Export interrupted, please retry.",
                     msg_save_preset: "Save Preset", msg_enter_name: "Enter preset name:", msg_err_cloud: "Cloud failed, saved locally.", msg_del_preset: "Delete Preset", msg_confirm_del: "Are you sure you want to delete preset: ",
-                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE & ART", tip_guide: "Read tutorials and learn about ASCII art",
+                    msg_compressing: "Packaging ZIP archive...", msg_engine: "Rendering Engine: ", btn_guide: "GUIDE", tip_guide: "Read tutorials and learn about ASCII art",
                     
-                    // Glass specific translations
                     lbl_img_scale: "Image Scale", lbl_img_off_x: "Horizontal Offset", lbl_img_off_y: "Vertical Offset",
                     lbl_extract: "Edge Extraction", opt_ext_auto: "Auto (Recommended)", opt_ext_alpha: "By Alpha (No BG)", opt_ext_luma: "By Luma (Black BG)",
                     lbl_mask: "Lens Mask (Reveal)", lbl_mask_w: "Mask Width", lbl_mask_h: "Mask Height", lbl_mask_x: "Mask X Offset", lbl_mask_y: "Mask Y Offset",
                     lbl_blur: "Glow Blur", lbl_sharp: "Subject Sharpness", lbl_stripe: "Stripe Width", lbl_disp: "Refraction Disp.", lbl_shading: "Glass Shading", lbl_noise: "Film Noise",
                     lbl_light_int: "Light Intensity", opt_lut: "Global LUT Mapping", opt_spatial: "Spatial Gradient", lbl_col1: "Primary A", lbl_col2: "Secondary B", lbl_angle: "Gradient Angle", lbl_offset: "Gradient Offset", lbl_lut_cols: "LUT Colors (Dark to Bright)",
-                    lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora"
+                    lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora",
+                    
+                    lbl_login_svg: "LOG IN FOR SVG", btn_svg: "SVG", lbl_free_export: "FREE EXPORT (IMAGE)", login_title: "Unlock Premium", login_desc: "Create an account or log in to get unlimited image exports and unlock Vector SVG downloads.", btn_google_login: "Continue with Google", btn_github_login: "Continue with GitHub", btn_apple_login: "Continue with Apple", btn_email_login: "SIGN IN / SIGN UP", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR",
+                    lbl_unlocked_svg: "PREMIUM SVG UNLOCKED", lbl_unlimited_exports: "UNLIMITED EXPORTS", tip_login: "Login to your account", btn_logout: "LOGOUT", msg_logged_out: "You have successfully logged out.", btn_login_header: "LOGIN"
                 },
                 zh: {
                     app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
@@ -774,7 +840,7 @@
                     lbl_no_space: "强制无缝排版 (剔除空格)", lbl_aspect: "字符横向紧凑度 (挤压列间距)", lbl_intensity: "字符亮度强化 (Overdraw)", lbl_dot_color: "单元发光颜色",
                     lbl_filters: "Filters", lbl_src_b: "输入源：曝光补偿", lbl_src_c: "输入源：对比强化", lbl_map_b: "映射层：全局光感", lbl_map_c: "映射层：色阶分离度", lbl_invert: "反转明暗映射 (Invert)", lbl_smooth: "时域平滑滤波去噪",
                     lbl_output: "Output", opt_res_src: "原始画布尺寸 (1:1)", lbl_fps: "序列导出帧率 (FPS)", tip_fps: "💡 提示：图片序列无帧率元数据，导入 AE/PR 时请右键素材「解释素材 ➔ 假定帧率」为该数值。",
-                    btn_reset_all: "清空重置", btn_save_frame: "留存当前单帧", btn_export_seq: "渲染导出视频帧序列",
+                    btn_reset_all: "清空重置", btn_export_seq: "渲染导出无损序列",
                     status_res: "解析度", status_mode: "识别模式", status_video: "视频序列", status_image: "静态图像",
                     modal_exp_title: "正在渲染光栅序列", modal_exp_status: "引擎准备中", btn_abort: "中断渲染", btn_cancel: "取消", btn_confirm: "确认执行",
                     msg_sys_notice: "提示", msg_err: "出错", msg_key_added: "✅ 记录成功", msg_err_keyframe: "只有上传视频序列后才能打关键帧哦！",
@@ -782,13 +848,15 @@
                     msg_save_preset: "保存预设", msg_enter_name: "请输入此配置的名称：", msg_err_cloud: "云端失败，已保存至本地。", msg_del_preset: "删除预设", msg_confirm_del: "确定要删除预设 ",
                     msg_compressing: "正在压缩打包...", msg_engine: "引擎渲染中: ", btn_guide: "教程与原理", tip_guide: "阅读详细教程与原理解析",
                     
-                    // Glass specific translations
                     lbl_img_scale: "图片缩放", lbl_img_off_x: "水平偏移", lbl_img_off_y: "垂直偏移",
                     lbl_extract: "边缘提取模式", opt_ext_auto: "自动识别 (推荐)", opt_ext_alpha: "按透明度 (去底图)", opt_ext_luma: "按亮度 (黑底图)",
                     lbl_mask: "透镜遮罩 (局部露出)", lbl_mask_w: "光栅覆盖宽度", lbl_mask_h: "光栅覆盖高度", lbl_mask_x: "遮罩 X轴偏移", lbl_mask_y: "遮罩 Y轴偏移",
                     lbl_blur: "高斯模糊发光扩散", lbl_sharp: "发光体清晰度", lbl_stripe: "长虹玻璃槽宽", lbl_disp: "折射扭曲度 (位移)", lbl_shading: "玻璃阴影衰减", lbl_noise: "胶片噪点质感",
                     lbl_light_int: "发光光源亮度强度", opt_lut: "全局映射 (LUT)", opt_spatial: "空间光源 (一半一半)", lbl_col1: "主色彩 A", lbl_col2: "副色彩 B", lbl_angle: "交界角度", lbl_offset: "渐变色彩偏移", lbl_lut_cols: "全局映射色彩预设 (LUT Presets)",
-                    lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境"
+                    lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境",
+                    
+                    lbl_login_svg: "登录解锁 SVG 格式", btn_svg: "SVG", lbl_free_export: "免费导出 (图像)", login_title: "解锁高级功能", login_desc: "登录以获取无限制图像导出权限，并解锁极清矢量 SVG 源文件下载引擎。", btn_google_login: "使用 Google 继续", btn_github_login: "使用 GitHub 继续", btn_apple_login: "使用 Apple 继续", btn_email_login: "登录 / 注册", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者",
+                    lbl_unlocked_svg: "已为您解锁矢量导出", lbl_unlimited_exports: "无限次数图像导出权限", tip_login: "登录或注册您的账号", btn_logout: "退出登录", msg_logged_out: "您已成功退出登录。", btn_login_header: "登录"
                 }
             };
 
@@ -800,9 +868,9 @@
 
             function applyI18n() {
                 if (currentLang === 'en') {
-                    langEnBtn.classList.add('text-[var(--accent)]'); langZhBtn.classList.remove('text-[var(--accent)]');
+                    langEnBtn?.classList.add('text-[var(--accent)]'); langZhBtn?.classList.remove('text-[var(--accent)]');
                 } else {
-                    langZhBtn.classList.add('text-[var(--accent)]'); langEnBtn.classList.remove('text-[var(--accent)]');
+                    langZhBtn?.classList.add('text-[var(--accent)]'); langEnBtn?.classList.remove('text-[var(--accent)]');
                 }
 
                 document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -818,22 +886,29 @@
                 });
                 
                 if(currentRenderMode === 'dot') {
-                    document.getElementById('lblGridSize').textContent = t('lbl_grid');
-                    document.getElementById('lblDotScale').textContent = t('lbl_scale');
+                    const el = document.getElementById('lblGridSize');
+                    if(el) el.textContent = t('lbl_grid');
+                    const el2 = document.getElementById('lblDotScale');
+                    if(el2) el2.textContent = t('lbl_scale');
                 } else if(currentRenderMode === 'ascii') {
-                    document.getElementById('lblGridSize').textContent = translations[currentLang]['lbl_grid'].replace('圆点', '字符').replace('Dot', 'Char');
-                    document.getElementById('lblDotScale').textContent = t('lbl_scale_ascii');
+                    const el = document.getElementById('lblGridSize');
+                    if(el) el.textContent = translations[currentLang]['lbl_grid'].replace('圆点', '字符').replace('Dot', 'Char');
+                    const el2 = document.getElementById('lblDotScale');
+                    if(el2) el2.textContent = t('lbl_scale_ascii');
                 }
                 
                 if (videoElement || imageElement) {
-                    document.getElementById('modeDisplay').textContent = isVideo ? t('status_video') : t('status_image');
+                    const el = document.getElementById('modeDisplay');
+                    if(el) el.textContent = isVideo ? t('status_video') : t('status_image');
                 } else {
                     initEmptyCanvas(); 
                 }
+                
+                updateLoginUI(); 
             }
 
-            langEnBtn.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
-            langZhBtn.addEventListener('click', () => { currentLang = 'zh'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
+            langEnBtn?.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
+            langZhBtn?.addEventListener('click', () => { currentLang = 'zh'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
 
             // --- Theme Toggle Logic ---
             const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -843,20 +918,20 @@
             let currentTheme = localStorage.getItem('matrix_ui_theme') || 'light';
             if (currentTheme === 'dark') {
                 document.body.classList.add('dark-mode');
-                themeIconSun.classList.add('hidden');
-                themeIconMoon.classList.remove('hidden');
+                themeIconSun?.classList.add('hidden');
+                themeIconMoon?.classList.remove('hidden');
             }
 
-            themeToggleBtn.addEventListener('click', () => {
+            themeToggleBtn?.addEventListener('click', () => {
                 if (document.body.classList.contains('dark-mode')) {
                     document.body.classList.remove('dark-mode');
-                    themeIconSun.classList.remove('hidden');
-                    themeIconMoon.classList.add('hidden');
+                    themeIconSun?.classList.remove('hidden');
+                    themeIconMoon?.classList.add('hidden');
                     localStorage.setItem('matrix_ui_theme', 'light');
                 } else {
                     document.body.classList.add('dark-mode');
-                    themeIconSun.classList.add('hidden');
-                    themeIconMoon.classList.remove('hidden');
+                    themeIconSun?.classList.add('hidden');
+                    themeIconMoon?.classList.remove('hidden');
                     localStorage.setItem('matrix_ui_theme', 'dark');
                 }
                 if (!imageElement && !videoElement) {
@@ -908,8 +983,12 @@
 
             const sourceBrightness = document.getElementById('sourceBrightness');
             const sourceContrast = document.getElementById('sourceContrast');
+            const sourceBrightnessVal = document.getElementById('sourceBrightnessVal');
+            const sourceContrastVal = document.getElementById('sourceContrastVal');
             const brightness = document.getElementById('brightness');
             const contrast = document.getElementById('contrast');
+            const brightnessVal = document.getElementById('brightnessVal');
+            const contrastVal = document.getElementById('contrastVal');
             
             const bgColorPicker = document.getElementById('bgColor');
             const dotColorPicker = document.getElementById('dotColor');
@@ -970,7 +1049,10 @@
             const timeDisplay = document.getElementById('timeDisplay');
             
             const exportSequence = document.getElementById('exportSequence');
-            const saveButton = document.getElementById('saveButton');
+            const exportSvgBtn = document.getElementById('exportSvgBtn');
+            const exportPngBtn = document.getElementById('exportPngBtn');
+            const exportJpgBtn = document.getElementById('exportJpgBtn');
+            
             const cancelExportBtn = document.getElementById('cancelExport');
             const exportOverlay = document.getElementById('exportOverlay');
             const exportProgressBar = document.getElementById('exportProgressBar');
@@ -1018,21 +1100,19 @@
                 glassBlur: 45, glassSharp: 0, glassStripe: 24, glassDisp: 15, glassShading: 0.6, glassNoise: 15
             };
 
-            // LUT Pre-defined Presets Click Listener
             document.querySelectorAll('.glass-preset-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn?.addEventListener('click', (e) => {
                     const colors = btn.getAttribute('data-colors').split(',');
-                    glassLut1.value = colors[0];
-                    glassLut2.value = colors[1];
-                    glassLut3.value = colors[2];
-                    glassLut4.value = colors[3];
-                    glassLut5.value = colors[4];
+                    if(glassLut1) glassLut1.value = colors[0];
+                    if(glassLut2) glassLut2.value = colors[1];
+                    if(glassLut3) glassLut3.value = colors[2];
+                    if(glassLut4) glassLut4.value = colors[3];
+                    if(glassLut5) glassLut5.value = colors[4];
                     updateUIValues();
                     if (!isVideo || (videoElement && videoElement.paused)) processFrame();
                 });
             });
 
-            // --- Basic Utilities ---
             function formatTime(seconds) {
                 if (isNaN(seconds)) return "0:00";
                 const m = Math.floor(seconds / 60);
@@ -1045,71 +1125,74 @@
                 return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
             }
 
-            // --- UI Updating Sync ---
             function updateUIValues() {
-                if(document.activeElement !== gridSizeInput) gridSizeInput.value = parseFloat(gridSize.value).toFixed(1);
-                document.getElementById('dotScaleVal').textContent = parseFloat(dotScale.value).toFixed(2);
-                document.getElementById('sourceBrightnessVal').textContent = sourceBrightness.value;
-                document.getElementById('sourceContrastVal').textContent = sourceContrast.value;
-                document.getElementById('brightnessVal').textContent = brightness.value;
-                document.getElementById('contrastVal').textContent = contrast.value;
-                document.getElementById('fpsVal').textContent = fpsInput.value;
-                document.getElementById('dotCutoffVal').textContent = parseFloat(dotCutoff.value).toFixed(2);
+                if(document.activeElement !== gridSizeInput && gridSizeInput) gridSizeInput.value = parseFloat(gridSize?.value).toFixed(1);
+                if(dotScaleVal) dotScaleVal.textContent = parseFloat(dotScale?.value).toFixed(2);
+                if(sourceBrightnessVal) sourceBrightnessVal.textContent = sourceBrightness?.value;
+                if(sourceContrastVal) sourceContrastVal.textContent = sourceContrast?.value;
+                if(brightnessVal) brightnessVal.textContent = brightness?.value;
+                if(contrastVal) contrastVal.textContent = contrast?.value;
+                if(fpsVal) fpsVal.textContent = fpsInput?.value;
+                if(dotCutoffVal) dotCutoffVal.textContent = parseFloat(dotCutoff?.value).toFixed(2);
                 if(asciiRatioVal && asciiRatio) asciiRatioVal.textContent = parseFloat(asciiRatio.value).toFixed(2);
                 if(asciiIntensityVal && asciiIntensity) asciiIntensityVal.textContent = asciiIntensity.value;
                 
                 // Glass Values
-                document.getElementById('glassImgScaleVal').textContent = Math.round(parseFloat(glassImgScale.value) * 100) + '%';
-                document.getElementById('glassImgOffsetXVal').textContent = glassImgOffsetX.value + 'px';
-                document.getElementById('glassImgOffsetYVal').textContent = glassImgOffsetY.value + 'px';
+                if(glassImgScale) document.getElementById('glassImgScaleVal').textContent = Math.round(parseFloat(glassImgScale.value) * 100) + '%';
+                if(glassImgOffsetX) document.getElementById('glassImgOffsetXVal').textContent = glassImgOffsetX.value + 'px';
+                if(glassImgOffsetY) document.getElementById('glassImgOffsetYVal').textContent = glassImgOffsetY.value + 'px';
 
-                document.getElementById('glassMaskWVal').textContent = glassMaskW.value + '%';
-                document.getElementById('glassMaskHVal').textContent = glassMaskH.value + '%';
-                document.getElementById('glassMaskXVal').textContent = glassMaskX.value + '%';
-                document.getElementById('glassMaskYVal').textContent = glassMaskY.value + '%';
-                document.getElementById('glassLightVal').textContent = parseFloat(glassLight.value).toFixed(1) + 'x';
-                document.getElementById('glassAngleVal').textContent = glassAngle.value + '°';
-                document.getElementById('glassOffsetVal').textContent = glassOffset.value + '%';
-                document.getElementById('glassBlurVal').textContent = glassBlur.value + 'px';
-                document.getElementById('glassSharpVal').textContent = glassSharp.value + '%';
-                document.getElementById('glassStripeVal').textContent = glassStripe.value + 'px';
-                document.getElementById('glassDispVal').textContent = glassDisp.value;
-                document.getElementById('glassShadingVal').textContent = Math.round(glassShading.value * 100) + '%';
-                document.getElementById('glassNoiseVal').textContent = glassNoise.value;
+                if(glassMaskW) document.getElementById('glassMaskWVal').textContent = glassMaskW.value + '%';
+                if(glassMaskH) document.getElementById('glassMaskHVal').textContent = glassMaskH.value + '%';
+                if(glassMaskX) document.getElementById('glassMaskXVal').textContent = glassMaskX.value + '%';
+                if(glassMaskY) document.getElementById('glassMaskYVal').textContent = glassMaskY.value + '%';
+                if(glassLight) document.getElementById('glassLightVal').textContent = parseFloat(glassLight.value).toFixed(1) + 'x';
+                if(glassAngle) document.getElementById('glassAngleVal').textContent = glassAngle.value + '°';
+                if(glassOffset) document.getElementById('glassOffsetVal').textContent = glassOffset.value + '%';
+                if(glassBlur) document.getElementById('glassBlurVal').textContent = glassBlur.value + 'px';
+                if(glassSharp) document.getElementById('glassSharpVal').textContent = glassSharp.value + '%';
+                if(glassStripe) document.getElementById('glassStripeVal').textContent = glassStripe.value + 'px';
+                if(glassDisp) document.getElementById('glassDispVal').textContent = glassDisp.value;
+                if(glassShading) document.getElementById('glassShadingVal').textContent = Math.round(glassShading.value * 100) + '%';
+                if(glassNoise) document.getElementById('glassNoiseVal').textContent = glassNoise.value;
 
                 updateLutPreview();
             }
 
             function updateLutPreview() {
                 const preview = document.getElementById('glassLutPreview');
-                preview.style.background = `linear-gradient(to right, ${glassLut1.value}, ${glassLut2.value} 20%, ${glassLut3.value} 50%, ${glassLut4.value} 80%, ${glassLut5.value})`;
+                if(preview && glassLut1 && glassLut2 && glassLut3 && glassLut4 && glassLut5) {
+                    preview.style.background = `linear-gradient(to right, ${glassLut1.value}, ${glassLut2.value} 20%, ${glassLut3.value} 50%, ${glassLut4.value} 80%, ${glassLut5.value})`;
+                }
             }
 
             function updateDotStyleUI() {
+                if(!dotStyleSelect) return;
                 const style = dotStyleSelect.value;
                 if (style === 'volumetric_custom') {
-                    customVolumetricControls.classList.remove('hidden');
-                    solidColorControl.classList.add('hidden');
+                    customVolumetricControls?.classList.remove('hidden');
+                    solidColorControl?.classList.add('hidden');
                 } else if (style === 'solid') {
-                    customVolumetricControls.classList.add('hidden');
-                    solidColorControl.classList.remove('hidden');
+                    customVolumetricControls?.classList.add('hidden');
+                    solidColorControl?.classList.remove('hidden');
                 } else {
-                    customVolumetricControls.classList.add('hidden');
-                    solidColorControl.classList.add('hidden');
+                    customVolumetricControls?.classList.add('hidden');
+                    solidColorControl?.classList.add('hidden');
                 }
             }
 
             function updateGlassColorModeUI() {
+                if(!glassColorMode) return;
                 if (glassColorMode.value === 'spatial') {
-                    glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
-                    glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
-                    glassSpatialControls.classList.remove('hidden');
-                    glassLutControls.classList.add('hidden');
+                    if(glassModeSpatialBtn) glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
+                    if(glassModeLutBtn) glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
+                    glassSpatialControls?.classList.remove('hidden');
+                    glassLutControls?.classList.add('hidden');
                 } else {
-                    glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
-                    glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
-                    glassLutControls.classList.remove('hidden');
-                    glassSpatialControls.classList.add('hidden');
+                    if(glassModeLutBtn) glassModeLutBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all neu-btn border-none shadow-sm text-[var(--accent)]";
+                    if(glassModeSpatialBtn) glassModeSpatialBtn.className = "flex-1 py-1.5 text-[10px] font-bold rounded-lg transition-all text-[var(--text-muted)] hover:text-[var(--text-dark)]";
+                    glassLutControls?.classList.remove('hidden');
+                    glassSpatialControls?.classList.add('hidden');
                 }
             }
 
@@ -1117,53 +1200,55 @@
                 currentRenderMode = mode;
                 
                 [modeDotBtn, modeAsciiBtn, modeGlassBtn].forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.classList.add('text-[var(--text-muted)]');
+                    btn?.classList.remove('active');
+                    btn?.classList.add('text-[var(--text-muted)]');
                 });
                 
-                matrixGeometryControls.classList.add('hidden');
-                glassGeometryControls.classList.add('hidden');
-                asciiControls.classList.add('hidden');
-                dotGeometryControls.classList.add('hidden');
+                matrixGeometryControls?.classList.add('hidden');
+                glassGeometryControls?.classList.add('hidden');
+                asciiControls?.classList.add('hidden');
+                dotGeometryControls?.classList.add('hidden');
                 
-                matrixColorControls.classList.add('hidden');
-                glassColorControls.classList.add('hidden');
+                matrixColorControls?.classList.add('hidden');
+                glassColorControls?.classList.add('hidden');
                 
-                matrixFilterControls.classList.add('hidden');
-                glassPhysicsControls.classList.add('hidden');
+                matrixFilterControls?.classList.add('hidden');
+                glassPhysicsControls?.classList.add('hidden');
 
                 if (mode === 'dot') {
-                    modeDotBtn.classList.add('active'); modeDotBtn.classList.remove('text-[var(--text-muted)]');
-                    matrixGeometryControls.classList.remove('hidden');
-                    dotGeometryControls.classList.remove('hidden');
-                    matrixColorControls.classList.remove('hidden');
-                    matrixFilterControls.classList.remove('hidden');
+                    modeDotBtn?.classList.add('active'); modeDotBtn?.classList.remove('text-[var(--text-muted)]');
+                    matrixGeometryControls?.classList.remove('hidden');
+                    dotGeometryControls?.classList.remove('hidden');
+                    matrixColorControls?.classList.remove('hidden');
+                    matrixFilterControls?.classList.remove('hidden');
                 } else if (mode === 'ascii') {
-                    modeAsciiBtn.classList.add('active'); modeAsciiBtn.classList.remove('text-[var(--text-muted)]');
-                    matrixGeometryControls.classList.remove('hidden');
-                    asciiControls.classList.remove('hidden');
-                    matrixColorControls.classList.remove('hidden');
-                    matrixFilterControls.classList.remove('hidden');
+                    modeAsciiBtn?.classList.add('active'); modeAsciiBtn?.classList.remove('text-[var(--text-muted)]');
+                    matrixGeometryControls?.classList.remove('hidden');
+                    asciiControls?.classList.remove('hidden');
+                    matrixColorControls?.classList.remove('hidden');
+                    matrixFilterControls?.classList.remove('hidden');
                 } else if (mode === 'glass') {
-                    modeGlassBtn.classList.add('active'); modeGlassBtn.classList.remove('text-[var(--text-muted)]');
-                    glassGeometryControls.classList.remove('hidden');
-                    glassColorControls.classList.remove('hidden');
-                    glassPhysicsControls.classList.remove('hidden');
+                    modeGlassBtn?.classList.add('active'); modeGlassBtn?.classList.remove('text-[var(--text-muted)]');
+                    glassGeometryControls?.classList.remove('hidden');
+                    glassColorControls?.classList.remove('hidden');
+                    glassPhysicsControls?.classList.remove('hidden');
                 }
                 
                 applyI18n();
                 updateDotStyleUI();
                 updateGlassColorModeUI();
-                presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
+                if(presetSelect) presetSelect.value = ""; 
+                deletePresetBtn?.classList.add('hidden');
                 if (!isVideo || (videoElement && videoElement.paused)) processFrame();
             }
 
             function updateTimeDisplay() {
-                if(!videoElement) return;
+                if(!videoElement || !timeDisplay) return;
                 timeDisplay.textContent = `${formatTime(videoElement.currentTime)} / ${formatTime(videoElement.duration)}`;
             }
 
             function updateKeyframeUI() {
+                if(!keyframeContainer) return;
                 keyframeContainer.innerHTML = '';
                 if (!videoElement) return;
                 keyframes.forEach(k => {
@@ -1176,8 +1261,9 @@
             }
 
             function initEmptyCanvas() {
-                if (imageElement || videoElement) return;
+                if (imageElement || videoElement || !halftoneCanvas) return;
                 const container = document.getElementById('previewContainer');
+                if(!container) return;
                 
                 const w = Math.max(10, container.clientWidth - 64);
                 const h = Math.max(10, container.clientHeight - 64);
@@ -1197,9 +1283,10 @@
             }
 
             function setupCanvasDimensions(w, h) {
-                if (!w || !h) return;
+                if (!w || !h || !halftoneCanvas) return; 
                 const isFS = !!document.fullscreenElement || isCssFullscreen;
                 const container = document.getElementById('previewContainer');
+                if(!container) return;
                 const padding = isFS ? 0 : 64; 
                 
                 const containerWidth = Math.max(1, isFS ? window.innerWidth : container.clientWidth - padding);
@@ -1229,7 +1316,6 @@
 
             // --- Rendering Core Algorithms ---
             
-            // 1. Glassmorphism Engine
             function generateGlass(targetCanvas, currentScale, source) {
                 if(!targetCanvas) return;
                 const ctx = targetCanvas.getContext('2d', { alpha: false });
@@ -1244,15 +1330,15 @@
                 }
 
                 let fillStyle = 'white';
-                const colMode = glassColorMode.value;
-                const lightInt = parseFloat(glassLight.value);
+                const colMode = glassColorMode ? glassColorMode.value : 'spatial';
+                const lightInt = glassLight ? parseFloat(glassLight.value) : 1.2;
 
                 if (colMode === 'spatial') {
-                    const spCol1 = glassSpatial1.value;
-                    const spCol2 = glassSpatial2.value;
-                    const rad = (parseFloat(glassAngle.value) - 90) * Math.PI / 180;
+                    const spCol1 = glassSpatial1 ? glassSpatial1.value : '#b500ff';
+                    const spCol2 = glassSpatial2 ? glassSpatial2.value : '#00e5ff';
+                    const rad = ((glassAngle ? parseFloat(glassAngle.value) : 135) - 90) * Math.PI / 180;
                     const diag = Math.sqrt(procW * procW + procH * procH);
-                    const shiftAmount = (parseFloat(glassOffset.value) / 100) * (diag / 2);
+                    const shiftAmount = ((glassOffset ? parseFloat(glassOffset.value) : 0) / 100) * (diag / 2);
                     const cx = procW / 2 + Math.cos(rad) * shiftAmount;
                     const cy = procH / 2 + Math.sin(rad) * shiftAmount;
 
@@ -1274,18 +1360,16 @@
                 if (srcRatio > dstRatio) { drawH = procW / srcRatio; } 
                 else { drawW = procH * srcRatio; }
                 
-                // 应用图片变形 (Scale & Offset)
-                const gScale = parseFloat(glassImgScale.value);
+                const gScale = glassImgScale ? parseFloat(glassImgScale.value) : 1.0;
                 drawW *= gScale;
                 drawH *= gScale;
-                // 将面板设定的位移(px)根据目前的画布缩放倍率自适应，确保多分辨率下表现一致
-                const drawX = (procW - drawW) / 2 + (parseFloat(glassImgOffsetX.value) * currentScale);
-                const drawY = (procH - drawH) / 2 + (parseFloat(glassImgOffsetY.value) * currentScale);
+                const drawX = (procW - drawW) / 2 + ((glassImgOffsetX ? parseFloat(glassImgOffsetX.value) : 0) * currentScale);
+                const drawY = (procH - drawH) / 2 + ((glassImgOffsetY ? parseFloat(glassImgOffsetY.value) : 0) * currentScale);
                 
                 tempCtx.drawImage(source, drawX, drawY, drawW, drawH);
 
-                let isLumaExtract = glassExtract.value === 'luma';
-                if (glassExtract.value === 'auto') {
+                let isLumaExtract = (glassExtract ? glassExtract.value : 'auto') === 'luma';
+                if ((glassExtract ? glassExtract.value : 'auto') === 'auto') {
                     const checkCanvas = document.createElement('canvas'); checkCanvas.width = 64; checkCanvas.height = 64;
                     const checkCtx = checkCanvas.getContext('2d', { willReadFrequently: true });
                     checkCtx.drawImage(source, 0, 0, 64, 64);
@@ -1324,7 +1408,7 @@
                 
                 baseCtx.fillStyle = 'black';
                 baseCtx.fillRect(0, 0, procW, procH);
-                baseCtx.filter = `blur(${glassBlur.value}px)`;
+                baseCtx.filter = `blur(${glassBlur ? glassBlur.value : 45}px)`;
                 baseCtx.drawImage(tempCanvas, 0, 0);
                 baseCtx.filter = 'none';
 
@@ -1335,11 +1419,11 @@
                     lutCanvas = document.createElement('canvas'); lutCanvas.width = 256; lutCanvas.height = 1; lutCtx = lutCanvas.getContext('2d', { willReadFrequently: true });
                 }
                 const gradLut = lutCtx.createLinearGradient(0, 0, 256, 0);
-                gradLut.addColorStop(0, glassLut1.value);
-                gradLut.addColorStop(0.15, glassLut2.value);
-                gradLut.addColorStop(0.45, glassLut3.value);
-                gradLut.addColorStop(0.75, glassLut4.value);
-                gradLut.addColorStop(1, glassLut5.value);
+                gradLut.addColorStop(0, glassLut1 ? glassLut1.value : '#000');
+                gradLut.addColorStop(0.15, glassLut2 ? glassLut2.value : '#0a2db5');
+                gradLut.addColorStop(0.45, glassLut3 ? glassLut3.value : '#16a6d1');
+                gradLut.addColorStop(0.75, glassLut4 ? glassLut4.value : '#f06d18');
+                gradLut.addColorStop(1, glassLut5 ? glassLut5.value : '#fff');
                 lutCtx.fillStyle = gradLut;
                 lutCtx.fillRect(0, 0, 256, 1);
                 const lutData = lutCtx.getImageData(0, 0, 256, 1).data;
@@ -1348,20 +1432,20 @@
                 const tempData = tempCtx.getImageData(0, 0, procW, procH).data;
                 const outData = new ImageData(procW, procH);
 
-                const mWidth = (procW * parseFloat(glassMaskW.value)) / 100;
-                const mHeight = (procH * parseFloat(glassMaskH.value)) / 100;
-                const maskCenterX = procW / 2 + (procW * parseFloat(glassMaskX.value)) / 100;
-                const maskCenterY = procH / 2 + (procH * parseFloat(glassMaskY.value)) / 100;
+                const mWidth = (procW * (glassMaskW ? parseFloat(glassMaskW.value) : 100)) / 100;
+                const mHeight = (procH * (glassMaskH ? parseFloat(glassMaskH.value) : 100)) / 100;
+                const maskCenterX = procW / 2 + (procW * (glassMaskX ? parseFloat(glassMaskX.value) : 0)) / 100;
+                const maskCenterY = procH / 2 + (procH * (glassMaskY ? parseFloat(glassMaskY.value) : 0)) / 100;
                 const mLeft = maskCenterX - mWidth / 2;
                 const mRight = maskCenterX + mWidth / 2;
                 const mTop = maskCenterY - mHeight / 2;
                 const mBottom = maskCenterY + mHeight / 2;
 
-                const stpW = parseFloat(glassStripe.value);
-                const disp = parseFloat(glassDisp.value);
-                const shd = parseFloat(glassShading.value);
-                const nse = parseFloat(glassNoise.value);
-                const shpFactor = parseFloat(glassSharp.value) / 100;
+                const stpW = glassStripe ? parseFloat(glassStripe.value) : 24;
+                const disp = glassDisp ? parseFloat(glassDisp.value) : 15;
+                const shd = glassShading ? parseFloat(glassShading.value) : 0.6;
+                const nse = glassNoise ? parseFloat(glassNoise.value) : 15;
+                const shpFactor = (glassSharp ? parseFloat(glassSharp.value) : 0) / 100;
                 const blrFactor = 1 - shpFactor;
 
                 for (let y = 0; y < procH; y++) {
@@ -1436,29 +1520,6 @@
                 ctx.putImageData(outData, 0, 0);
             }
 
-            // 2. Original Matrix / ASCII Engine
-            function getVolumetricColor(lum, style) {
-                let palette; let stops; 
-                if (style === 'volumetric_custom') {
-                    palette = [ hexToRgb(customColorDark.value), hexToRgb(customColorMid.value), hexToRgb(customColorLight.value) ];
-                    stops = [0.0, 0.45, 0.80];
-                } else {
-                    const palettes = {
-                        'volumetric_blue': [[0,0,0], [0,20,80], [160,200,255], [255,255,255]], 
-                        'volumetric_mono': [[0,0,0], [80,80,80], [180,180,180], [255,255,255]]
-                    };
-                    palette = palettes[style]; stops = [0.0, 0.25, 0.6, 1.0];
-                }
-                if (!palette) return null;
-                lum = Math.max(0, Math.min(1, lum));
-                let closestIdx = 0; let minDiff = Infinity;
-                for (let i = 0; i < stops.length; i++) {
-                    let diff = Math.abs(lum - stops[i]);
-                    if (diff < minDiff) { minDiff = diff; closestIdx = i; }
-                }
-                return `rgb(${palette[closestIdx][0]},${palette[closestIdx][1]},${palette[closestIdx][2]})`;
-            }
-
             function generateHalftone(targetCanvas, currentScale, source, gridValue) {
                 if(!targetCanvas) return;
                 const ctx = targetCanvas.getContext('2d', { alpha: false });
@@ -1481,8 +1542,8 @@
                 if (srcRatio > dstRatio) { drawH = procW / srcRatio; drawY = (procH - drawH) / 2; } 
                 else { drawW = procH * srcRatio; drawX = (procW - drawW) / 2; }
                 
-                const srcB = parseInt(sourceBrightness.value, 10);
-                const srcC = parseInt(sourceContrast.value, 10);
+                const srcB = sourceBrightness ? parseInt(sourceBrightness.value, 10) : 0;
+                const srcC = sourceContrast ? parseInt(sourceContrast.value, 10) : 0;
                 oCtx.filter = `brightness(${100 + srcB}%) contrast(${100 + srcC}%)`;
                 oCtx.drawImage(source, drawX, drawY, drawW, drawH);
                 oCtx.filter = 'none';
@@ -1490,20 +1551,20 @@
                 const imgData = oCtx.getImageData(0, 0, procW, procH);
                 const data = imgData.data;
 
-                const bAdj = parseInt(brightness.value, 10);
-                const cAdj = parseInt(contrast.value, 10);
+                const bAdj = brightness ? parseInt(brightness.value, 10) : 20;
+                const cAdj = contrast ? parseInt(contrast.value, 10) : 20;
                 const cFactor = (259 * (cAdj + 255)) / (255 * (259 - cAdj));
 
                 const baseGrid = Math.max(1, gridValue * currentScale);
-                const maxRadiusScale = parseFloat(dotScale.value);
-                const isMappingInverted = invertMapping.checked;
-                const useSmooth = smoothStep.checked;
+                const maxRadiusScale = dotScale ? parseFloat(dotScale.value) : 0.85;
+                const isMappingInverted = invertMapping ? invertMapping.checked : false;
+                const useSmooth = smoothStep ? smoothStep.checked : true;
                 const rMode = currentRenderMode;
-                const aCharsRaw = asciiCharsInput.value || " ";
+                const aCharsRaw = asciiCharsInput ? asciiCharsInput.value : " ";
                 const aLogic = asciiLogicSelect ? asciiLogicSelect.value : 'density';
-                const dStyle = dotStyleSelect.value;
-                const isFixedSize = fixedDotSize.checked;
-                const cutoff = parseFloat(dotCutoff.value);
+                const dStyle = dotStyleSelect ? dotStyleSelect.value : 'solid';
+                const isFixedSize = fixedDotSize ? fixedDotSize.checked : false;
+                const cutoff = dotCutoff ? parseFloat(dotCutoff.value) : 0.05;
                 const aRatio = asciiRatio ? parseFloat(asciiRatio.value) : 0.6;
                 const aIntensity = asciiIntensity ? parseInt(asciiIntensity.value) : 1;
                 
@@ -1517,7 +1578,7 @@
                 const stepX = (rMode === 'ascii') ? baseGrid * aRatio : baseGrid;
                 const stepY = baseGrid;
 
-                ctx.fillStyle = bgColorPicker.value;
+                ctx.fillStyle = bgColorPicker ? bgColorPicker.value : '#000';
                 ctx.fillRect(0, 0, procW, procH);
                 
                 const numCols = Math.floor(procW / stepX);
@@ -1575,13 +1636,13 @@
                                 if (radius > 0.3) {
                                     if (dStyle === 'original') { ctx.fillStyle = `rgb(${Math.round(totalR/count)}, ${Math.round(totalG/count)}, ${Math.round(totalB/count)})`; } 
                                     else if (dStyle.startsWith('volumetric')) { ctx.fillStyle = getVolumetricColor(normalizedLum, dStyle); } 
-                                    else { ctx.fillStyle = dotColorPicker.value; }
+                                    else { ctx.fillStyle = dotColorPicker ? dotColorPicker.value : '#fff'; }
                                     ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, Math.PI * 2); ctx.fill();
                                 }
                             } else {
                                 if (dStyle === 'original') { ctx.fillStyle = `rgb(${Math.round(totalR/count)}, ${Math.round(totalG/count)}, ${Math.round(totalB/count)})`; } 
                                 else if (dStyle.startsWith('volumetric')) { ctx.fillStyle = getVolumetricColor(normalizedLum, dStyle); } 
-                                else { ctx.fillStyle = dotColorPicker.value; }
+                                else { ctx.fillStyle = dotColorPicker ? dotColorPicker.value : '#fff'; }
 
                                 const fontSize = stepY * maxRadiusScale * 1.2;
                                 ctx.font = `900 ${fontSize}px "JetBrains Mono", "Courier New", Courier, monospace`;
@@ -1618,20 +1679,19 @@
                 if (!source || (isVideo && videoElement.readyState < 2)) return;
 
                 const sourceWidth = isVideo ? videoElement.videoWidth : imageElement.width;
-                let currentGridValue = parseFloat(gridSize.value);
+                let currentGridValue = gridSize ? parseFloat(gridSize.value) : 20;
                 
                 if (isVideo && keyframes.length > 0) {
                     if (!isManuallyOverridingGrid) {
                         currentGridValue = getInterpolatedGridSize(videoElement.currentTime);
-                        gridSize.value = currentGridValue;
-                        if(document.activeElement !== gridSizeInput) gridSizeInput.value = currentGridValue.toFixed(1);
-                        keyframeIndicator.classList.remove('hidden');
-                    } else { keyframeIndicator.classList.add('hidden'); }
-                } else { keyframeIndicator.classList.add('hidden'); }
+                        if(gridSize) gridSize.value = currentGridValue;
+                        if(gridSizeInput && document.activeElement !== gridSizeInput) gridSizeInput.value = currentGridValue.toFixed(1);
+                        keyframeIndicator?.classList.remove('hidden');
+                    } else { keyframeIndicator?.classList.add('hidden'); }
+                } else { keyframeIndicator?.classList.add('hidden'); }
 
                 const scaleCanvas = halftoneCanvas && sourceWidth > 0 ? (halftoneCanvas.width / sourceWidth) : 1;
                 
-                // Branch Rendering Engine based on selected Mode
                 if (currentRenderMode === 'glass') {
                     generateGlass(halftoneCanvas, scaleCanvas, source);
                 } else {
@@ -1639,7 +1699,7 @@
                 }
                 
                 if (isVideo && !isScrubbing && videoElement) {
-                    videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0;
+                    if(videoScrubber) videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0;
                     updateTimeDisplay();
                 }
             }
@@ -1650,155 +1710,559 @@
                 animationFrameId = requestAnimationFrame(renderLoop);
             }
 
-            // --- Event Bindings ---
-            modeDotBtn.addEventListener('click', () => setRenderMode('dot'));
-            modeAsciiBtn.addEventListener('click', () => setRenderMode('ascii'));
-            modeGlassBtn.addEventListener('click', () => setRenderMode('glass'));
+            // --- Event Bindings with Optional Chaining ---
+            modeDotBtn?.addEventListener('click', () => setRenderMode('dot'));
+            modeAsciiBtn?.addEventListener('click', () => setRenderMode('ascii'));
+            modeGlassBtn?.addEventListener('click', () => setRenderMode('glass'));
             
-            dotStyleSelect.addEventListener('change', () => { updateDotStyleUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
-            glassColorMode.addEventListener('change', () => { updateGlassColorModeUI(); presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            dotStyleSelect?.addEventListener('change', () => { updateDotStyleUI(); if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            glassColorMode?.addEventListener('change', () => { updateGlassColorModeUI(); if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             
-            glassModeLutBtn.addEventListener('click', () => { glassColorMode.value = 'lut'; glassColorMode.dispatchEvent(new Event('change')); });
-            glassModeSpatialBtn.addEventListener('click', () => { glassColorMode.value = 'spatial'; glassColorMode.dispatchEvent(new Event('change')); });
+            glassModeLutBtn?.addEventListener('click', () => { if(glassColorMode) glassColorMode.value = 'lut'; glassColorMode?.dispatchEvent(new Event('change')); });
+            glassModeSpatialBtn?.addEventListener('click', () => { if(glassColorMode) glassColorMode.value = 'spatial'; glassColorMode?.dispatchEvent(new Event('change')); });
 
             [dotScale, sourceBrightness, sourceContrast, brightness, contrast, bgColorPicker, dotColorPicker, customColorDark, customColorMid, customColorLight, dotCutoff, fpsInput, asciiRatio, asciiIntensity,
              glassImgScale, glassImgOffsetX, glassImgOffsetY, glassExtract, glassMaskW, glassMaskH, glassMaskX, glassMaskY, glassLight, glassSpatial1, glassSpatial2, glassAngle, glassOffset, glassLut1, glassLut2, glassLut3, glassLut4, glassLut5, glassBlur, glassSharp, glassStripe, glassDisp, glassShading, glassNoise
             ].forEach(el => {
-                if(el) el.addEventListener('input', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+                el?.addEventListener('input', () => { if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             });
 
             [invertMapping, smoothStep, fixedDotSize, asciiRemoveSpaces].forEach(el => {
-                if(el) el.addEventListener('change', () => { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+                el?.addEventListener('change', () => { if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
             });
 
-            asciiLogicSelect.addEventListener('change', () => {
-                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); 
-                if (asciiLogicSelect.value === 'mask' && asciiCharsInput.value.length < 20) {
+            asciiLogicSelect?.addEventListener('change', () => {
+                if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); 
+                if (asciiLogicSelect.value === 'mask' && asciiCharsInput && asciiCharsInput.value.length < 20) {
                     asciiCharsInput.value = "THE OCEAN, WITH ITS VAST EXPANSE AND MYSTERIOUS ALLURE, HAS ALWAYS HELD A SPECIAL PLACE IN HUMAN HEARTS. ";
-                    asciiPresetSelect.value = "custom";
+                    if(asciiPresetSelect) asciiPresetSelect.value = "custom";
                 }
                 if (!isVideo || (videoElement && videoElement.paused)) processFrame();
             });
 
-            asciiPresetSelect.addEventListener('change', (e) => {
-                if (e.target.value !== 'custom') { asciiCharsInput.value = e.target.value; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
+            asciiPresetSelect?.addEventListener('change', (e) => {
+                if (e.target.value !== 'custom' && asciiCharsInput) { asciiCharsInput.value = e.target.value; if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
             });
             
-            asciiCharsInput.addEventListener('input', () => { asciiPresetSelect.value = 'custom'; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            asciiCharsInput?.addEventListener('input', () => { if(asciiPresetSelect) asciiPresetSelect.value = 'custom'; if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
 
-            gridSize.addEventListener('input', () => { isManuallyOverridingGrid = true; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); gridSizeInput.value = parseFloat(gridSize.value).toFixed(1); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
-            gridSizeInput.addEventListener('input', () => { isManuallyOverridingGrid = true; presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); let val = parseFloat(gridSizeInput.value); if (!isNaN(val)) { gridSize.value = val; if (!isVideo || (videoElement && videoElement.paused)) processFrame(); } });
+            gridSize?.addEventListener('input', () => { isManuallyOverridingGrid = true; if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); if(gridSizeInput) gridSizeInput.value = parseFloat(gridSize.value).toFixed(1); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            gridSizeInput?.addEventListener('input', () => { isManuallyOverridingGrid = true; if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); let val = parseFloat(gridSizeInput.value); if (!isNaN(val)) { if(gridSize) gridSize.value = val; if (!isVideo || (videoElement && videoElement.paused)) processFrame(); } });
 
-            function handleSubReset() { presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
+            function handleSubReset() { if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden'); updateUIValues(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); }
             
-            resetGeometryBtn.addEventListener('click', () => { gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff; glassImgScale.value = defaults.glassImgScale; glassImgOffsetX.value = defaults.glassImgOffsetX; glassImgOffsetY.value = defaults.glassImgOffsetY; glassExtract.value = defaults.glassExtract; glassMaskW.value = defaults.glassMaskW; glassMaskH.value = defaults.glassMaskH; glassMaskX.value = defaults.glassMaskX; glassMaskY.value = defaults.glassMaskY; isManuallyOverridingGrid = false; handleSubReset(); });
-            resetColorBtn.addEventListener('click', () => { bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor; dotStyleSelect.value = defaults.dotStyle; customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight; asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces; glassLight.value = defaults.glassLight; glassColorMode.value = defaults.glassColorMode; glassSpatial1.value = defaults.glassSpatial1; glassSpatial2.value = defaults.glassSpatial2; glassAngle.value = defaults.glassAngle; glassOffset.value = defaults.glassOffset; glassLut1.value = defaults.glassLut1; glassLut2.value = defaults.glassLut2; glassLut3.value = defaults.glassLut3; glassLut4.value = defaults.glassLut4; glassLut5.value = defaults.glassLut5; updateDotStyleUI(); updateGlassColorModeUI(); handleSubReset(); });
-            resetSignalBtn.addEventListener('click', () => { sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast; brightness.value = defaults.brightness; contrast.value = defaults.contrast; invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; glassBlur.value = defaults.glassBlur; glassSharp.value = defaults.glassSharp; glassStripe.value = defaults.glassStripe; glassDisp.value = defaults.glassDisp; glassShading.value = defaults.glassShading; glassNoise.value = defaults.glassNoise; handleSubReset(); });
-            resetOutputBtn.addEventListener('click', () => { exportResolution.value = 'source'; fpsInput.value = defaults.fps; updateUIValues(); });
+            resetGeometryBtn?.addEventListener('click', () => { if(gridSize) gridSize.value = defaults.gridSize; if(dotScale) dotScale.value = defaults.dotScale; if(fixedDotSize) fixedDotSize.checked = defaults.fixedDotSize; if(dotCutoff) dotCutoff.value = defaults.dotCutoff; if(glassImgScale) glassImgScale.value = defaults.glassImgScale; if(glassImgOffsetX) glassImgOffsetX.value = defaults.glassImgOffsetX; if(glassImgOffsetY) glassImgOffsetY.value = defaults.glassImgOffsetY; if(glassExtract) glassExtract.value = defaults.glassExtract; if(glassMaskW) glassMaskW.value = defaults.glassMaskW; if(glassMaskH) glassMaskH.value = defaults.glassMaskH; if(glassMaskX) glassMaskX.value = defaults.glassMaskX; if(glassMaskY) glassMaskY.value = defaults.glassMaskY; isManuallyOverridingGrid = false; handleSubReset(); });
+            resetColorBtn?.addEventListener('click', () => { if(bgColorPicker) bgColorPicker.value = defaults.bgColor; if(dotColorPicker) dotColorPicker.value = defaults.dotColor; if(dotStyleSelect) dotStyleSelect.value = defaults.dotStyle; if(customColorDark) customColorDark.value = defaults.customColorDark; if(customColorMid) customColorMid.value = defaults.customColorMid; if(customColorLight) customColorLight.value = defaults.customColorLight; if(asciiCharsInput) asciiCharsInput.value = defaults.asciiChars; if(asciiPresetSelect) asciiPresetSelect.value = defaults.asciiChars; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces; if(glassLight) glassLight.value = defaults.glassLight; if(glassColorMode) glassColorMode.value = defaults.glassColorMode; if(glassSpatial1) glassSpatial1.value = defaults.glassSpatial1; if(glassSpatial2) glassSpatial2.value = defaults.glassSpatial2; if(glassAngle) glassAngle.value = defaults.glassAngle; if(glassOffset) glassOffset.value = defaults.glassOffset; if(glassLut1) glassLut1.value = defaults.glassLut1; if(glassLut2) glassLut2.value = defaults.glassLut2; if(glassLut3) glassLut3.value = defaults.glassLut3; if(glassLut4) glassLut4.value = defaults.glassLut4; if(glassLut5) glassLut5.value = defaults.glassLut5; updateDotStyleUI(); updateGlassColorModeUI(); handleSubReset(); });
+            resetSignalBtn?.addEventListener('click', () => { if(sourceBrightness) sourceBrightness.value = defaults.sourceBrightness; if(sourceContrast) sourceContrast.value = defaults.sourceContrast; if(brightness) brightness.value = defaults.brightness; if(contrast) contrast.value = defaults.contrast; if(invertMapping) invertMapping.checked = defaults.invertMapping; if(smoothStep) smoothStep.checked = defaults.smoothStep; if(glassBlur) glassBlur.value = defaults.glassBlur; if(glassSharp) glassSharp.value = defaults.glassSharp; if(glassStripe) glassStripe.value = defaults.glassStripe; if(glassDisp) glassDisp.value = defaults.glassDisp; if(glassShading) glassShading.value = defaults.glassShading; if(glassNoise) glassNoise.value = defaults.glassNoise; handleSubReset(); });
+            resetOutputBtn?.addEventListener('click', () => { if(exportResolution) exportResolution.value = 'source'; if(fpsInput) fpsInput.value = defaults.fps; updateUIValues(); });
 
-            if(addKeyframeBtn) {
-                addKeyframeBtn.addEventListener('click', () => {
-                    if (!isVideo || !videoElement) {
-                        showModal({ title: t('msg_sys_notice'), message: t('msg_err_keyframe'), hideCancel: true });
-                        return; 
-                    }
-                    const time = videoElement.currentTime; 
-                    const value = parseFloat(gridSize.value); 
-                    keyframes = keyframes.filter(k => Math.abs(k.time - time) > 0.1); 
-                    keyframes.push({ time, value }); 
-                    isManuallyOverridingGrid = false; 
-                    updateKeyframeUI(); 
-                    processFrame(); 
-                    
-                    const oldText = addKeyframeBtn.innerHTML;
-                    addKeyframeBtn.innerHTML = t('msg_key_added');
-                    setTimeout(() => { addKeyframeBtn.innerHTML = oldText; }, 1500);
-                });
-            }
+            addKeyframeBtn?.addEventListener('click', () => {
+                if (!isVideo || !videoElement) {
+                    showModal({ title: t('msg_sys_notice'), message: t('msg_err_keyframe'), hideCancel: true });
+                    return; 
+                }
+                const time = videoElement.currentTime; 
+                const value = parseFloat(gridSize.value); 
+                keyframes = keyframes.filter(k => Math.abs(k.time - time) > 0.1); 
+                keyframes.push({ time, value }); 
+                isManuallyOverridingGrid = false; 
+                updateKeyframeUI(); 
+                processFrame(); 
+                
+                const oldText = addKeyframeBtn.innerHTML;
+                addKeyframeBtn.innerHTML = t('msg_key_added');
+                setTimeout(() => { addKeyframeBtn.innerHTML = oldText; }, 1500);
+            });
 
-            if(clearKeyframesBtn) {
-                clearKeyframesBtn.addEventListener('click', () => {
-                    keyframes = []; 
-                    updateKeyframeUI(); 
-                    if (!isVideo || (videoElement && videoElement.paused)) processFrame();
-                });
-            }
+            clearKeyframesBtn?.addEventListener('click', () => {
+                keyframes = []; 
+                updateKeyframeUI(); 
+                if (!isVideo || (videoElement && videoElement.paused)) processFrame();
+            });
 
-            const startScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = true; isManuallyOverridingGrid = false; wasPlaying = !videoElement.paused; videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); };
-            const stopScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = false; if (wasPlaying) { videoElement.play().catch(console.error); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); } };
+            const startScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = true; isManuallyOverridingGrid = false; wasPlaying = !videoElement.paused; videoElement.pause(); playIcon?.classList.remove('hidden'); pauseIcon?.classList.add('hidden'); };
+            const stopScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = false; if (wasPlaying) { videoElement.play().catch(console.error); playIcon?.classList.add('hidden'); pauseIcon?.classList.remove('hidden'); } };
             
-            videoScrubber.addEventListener('mousedown', startScrubbing); videoScrubber.addEventListener('touchstart', startScrubbing, {passive: true}); videoScrubber.addEventListener('mouseup', stopScrubbing); videoScrubber.addEventListener('touchend', stopScrubbing);
-            videoScrubber.addEventListener('input', () => { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.currentTime = (videoScrubber.value / 100) * videoElement.duration; updateTimeDisplay(); });
+            videoScrubber?.addEventListener('mousedown', startScrubbing); videoScrubber?.addEventListener('touchstart', startScrubbing, {passive: true}); videoScrubber?.addEventListener('mouseup', stopScrubbing); videoScrubber?.addEventListener('touchend', stopScrubbing);
+            videoScrubber?.addEventListener('input', () => { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.currentTime = (videoScrubber.value / 100) * videoElement.duration; updateTimeDisplay(); });
             document.addEventListener('mouseup', () => { if (isScrubbing) stopScrubbing(); });
 
-            playPauseBtn.onclick = () => { isManuallyOverridingGrid = false; if (videoElement) { if (videoElement.paused) { videoElement.play().catch(console.error); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); } else { videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); } } };
-            function stepFrame(direction) { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); videoElement.currentTime = Math.max(0, Math.min(videoElement.duration, videoElement.currentTime + (direction * (1 / (parseInt(fpsInput.value) || 24))))); videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0; updateTimeDisplay(); }
-            prevFrameBtn.onclick = () => stepFrame(-1); nextFrameBtn.onclick = () => stepFrame(1);
-            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isCssFullscreen) { exitCssFullscreen(); return; } if (!isVideo || !videoElement || isExporting || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); playPauseBtn.click(); } else if (e.code === 'ArrowLeft') { e.preventDefault(); stepFrame(-1); } else if (e.code === 'ArrowRight') { e.preventDefault(); stepFrame(1); } });
+            if(playPauseBtn) playPauseBtn.onclick = () => { isManuallyOverridingGrid = false; if (videoElement) { if (videoElement.paused) { videoElement.play().catch(console.error); playIcon?.classList.add('hidden'); pauseIcon?.classList.remove('hidden'); } else { videoElement.pause(); playIcon?.classList.remove('hidden'); pauseIcon?.classList.add('hidden'); } } };
+            function stepFrame(direction) { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.pause(); playIcon?.classList.remove('hidden'); pauseIcon?.classList.add('hidden'); videoElement.currentTime = Math.max(0, Math.min(videoElement.duration, videoElement.currentTime + (direction * (1 / (parseInt(fpsInput.value) || 24))))); if(videoScrubber) videoScrubber.value = (videoElement.currentTime / videoElement.duration) * 100 || 0; updateTimeDisplay(); }
+            if(prevFrameBtn) prevFrameBtn.onclick = () => stepFrame(-1); 
+            if(nextFrameBtn) nextFrameBtn.onclick = () => stepFrame(1);
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isCssFullscreen) { exitCssFullscreen(); return; } if (!isVideo || !videoElement || isExporting || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); playPauseBtn?.click(); } else if (e.code === 'ArrowLeft') { e.preventDefault(); stepFrame(-1); } else if (e.code === 'ArrowRight') { e.preventDefault(); stepFrame(1); } });
 
             // --- File Upload ---
-            fileUpload.addEventListener('change', (e) => {
+            fileUpload?.addEventListener('change', (e) => {
                 const file = e.target.files[0]; if (!file) return;
                 
-                document.getElementById('fileNameDisplay').textContent = file.name;
+                const fnDisplay = document.getElementById('fileNameDisplay');
+                if(fnDisplay) fnDisplay.textContent = file.name;
                 
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
                 if (videoElement) { videoElement.pause(); videoElement.src = ""; }
 
                 const fileURL = URL.createObjectURL(file);
                 if (file.type.startsWith('video/')) {
-                    isVideo = true; imageElement = null; document.getElementById('modeDisplay').textContent = t('status_video'); videoControls.classList.remove('hidden');
+                    isVideo = true; imageElement = null; 
+                    const mdDisplay = document.getElementById('modeDisplay');
+                    if(mdDisplay) mdDisplay.textContent = t('status_video'); 
+                    videoControls?.classList.remove('hidden');
                     if (!videoElement) {
                         videoElement = document.createElement('video'); videoElement.muted = true; videoElement.playsInline = true; videoElement.loop = true; videoElement.crossOrigin = "anonymous"; videoElement.autoplay = true;
                         videoElement.addEventListener('seeked', () => { if (videoElement.paused && !isExporting) processFrame(); });
-                        videoElement.addEventListener('play', () => { playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); });
-                        videoElement.addEventListener('pause', () => { playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); });
+                        videoElement.addEventListener('play', () => { playIcon?.classList.add('hidden'); pauseIcon?.classList.remove('hidden'); });
+                        videoElement.addEventListener('pause', () => { playIcon?.classList.remove('hidden'); pauseIcon?.classList.add('hidden'); });
                     }
                     videoElement.src = fileURL;
                     videoElement.onloadedmetadata = () => {
-                        resDisplay.textContent = `${videoElement.videoWidth} x ${videoElement.videoHeight}`; setupCanvasDimensions(videoElement.videoWidth, videoElement.videoHeight);
+                        if(resDisplay) resDisplay.textContent = `${videoElement.videoWidth} x ${videoElement.videoHeight}`; 
+                        setupCanvasDimensions(videoElement.videoWidth, videoElement.videoHeight);
                         videoElement.play().catch(e => console.log("Auto-play prevented", e));
                         keyframes = []; updateKeyframeUI(); if(animationFrameId) cancelAnimationFrame(animationFrameId); renderLoop();
                     };
                 } else {
-                    isVideo = false; videoElement = null; videoControls.classList.add('hidden'); document.getElementById('modeDisplay').textContent = t('status_image');
+                    isVideo = false; videoElement = null; videoControls?.classList.add('hidden'); 
+                    const mdDisplay = document.getElementById('modeDisplay');
+                    if(mdDisplay) mdDisplay.textContent = t('status_image');
                     imageElement = new Image(); imageElement.src = fileURL;
-                    imageElement.onload = () => { resDisplay.textContent = `${imageElement.width} x ${imageElement.height}`; setupCanvasDimensions(imageElement.width, imageElement.height); processFrame(); };
+                    imageElement.onload = () => { if(resDisplay) resDisplay.textContent = `${imageElement.width} x ${imageElement.height}`; setupCanvasDimensions(imageElement.width, imageElement.height); processFrame(); };
                 }
             });
 
             // --- Fullscreen ---
-            fullscreenBtn.addEventListener('click', () => { if (!document.fullscreenElement && !isCssFullscreen) { if (previewContainer.requestFullscreen) previewContainer.requestFullscreen().catch(() => enterCssFullscreen()); else enterCssFullscreen(); } else { if (document.fullscreenElement) document.exitFullscreen(); else if (isCssFullscreen) exitCssFullscreen(); } });
-            document.addEventListener('fullscreenchange', () => { if (document.fullscreenElement) { fsEnterIcon.classList.add('hidden'); fsExitIcon.classList.remove('hidden'); previewContainer.classList.replace('relative', 'fixed'); previewContainer.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } else { fsEnterIcon.classList.remove('hidden'); fsExitIcon.classList.add('hidden'); previewContainer.classList.replace('fixed', 'relative'); previewContainer.classList.add('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } triggerResize(); });
+            fullscreenBtn?.addEventListener('click', () => { if (!document.fullscreenElement && !isCssFullscreen) { if (previewContainer.requestFullscreen) previewContainer.requestFullscreen().catch(() => enterCssFullscreen()); else enterCssFullscreen(); } else { if (document.fullscreenElement) document.exitFullscreen(); else if (isCssFullscreen) exitCssFullscreen(); } });
+            document.addEventListener('fullscreenchange', () => { if (document.fullscreenElement) { fsEnterIcon?.classList.add('hidden'); fsExitIcon?.classList.remove('hidden'); previewContainer?.classList.replace('relative', 'fixed'); previewContainer?.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer?.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } else { fsEnterIcon?.classList.remove('hidden'); fsExitIcon?.classList.add('hidden'); previewContainer?.classList.replace('fixed', 'relative'); previewContainer?.classList.add('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer?.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); } triggerResize(); });
             window.addEventListener('resize', triggerResize);
-            function enterCssFullscreen() { isCssFullscreen = true; previewContainer.classList.replace('relative', 'fixed'); previewContainer.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); fsEnterIcon.classList.add('hidden'); fsExitIcon.classList.remove('hidden'); triggerResize(); }
-            function exitCssFullscreen() { isCssFullscreen = false; previewContainer.classList.replace('fixed', 'relative'); previewContainer.classList.add('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); previewContainer.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); fsEnterIcon.classList.remove('hidden'); fsExitIcon.classList.add('hidden'); triggerResize(); }
 
-            // --- Exporting & Saving ---
-            cancelExportBtn.onclick = () => { isExporting = false; };
-            saveButton.onclick = () => {
+            // --- Authentication, Database & Export System ---
+            let isProUser = false;
+            let freeExportsLeft = 8;
+            
+            let userPresets = {};
+            let currentUser = null;
+            let db = null;
+            let currentAppId = 'zyronmatrix';
+            let app = null;
+            let auth = null;
+
+            const loginModal = document.getElementById('loginModal');
+            const svgLoginLabel = document.getElementById('svgLoginLabel');
+            const pngLimitLabel = document.getElementById('pngLimitLabel');
+            const headerUserBtn = document.getElementById('headerUserBtn');
+            const userIconUnauth = document.getElementById('userIconUnauth');
+            const userIconAuth = document.getElementById('userIconAuth');
+            const headerLoginText = document.getElementById('headerLoginText');
+
+            function updatePresetDropdown() { 
+                const currentSelection = presetSelect ? presetSelect.value : ""; 
+                if(presetSelect) presetSelect.innerHTML = `<option value="">${t('opt_custom_preset')}</option>`; 
+                for (const name in userPresets) { 
+                    const opt = document.createElement('option'); opt.value = name; opt.textContent = name; 
+                    presetSelect?.appendChild(opt); 
+                } 
+                if (userPresets[currentSelection] && presetSelect) presetSelect.value = currentSelection; 
+            }
+            
+            function loadLocalPresets() { 
+                try { userPresets = JSON.parse(localStorage.getItem('halftone_user_presets') || '{}'); } 
+                catch (e) { userPresets = {}; } 
+                updatePresetDropdown(); 
+            }
+
+            function updateLoginUI() {
+                if (isProUser) {
+                    if(svgLoginLabel) {
+                        svgLoginLabel.textContent = t('lbl_unlocked_svg');
+                        svgLoginLabel.classList.remove('text-[var(--text-dark)]');
+                        svgLoginLabel.classList.add('text-[var(--accent)]');
+                    }
+                    if(pngLimitLabel) {
+                        pngLimitLabel.textContent = t('lbl_unlimited_exports');
+                        pngLimitLabel.classList.remove('text-[var(--text-dark)]');
+                        pngLimitLabel.classList.add('text-[var(--accent)]');
+                    }
+                    userIconUnauth?.classList.add('hidden');
+                    userIconAuth?.classList.remove('hidden');
+                    headerUserBtn?.setAttribute('data-i18n-title', 'btn_logout');
+                    if(headerUserBtn) headerUserBtn.title = t('btn_logout');
+                    if(headerLoginText) {
+                        headerLoginText.textContent = t('btn_logout');
+                        headerLoginText.setAttribute('data-i18n', 'btn_logout');
+                    }
+                } else {
+                    const leftTxt = currentLang === 'zh' ? `免费额度: ${freeExportsLeft} 张` : `${freeExportsLeft} LEFT BEFORE LOG IN`;
+                    if(pngLimitLabel) pngLimitLabel.textContent = leftTxt;
+                    
+                    if(svgLoginLabel) {
+                        svgLoginLabel.textContent = t('lbl_login_svg');
+                        svgLoginLabel.classList.remove('text-[var(--accent)]');
+                        svgLoginLabel.classList.add('text-[var(--text-dark)]');
+                    }
+                    if(pngLimitLabel) {
+                        pngLimitLabel.classList.remove('text-[var(--accent)]');
+                        pngLimitLabel.classList.add('text-[var(--text-dark)]');
+                    }
+                    userIconUnauth?.classList.remove('hidden');
+                    userIconAuth?.classList.add('hidden');
+                    headerUserBtn?.setAttribute('data-i18n-title', 'tip_login');
+                    if(headerUserBtn) headerUserBtn.title = t('tip_login');
+                    if(headerLoginText) {
+                        headerLoginText.textContent = t('btn_login_header');
+                        headerLoginText.setAttribute('data-i18n', 'btn_login_header');
+                    }
+                }
+            }
+
+            // Real Firebase Setup
+            const firebaseConfig = {
+                apiKey: "AIzaSyCIA_yKDZyo9nOLHh1nNCRh278ldPodplM",
+                authDomain: "zyronmatrix.firebaseapp.com",
+                projectId: "zyronmatrix",
+                storageBucket: "zyronmatrix.firebasestorage.app",
+                messagingSenderId: "1021435323563",
+                appId: "1:1021435323563:web:e698deddfba66c60d4c3ee"
+            };
+
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user && !user.isAnonymous) {
+                        isProUser = true;
+                        updateLoginUI();
+                        if(cloudStatus) {
+                            cloudStatus.textContent = t('status_synced');
+                            cloudStatus.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full";
+                        }
+                        if(db) {
+                            onSnapshot(collection(db, 'artifacts', currentAppId, 'users', user.uid, 'presets'), (snapshot) => {
+                                userPresets = {};
+                                snapshot.forEach(doc => userPresets[doc.id] = doc.data());
+                                updatePresetDropdown();
+                            }, (error) => {
+                                console.error("Presets sync error", error);
+                            });
+                        }
+                    } else {
+                        isProUser = false;
+                        updateLoginUI();
+                        if(cloudStatus) {
+                            cloudStatus.textContent = t('status_local');
+                            cloudStatus.className = "text-[9px] text-[var(--text-muted)] font-bold px-3 py-1 neu-inset rounded-full";
+                        }
+                        loadLocalPresets();
+                    }
+                });
+            } catch (e) {
+                console.error("Firebase init failed:", e);
+                loadLocalPresets();
+            }
+
+            headerUserBtn?.addEventListener('click', async () => {
+                if (isProUser && auth) {
+                    try {
+                        await signOut(auth);
+                        showModal({ title: t('msg_sys_notice'), message: t('msg_logged_out'), hideCancel: true });
+                    } catch(e) {
+                        console.error(e);
+                    }
+                } else {
+                    loginModal?.classList.remove('hidden');
+                    loginModal?.classList.add('flex');
+                }
+            });
+
+            document.getElementById('loginCancelBtn')?.addEventListener('click', () => {
+                loginModal?.classList.add('hidden');
+                loginModal?.classList.remove('flex');
+            });
+
+            const googleProvider = new GoogleAuthProvider();
+            const githubProvider = new GithubAuthProvider();
+            const appleProvider = new OAuthProvider('apple.com');
+
+            document.getElementById('authGoogleBtn')?.addEventListener('click', async () => {
+                try {
+                    await signInWithPopup(auth, googleProvider);
+                    loginModal?.classList.add('hidden');
+                    loginModal?.classList.remove('flex');
+                } catch(e) {
+                    showModal({ title: t('msg_err'), message: e.message, hideCancel: true });
+                }
+            });
+            document.getElementById('authGithubBtn')?.addEventListener('click', async () => {
+                try {
+                    await signInWithPopup(auth, githubProvider);
+                    loginModal?.classList.add('hidden');
+                    loginModal?.classList.remove('flex');
+                } catch(e) {
+                    showModal({ title: t('msg_err'), message: e.message, hideCancel: true });
+                }
+            });
+            document.getElementById('authAppleBtn')?.addEventListener('click', async () => {
+                try {
+                    await signInWithPopup(auth, appleProvider);
+                    loginModal?.classList.add('hidden');
+                    loginModal?.classList.remove('flex');
+                } catch(e) {
+                    showModal({ title: t('msg_err'), message: e.message, hideCancel: true });
+                }
+            });
+            
+            document.getElementById('authEmailBtn')?.addEventListener('click', async () => {
+                const em = document.getElementById('authEmail')?.value;
+                const pw = document.getElementById('authPassword')?.value;
+                if(em && pw) {
+                    try {
+                        try {
+                            await signInWithEmailAndPassword(auth, em, pw);
+                        } catch (err) {
+                            if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+                                await createUserWithEmailAndPassword(auth, em, pw);
+                            } else {
+                                throw err;
+                            }
+                        }
+                        loginModal?.classList.add('hidden');
+                        loginModal?.classList.remove('flex');
+                    } catch(e) {
+                        showModal({ title: t('msg_err'), message: e.message, hideCancel: true });
+                    }
+                }
+                else showModal({ title: t('msg_sys_notice'), message: currentLang === 'zh' ? "请输入邮箱和密码" : "Please enter email and password.", hideCancel: true });
+            });
+
+            function downloadFile(content, format) {
+                const blob = format === 'svg' ? new Blob([content], {type: 'image/svg+xml;charset=utf-8'}) : content;
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.style.display = 'none'; a.href = url;
+                a.download = `ZYRONMATRIX_FRAME_${Date.now()}.${format}`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            }
+
+            function exportVectorSVG() {
                 const source = isVideo ? videoElement : imageElement;
                 if(!source) { showModal({ title: t('msg_sys_notice'), message: t('msg_err_upload'), hideCancel: true }); return; }
-                const c = document.createElement('canvas'); const resVal = exportResolution.value; let exportW = isVideo ? videoElement.videoWidth : imageElement.width; let exportH = isVideo ? videoElement.videoHeight : imageElement.height;
+                
+                const resVal = exportResolution ? exportResolution.value : 'source'; 
+                let exportW = isVideo ? videoElement.videoWidth : imageElement.width; 
+                let exportH = isVideo ? videoElement.videoHeight : imageElement.height;
+                if (resVal !== 'source') [exportW, exportH] = resVal.split('x').map(Number); 
+                const currentScale = exportW / (isVideo ? videoElement.videoWidth : imageElement.width);
+                const gridValue = isVideo ? getInterpolatedGridSize(videoElement.currentTime) : (gridSize ? parseFloat(gridSize.value) : 20);
+
+                if (currentRenderMode === 'glass') {
+                    const c = document.createElement('canvas'); c.width = exportW; c.height = exportH;
+                    generateGlass(c, currentScale, source);
+                    const b64 = c.toDataURL('image/png');
+                    const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${exportW} ${exportH}" width="${exportW}" height="${exportH}">
+                        <image href="${b64}" width="100%" height="100%" />
+                    </svg>`;
+                    downloadFile(svgStr, 'svg');
+                    return;
+                }
+
+                const procW = exportW;
+                const procH = exportH;
+                let offscreen = document.createElement('canvas'); offscreen.width = procW; offscreen.height = procH;
+                let oCtx = offscreen.getContext('2d', { alpha: false });
+                oCtx.fillStyle = '#ffffff'; oCtx.fillRect(0, 0, procW, procH);
+
+                const sW = source.videoWidth || source.width; const sH = source.videoHeight || source.height;
+                const srcRatio = sW / sH; const dstRatio = procW / procH;
+                let drawW = procW, drawH = procH, drawX = 0, drawY = 0;
+                if (srcRatio > dstRatio) { drawH = procW / srcRatio; drawY = (procH - drawH) / 2; } 
+                else { drawW = procH * srcRatio; drawX = (procW - drawW) / 2; }
+                
+                const srcB = sourceBrightness ? parseInt(sourceBrightness.value, 10) : 0;
+                const srcC = sourceContrast ? parseInt(sourceContrast.value, 10) : 0;
+                oCtx.filter = `brightness(${100 + srcB}%) contrast(${100 + srcC}%)`;
+                oCtx.drawImage(source, drawX, drawY, drawW, drawH);
+
+                const imgData = oCtx.getImageData(0, 0, procW, procH).data;
+                const bAdj = brightness ? parseInt(brightness.value, 10) : 20;
+                const cAdj = contrast ? parseInt(contrast.value, 10) : 20;
+                const cFactor = (259 * (cAdj + 255)) / (255 * (259 - cAdj));
+
+                const baseGrid = Math.max(1, gridValue * currentScale);
+                const maxRadiusScale = dotScale ? parseFloat(dotScale.value) : 0.85;
+                const isMappingInverted = invertMapping ? invertMapping.checked : false;
+                const useSmooth = smoothStep ? smoothStep.checked : true;
+                const rMode = currentRenderMode;
+                const aCharsRaw = asciiCharsInput ? asciiCharsInput.value : " ";
+                const aLogic = asciiLogicSelect ? asciiLogicSelect.value : 'density';
+                const dStyle = dotStyleSelect ? dotStyleSelect.value : 'solid';
+                const isFixedSize = fixedDotSize ? fixedDotSize.checked : false;
+                const cutoff = dotCutoff ? parseFloat(dotCutoff.value) : 0.05;
+                const aRatio = asciiRatio ? parseFloat(asciiRatio.value) : 0.6;
+                const aIntensity = asciiIntensity ? parseInt(asciiIntensity.value) : 1;
+                
+                const removeSpaces = asciiRemoveSpaces ? asciiRemoveSpaces.checked : true;
+                let safeChars = aCharsRaw;
+                if (rMode === 'ascii' && aLogic === 'mask' && removeSpaces) {
+                    safeChars = aCharsRaw.replace(/\s+/g, '');
+                    if (safeChars.length === 0) safeChars = "MATRIX";
+                }
+
+                const stepX = (rMode === 'ascii') ? baseGrid * aRatio : baseGrid;
+                const stepY = baseGrid;
+                const numCols = Math.floor(procW / stepX);
+                const numRows = Math.floor(procH / stepY);
+                const offsetX = (procW - (numCols * stepX)) / 2;
+                const offsetY = (procH - (numRows * stepY)) / 2;
+                
+                const bgC = bgColorPicker ? bgColorPicker.value : '#000000';
+
+                let svgLines = [];
+                svgLines.push(`<?xml version="1.0" encoding="UTF-8"?>`);
+                svgLines.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${procW} ${procH}" width="${procW}" height="${procH}" style="background-color:${bgC};">`);
+                svgLines.push(`<rect width="100%" height="100%" fill="${bgC}"/>`);
+
+                if (rMode === 'ascii') {
+                    svgLines.push(`<style>text{font-family:'JetBrains Mono','Courier New',Courier,monospace;font-weight:900;text-anchor:middle;dominant-baseline:central;}</style>`);
+                }
+
+                let textIdx = 0; 
+                for (let row = 0; row < numRows; row++) {
+                    for (let col = 0; col < numCols; col++) {
+                        let maskChar = '';
+                        if (rMode === 'ascii' && aLogic === 'mask') {
+                            maskChar = safeChars[textIdx % safeChars.length];
+                            textIdx++;
+                        }
+
+                        let totalLum = 0, totalR = 0, totalG = 0, totalB = 0, count = 0;
+                        const startX = Math.floor(offsetX + col * stepX);
+                        const startY = Math.floor(offsetY + row * stepY);
+                        const endX = Math.min(Math.floor(offsetX + (col + 1) * stepX), procW);
+                        const endY = Math.min(Math.floor(offsetY + (row + 1) * stepY), procH);
+
+                        for (let py = startY; py < endY; py++) {
+                            for (let px = startX; px < endX; px++) {
+                                const idx = (py * procW + px) * 4;
+                                const r = imgData[idx], g = imgData[idx+1], b = imgData[idx+2];
+                                let lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                                lum = cFactor * (lum - 128) + 128 + bAdj;
+                                totalLum += Math.max(0, Math.min(255, lum));
+                                if (dStyle === 'original') { totalR += r; totalG += g; totalB += b; }
+                                count++;
+                            }
+                        }
+
+                        if (count > 0) {
+                            const avgLum = totalLum / count;
+                            let normalizedLum = avgLum / 255;
+                            let renderRatio = isMappingInverted ? normalizedLum : (1 - normalizedLum);
+
+                            if (useSmooth) {
+                                renderRatio = Math.max(0, Math.min(1, renderRatio));
+                                renderRatio = renderRatio * renderRatio * (3 - 2 * renderRatio);
+                            }
+
+                            const centerX = offsetX + col * stepX + stepX / 2;
+                            const centerY = offsetY + row * stepY + stepY / 2;
+
+                            if (rMode === 'dot') {
+                                const maxRadius = (stepY / 2) * maxRadiusScale;
+                                let radius = isFixedSize ? (renderRatio > cutoff ? maxRadius : 0) : (renderRatio > cutoff ? maxRadius * renderRatio : 0);
+
+                                if (radius > 0.3) {
+                                    let fillCol = dotColorPicker ? dotColorPicker.value : '#fff';
+                                    if (dStyle === 'original') { fillCol = `rgb(${Math.round(totalR/count)},${Math.round(totalG/count)},${Math.round(totalB/count)})`; } 
+                                    else if (dStyle.startsWith('volumetric')) { fillCol = getVolumetricColor(normalizedLum, dStyle); } 
+                                    svgLines.push(`<circle cx="${centerX.toFixed(1)}" cy="${centerY.toFixed(1)}" r="${radius.toFixed(1)}" fill="${fillCol}"/>`);
+                                }
+                            } else {
+                                let fillCol = dotColorPicker ? dotColorPicker.value : '#fff';
+                                if (dStyle === 'original') { fillCol = `rgb(${Math.round(totalR/count)},${Math.round(totalG/count)},${Math.round(totalB/count)})`; } 
+                                else if (dStyle.startsWith('volumetric')) { fillCol = getVolumetricColor(normalizedLum, dStyle); } 
+
+                                const fontSize = stepY * maxRadiusScale * 1.2;
+
+                                if (aLogic === 'mask') {
+                                    if (renderRatio > cutoff && maskChar !== ' ') {
+                                        let alpha = Math.max(0, Math.min(1, renderRatio));
+                                        let xmlChar = maskChar.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                                        for(let i = 0; i < aIntensity; i++) {
+                                            svgLines.push(`<text x="${centerX.toFixed(1)}" y="${centerY.toFixed(1)}" font-size="${fontSize.toFixed(1)}px" fill="${fillCol}" opacity="${alpha.toFixed(2)}">${xmlChar}</text>`);
+                                        }
+                                    }
+                                } else {
+                                    if (renderRatio > cutoff) {
+                                        const charIdx = Math.floor(renderRatio * 0.999 * safeChars.length);
+                                        const char = safeChars[charIdx];
+                                        if (char && char !== ' ') {
+                                            let xmlChar = char.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                                            for(let i = 0; i < aIntensity; i++) {
+                                                svgLines.push(`<text x="${centerX.toFixed(1)}" y="${centerY.toFixed(1)}" font-size="${fontSize.toFixed(1)}px" fill="${fillCol}">${xmlChar}</text>`);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                svgLines.push('</svg>');
+                downloadFile(svgLines.join('\n'), 'svg');
+            }
+
+            exportSvgBtn?.addEventListener('click', () => {
+                if (!isProUser) {
+                    loginModal?.classList.remove('hidden');
+                    loginModal?.classList.add('flex');
+                    return;
+                }
+                exportVectorSVG();
+            });
+
+            const renderRasterFormat = (format) => {
+                const source = isVideo ? videoElement : imageElement;
+                if(!source) { showModal({ title: t('msg_sys_notice'), message: t('msg_err_upload'), hideCancel: true }); return; }
+                
+                if (!isProUser && freeExportsLeft <= 0) {
+                    loginModal?.classList.remove('hidden');
+                    loginModal?.classList.add('flex');
+                    return;
+                }
+
+                const c = document.createElement('canvas'); 
+                const resVal = exportResolution ? exportResolution.value : 'source'; 
+                let exportW = isVideo ? videoElement.videoWidth : imageElement.width; 
+                let exportH = isVideo ? videoElement.videoHeight : imageElement.height;
                 if (resVal !== 'source') [exportW, exportH] = resVal.split('x').map(Number); c.width = exportW; c.height = exportH;
                 
                 if (currentRenderMode === 'glass') {
                     generateGlass(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source);
                 } else {
-                    generateHalftone(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : parseFloat(gridSize.value));
+                    generateHalftone(c, exportW / (isVideo ? videoElement.videoWidth : imageElement.width), source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : (gridSize ? parseFloat(gridSize.value) : 20));
                 }
 
                 c.toBlob((blob) => {
                     if (!blob) { showModal({ title: t('msg_err'), message: t('msg_err_render'), hideCancel: true }); return; }
-                    const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.style.display = 'none'; a.href = url; a.download = `zyronmatrix_frame_${Date.now()}.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-                }, 'image/png');
-            };
+                    downloadFile(blob, format === 'jpeg' ? 'jpg' : 'png');
+                    if (!isProUser) {
+                        freeExportsLeft--;
+                        updateLoginUI();
+                    }
+                }, `image/${format}`, format === 'jpeg' ? 0.95 : undefined);
+            }
 
-            exportSequence.addEventListener('click', async () => {
+            exportPngBtn?.addEventListener('click', () => renderRasterFormat('png'));
+            exportJpgBtn?.addEventListener('click', () => renderRasterFormat('jpeg'));
+
+            exportSequence?.addEventListener('click', async () => {
                 if (!videoElement || !isVideo) { showModal({ message: t('msg_err_export_req'), hideCancel: true }); return; }
-                isExporting = true; videoElement.pause(); exportOverlay.style.display = 'flex';
-                const zip = new JSZip(); const fps = parseInt(fpsInput.value) || 24; const totalFrames = Math.ceil(videoElement.duration * fps); const timeStep = 1 / fps;
-                const resVal = exportResolution.value; let exportWidth = videoElement.videoWidth, exportHeight = videoElement.videoHeight;
+                isExporting = true; videoElement.pause(); 
+                if(exportOverlay) exportOverlay.style.display = 'flex';
+                
+                const zip = new JSZip(); const fps = fpsInput ? parseInt(fpsInput.value) : 24; const totalFrames = Math.ceil(videoElement.duration * fps); const timeStep = 1 / fps;
+                const resVal = exportResolution ? exportResolution.value : 'source'; let exportWidth = videoElement.videoWidth, exportHeight = videoElement.videoHeight;
                 if (resVal !== 'source') [exportWidth, exportHeight] = resVal.split('x').map(Number);
                 const exportCanvas = document.createElement('canvas'); exportCanvas.width = exportWidth; exportCanvas.height = exportHeight; const scale = exportWidth / videoElement.videoWidth;
 
@@ -1824,106 +2288,54 @@
 
                         const blob = await new Promise(res => exportCanvas.toBlob(res, 'image/png'));
                         if (blob) zip.file(`frame_${i.toString().padStart(5, '0')}.png`, blob);
-                        exportProgressBar.style.width = `${((i + 1) / totalFrames) * 100}%`; exportStatus.textContent = `${t('msg_engine')} ${i + 1} / ${totalFrames}`;
+                        if(exportProgressBar) exportProgressBar.style.width = `${((i + 1) / totalFrames) * 100}%`; 
+                        if(exportStatus) exportStatus.textContent = `${t('msg_engine')} ${i + 1} / ${totalFrames}`;
                     }
                     if (isExporting) {
-                        exportTitle.textContent = t('msg_compressing');
-                        const content = await zip.generateAsync({ type: "blob" }, (meta) => { exportProgressBar.style.width = `${Math.max(meta.percent, ((totalFrames-1)/totalFrames)*100)}%`; exportStatus.textContent = `Compressing: ${Math.round(meta.percent)}%`; });
+                        if(exportTitle) exportTitle.textContent = t('msg_compressing');
+                        const content = await zip.generateAsync({ type: "blob" }, (meta) => { 
+                            if(exportProgressBar) exportProgressBar.style.width = `${Math.max(meta.percent, ((totalFrames-1)/totalFrames)*100)}%`; 
+                            if(exportStatus) exportStatus.textContent = `Compressing: ${Math.round(meta.percent)}%`; 
+                        });
                         const link = document.createElement('a'); link.href = URL.createObjectURL(content); link.download = `zyronmatrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(link.href);
                     }
-                } catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_export'), hideCancel: true }); } finally { isExporting = false; exportOverlay.style.display = 'none'; videoElement.play().catch(e=>console.log(e)); }
+                } catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_export'), hideCancel: true }); } finally { isExporting = false; if(exportOverlay) exportOverlay.style.display = 'none'; videoElement.play().catch(e=>console.log(e)); }
             });
+            
+            cancelExportBtn?.addEventListener('click', () => { isExporting = false; });
 
-            resetButton.onclick = () => {
-                gridSize.value = defaults.gridSize; dotScale.value = defaults.dotScale; sourceBrightness.value = defaults.sourceBrightness; sourceContrast.value = defaults.sourceContrast;
-                brightness.value = defaults.brightness; contrast.value = defaults.contrast; fpsInput.value = defaults.fps; exportResolution.value = 'source'; bgColorPicker.value = defaults.bgColor; dotColorPicker.value = defaults.dotColor;
-                invertMapping.checked = defaults.invertMapping; smoothStep.checked = defaults.smoothStep; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
-                asciiLogicSelect.value = defaults.asciiLogic; if(asciiRatio) asciiRatio.value = defaults.asciiRatio; if(asciiIntensity) asciiIntensity.value = defaults.asciiIntensity; if(asciiRemoveSpaces) asciiRemoveSpaces.checked = defaults.asciiRemoveSpaces;
-                customColorDark.value = defaults.customColorDark; customColorMid.value = defaults.customColorMid; customColorLight.value = defaults.customColorLight;
-                asciiCharsInput.value = defaults.asciiChars; asciiPresetSelect.value = defaults.asciiChars;
-                
-                glassImgScale.value = defaults.glassImgScale; glassImgOffsetX.value = defaults.glassImgOffsetX; glassImgOffsetY.value = defaults.glassImgOffsetY;
-                glassExtract.value = defaults.glassExtract; glassMaskW.value = defaults.glassMaskW; glassMaskH.value = defaults.glassMaskH; glassMaskX.value = defaults.glassMaskX; glassMaskY.value = defaults.glassMaskY; glassLight.value = defaults.glassLight; glassColorMode.value = defaults.glassColorMode; glassSpatial1.value = defaults.glassSpatial1; glassSpatial2.value = defaults.glassSpatial2; glassAngle.value = defaults.glassAngle; glassOffset.value = defaults.glassOffset; glassLut1.value = defaults.glassLut1; glassLut2.value = defaults.glassLut2; glassLut3.value = defaults.glassLut3; glassLut4.value = defaults.glassLut4; glassLut5.value = defaults.glassLut5; glassBlur.value = defaults.glassBlur; glassSharp.value = defaults.glassSharp; glassStripe.value = defaults.glassStripe; glassDisp.value = defaults.glassDisp; glassShading.value = defaults.glassShading; glassNoise.value = defaults.glassNoise;
-
-                setRenderMode(defaults.renderMode); dotStyleSelect.value = defaults.dotStyle; updateDotStyleUI(); updateGlassColorModeUI();
-                
-                presetSelect.value = ""; deletePresetBtn.classList.add('hidden'); isManuallyOverridingGrid = false; keyframes = []; updateKeyframeUI(); updateUIValues(); if (!isVideo) processFrame();
-            };
-
-            // --- Modals & Firebase Initialization ---
-            const customModal = document.getElementById('customModal'), modalTitle = document.getElementById('modalTitle'), modalMessage = document.getElementById('modalMessage'), modalInput = document.getElementById('modalInput'), modalCancel = document.getElementById('modalCancel'), modalConfirm = document.getElementById('modalConfirm');
-            let modalResolve = null;
-            function showModal({ title = t('msg_sys_notice'), message, showInput = false, hideCancel = false }) { return new Promise((resolve) => { modalTitle.textContent = title; modalMessage.textContent = message; if (showInput) { modalInput.classList.remove('hidden'); modalInput.value = ''; setTimeout(() => modalInput.focus(), 50); } else { modalInput.classList.add('hidden'); } if (hideCancel) modalCancel.classList.add('hidden'); else modalCancel.classList.remove('hidden'); customModal.classList.remove('hidden'); customModal.classList.add('flex'); modalResolve = resolve; }); }
-            function closeModal(value) { customModal.classList.add('hidden'); customModal.classList.remove('flex'); if (modalResolve) { modalResolve(value); modalResolve = null; } }
-            modalCancel.onclick = () => closeModal(null); modalConfirm.onclick = () => { if (!modalInput.classList.contains('hidden')) closeModal(modalInput.value.trim() || null); else closeModal(true); }; modalInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') modalConfirm.click(); });
-
-            let userPresets = {}; let currentUser = null; let db = null; let currentAppId = 'default-app-id';
-            function updatePresetDropdown() { const currentSelection = presetSelect.value; presetSelect.innerHTML = `<option value="">${t('opt_custom_preset')}</option>`; for (const name in userPresets) { const opt = document.createElement('option'); opt.value = name; opt.textContent = name; presetSelect.appendChild(opt); } if (userPresets[currentSelection]) presetSelect.value = currentSelection; }
-            if (typeof __firebase_config !== 'undefined') { cloudStatus.textContent = t('status_conn'); cloudStatus.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full"; try { const firebaseConfig = JSON.parse(__firebase_config); currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'; const app = initializeApp(firebaseConfig); const auth = getAuth(app); db = getFirestore(app); const initAuth = async () => { if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token); else await signInAnonymously(auth); }; initAuth().then(() => { onAuthStateChanged(auth, (user) => { currentUser = user; if (user) { onSnapshot(collection(db, 'artifacts', currentAppId, 'users', user.uid, 'presets'), (snapshot) => { userPresets = {}; snapshot.forEach(doc => userPresets[doc.id] = doc.data()); updatePresetDropdown(); cloudStatus.textContent = t('status_synced'); cloudStatus.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full"; }, () => { cloudStatus.textContent = t('status_sync_err'); cloudStatus.className = "text-[9px] text-red-500 font-bold px-3 py-1 neu-inset rounded-full"; }); } }); }).catch(e => loadLocalPresets()); } catch (e) { loadLocalPresets(); } } else { loadLocalPresets(); }
-            function loadLocalPresets() { cloudStatus.textContent = t('status_local'); cloudStatus.className = "text-[9px] text-[var(--text-muted)] font-bold px-3 py-1 neu-inset rounded-full"; try { userPresets = JSON.parse(localStorage.getItem('halftone_user_presets') || '{}'); } catch (e) { userPresets = {}; } updatePresetDropdown(); }
-
-            presetSelect.addEventListener('change', (e) => {
-                const name = e.target.value;
-                if (name && userPresets[name]) {
-                    const p = userPresets[name];
-                    gridSize.value = p.gridSize; gridSizeInput.value = parseFloat(p.gridSize).toFixed(1); dotScale.value = p.dotScale; sourceBrightness.value = p.sourceBrightness; sourceContrast.value = p.sourceContrast; brightness.value = p.brightness; contrast.value = p.contrast; fpsInput.value = p.fps || defaults.fps; bgColorPicker.value = p.bgColor || defaults.bgColor; dotColorPicker.value = p.dotColor || defaults.dotColor; invertMapping.checked = p.invertMapping; smoothStep.checked = p.smoothStep !== undefined ? p.smoothStep : defaults.smoothStep; fixedDotSize.checked = p.fixedDotSize !== undefined ? p.fixedDotSize : defaults.fixedDotSize; dotCutoff.value = p.dotCutoff !== undefined ? p.dotCutoff : defaults.dotCutoff;
-                    
-                    if (p.glassImgScale !== undefined) glassImgScale.value = p.glassImgScale;
-                    if (p.glassImgOffsetX !== undefined) glassImgOffsetX.value = p.glassImgOffsetX;
-                    if (p.glassImgOffsetY !== undefined) glassImgOffsetY.value = p.glassImgOffsetY;
-                    if (p.glassExtract) glassExtract.value = p.glassExtract;
-                    if (p.glassMaskW !== undefined) glassMaskW.value = p.glassMaskW;
-                    if (p.glassMaskH !== undefined) glassMaskH.value = p.glassMaskH;
-                    if (p.glassMaskX !== undefined) glassMaskX.value = p.glassMaskX;
-                    if (p.glassMaskY !== undefined) glassMaskY.value = p.glassMaskY;
-                    if (p.glassLight !== undefined) glassLight.value = p.glassLight;
-                    if (p.glassColorMode) glassColorMode.value = p.glassColorMode;
-                    if (p.glassSpatial1) glassSpatial1.value = p.glassSpatial1;
-                    if (p.glassSpatial2) glassSpatial2.value = p.glassSpatial2;
-                    if (p.glassAngle !== undefined) glassAngle.value = p.glassAngle;
-                    if (p.glassOffset !== undefined) glassOffset.value = p.glassOffset;
-                    if (p.glassLut1) glassLut1.value = p.glassLut1;
-                    if (p.glassLut2) glassLut2.value = p.glassLut2;
-                    if (p.glassLut3) glassLut3.value = p.glassLut3;
-                    if (p.glassLut4) glassLut4.value = p.glassLut4;
-                    if (p.glassLut5) glassLut5.value = p.glassLut5;
-                    if (p.glassBlur !== undefined) glassBlur.value = p.glassBlur;
-                    if (p.glassSharp !== undefined) glassSharp.value = p.glassSharp;
-                    if (p.glassStripe !== undefined) glassStripe.value = p.glassStripe;
-                    if (p.glassDisp !== undefined) glassDisp.value = p.glassDisp;
-                    if (p.glassShading !== undefined) glassShading.value = p.glassShading;
-                    if (p.glassNoise !== undefined) glassNoise.value = p.glassNoise;
-
-                    if (p.renderMode) setRenderMode(p.renderMode);
-                    if (p.dotStyle) { dotStyleSelect.value = p.dotStyle; if (p.dotStyle === 'volumetric_custom') { customColorDark.value = p.customColorDark || "#000000"; customColorMid.value = p.customColorMid || "#99bbff"; customColorLight.value = p.customColorLight || "#ffffff"; } updateDotStyleUI(); }
-                    if (p.asciiLogic) { asciiLogicSelect.value = p.asciiLogic; }
-                    if (p.asciiRatio && asciiRatio) { asciiRatio.value = p.asciiRatio; }
-                    if (p.asciiIntensity && asciiIntensity) { asciiIntensity.value = p.asciiIntensity; }
-                    if (p.asciiRemoveSpaces !== undefined && asciiRemoveSpaces) { asciiRemoveSpaces.checked = p.asciiRemoveSpaces; }
-                    if (p.asciiChars) { asciiCharsInput.value = p.asciiChars; const match = Array.from(asciiPresetSelect.options).find(opt => opt.value === p.asciiChars); asciiPresetSelect.value = match ? match.value : 'custom'; }
-                    deletePresetBtn.classList.remove('hidden'); isManuallyOverridingGrid = false; updateUIValues(); updateGlassColorModeUI(); if (!isVideo || (videoElement && videoElement.paused)) processFrame();
-                } else { deletePresetBtn.classList.add('hidden'); }
-            });
-
-            savePresetBtn.addEventListener('click', async () => {
+            savePresetBtn?.addEventListener('click', async () => {
                 const name = await showModal({ title: t('msg_save_preset'), message: t('msg_enter_name'), showInput: true }); if (!name) return;
                 const preset = { gridSize: parseFloat(gridSize.value), dotScale: parseFloat(dotScale.value), sourceBrightness: parseInt(sourceBrightness.value), sourceContrast: parseInt(sourceContrast.value), brightness: parseInt(brightness.value), contrast: parseInt(contrast.value), fps: parseInt(fpsInput.value), bgColor: bgColorPicker.value, dotColor: dotColorPicker.value, invertMapping: invertMapping.checked, smoothStep: smoothStep.checked, fixedDotSize: fixedDotSize.checked, dotCutoff: parseFloat(dotCutoff.value), renderMode: currentRenderMode, asciiLogic: asciiLogicSelect.value, asciiRatio: asciiRatio ? parseFloat(asciiRatio.value) : 0.6, asciiIntensity: asciiIntensity ? parseInt(asciiIntensity.value) : 1, asciiRemoveSpaces: asciiRemoveSpaces ? asciiRemoveSpaces.checked : true, dotStyle: dotStyleSelect.value, customColorDark: customColorDark.value, customColorMid: customColorMid.value, customColorLight: customColorLight.value, asciiChars: asciiCharsInput.value,
-                glassImgScale: parseFloat(glassImgScale.value), glassImgOffsetX: parseFloat(glassImgOffsetX.value), glassImgOffsetY: parseFloat(glassImgOffsetY.value), glassExtract: glassExtract.value, glassMaskW: parseFloat(glassMaskW.value), glassMaskH: parseFloat(glassMaskH.value), glassMaskX: parseFloat(glassMaskX.value), glassMaskY: parseFloat(glassMaskY.value), glassLight: parseFloat(glassLight.value), glassColorMode: glassColorMode.value, glassSpatial1: glassSpatial1.value, glassSpatial2: glassSpatial2.value, glassAngle: parseFloat(glassAngle.value), glassOffset: parseFloat(glassOffset.value), glassLut1: glassLut1.value, glassLut2: glassLut2.value, glassLut3: glassLut3.value, glassLut4: glassLut4.value, glassLut5: glassLut5.value, glassBlur: parseFloat(glassBlur.value), glassSharp: parseFloat(glassSharp.value), glassStripe: parseFloat(glassStripe.value), glassDisp: parseFloat(glassDisp.value), glassShading: parseFloat(glassShading.value), glassNoise: parseFloat(glassNoise.value) };
-                userPresets[name] = preset; presetSelect.value = name; deletePresetBtn.classList.remove('hidden');
-                if (db && currentUser) { try { await setDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), preset); } catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_cloud'), hideCancel: true }); } } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); presetSelect.value = name; }
+                glassImgScale: glassImgScale ? parseFloat(glassImgScale.value) : 1, glassImgOffsetX: glassImgOffsetX ? parseFloat(glassImgOffsetX.value) : 0, glassImgOffsetY: glassImgOffsetY ? parseFloat(glassImgOffsetY.value) : 0, glassExtract: glassExtract ? glassExtract.value : 'auto', glassMaskW: glassMaskW ? parseFloat(glassMaskW.value) : 100, glassMaskH: glassMaskH ? parseFloat(glassMaskH.value) : 100, glassMaskX: glassMaskX ? parseFloat(glassMaskX.value) : 0, glassMaskY: glassMaskY ? parseFloat(glassMaskY.value) : 0, glassLight: glassLight ? parseFloat(glassLight.value) : 1.2, glassColorMode: glassColorMode ? glassColorMode.value : 'spatial', glassSpatial1: glassSpatial1 ? glassSpatial1.value : '#b500ff', glassSpatial2: glassSpatial2 ? glassSpatial2.value : '#00e5ff', glassAngle: glassAngle ? parseFloat(glassAngle.value) : 135, glassOffset: glassOffset ? parseFloat(glassOffset.value) : 0, glassLut1: glassLut1 ? glassLut1.value : '#000', glassLut2: glassLut2 ? glassLut2.value : '#0a2db5', glassLut3: glassLut3 ? glassLut3.value : '#16a6d1', glassLut4: glassLut4 ? glassLut4.value : '#f06d18', glassLut5: glassLut5 ? glassLut5.value : '#fff', glassBlur: glassBlur ? parseFloat(glassBlur.value) : 45, glassSharp: glassSharp ? parseFloat(glassSharp.value) : 0, glassStripe: glassStripe ? parseFloat(glassStripe.value) : 24, glassDisp: glassDisp ? parseFloat(glassDisp.value) : 15, glassShading: glassShading ? parseFloat(glassShading.value) : 0.6, glassNoise: glassNoise ? parseFloat(glassNoise.value) : 15 };
+                userPresets[name] = preset; if(presetSelect) presetSelect.value = name; deletePresetBtn?.classList.remove('hidden');
+                
+                if (db && currentUser && !currentUser.isAnonymous) { 
+                    try { await setDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), preset); } 
+                    catch (e) { showModal({ title: t('msg_err'), message: t('msg_err_cloud'), hideCancel: true }); } 
+                } else { 
+                    localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); 
+                    updatePresetDropdown(); 
+                    if(presetSelect) presetSelect.value = name; 
+                }
             });
 
-            deletePresetBtn.addEventListener('click', async () => {
-                const name = presetSelect.value; if (!name) return;
+            deletePresetBtn?.addEventListener('click', async () => {
+                const name = presetSelect ? presetSelect.value : null; if (!name) return;
                 if (await showModal({ title: t('msg_del_preset'), message: `${t('msg_confirm_del')} "${name}" ?`, showInput: false })) {
-                    delete userPresets[name]; presetSelect.value = ""; deletePresetBtn.classList.add('hidden');
-                    if (db && currentUser) { try { await deleteDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name)); } catch (e) {} } else { localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); updatePresetDropdown(); }
+                    delete userPresets[name]; if(presetSelect) presetSelect.value = ""; deletePresetBtn?.classList.add('hidden');
+                    if (db && currentUser && !currentUser.isAnonymous) { 
+                        try { await deleteDoc(doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name)); } catch (e) {} 
+                    } else { 
+                        localStorage.setItem('halftone_user_presets', JSON.stringify(userPresets)); 
+                        updatePresetDropdown(); 
+                    }
                 }
             });
 
             // Initial calls
-            bgColorPicker.value = defaults.bgColor; dotStyleSelect.value = defaults.dotStyle; contrast.value = defaults.contrast; fixedDotSize.checked = defaults.fixedDotSize; dotCutoff.value = defaults.dotCutoff;
-            glassColorMode.value = defaults.glassColorMode; updateGlassColorModeUI();
+            if(bgColorPicker) bgColorPicker.value = defaults.bgColor; if(dotStyleSelect) dotStyleSelect.value = defaults.dotStyle; if(contrast) contrast.value = defaults.contrast; if(fixedDotSize) fixedDotSize.checked = defaults.fixedDotSize; if(dotCutoff) dotCutoff.value = defaults.dotCutoff;
+            if(glassColorMode) glassColorMode.value = defaults.glassColorMode; updateGlassColorModeUI();
             applyI18n(); 
             updateDotStyleUI(); updateUIValues();
         });
