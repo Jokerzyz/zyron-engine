@@ -208,13 +208,11 @@
         <p>How to make a Matrix digital rain effect, convert video to ASCII art, or create stunning frosted glass refraction loops? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D frosted glass diseños.</p>
     </div>
 
-    <!-- I18N Language Switcher (Top Left) -->
     <div class="absolute top-6 left-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <button id="langEnBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest uppercase">EN</button>
         <button id="langZhBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest">中文</button>
     </div>
 
-    <!-- 独立的顶部右侧悬浮 UI (教程与登录账号) -->
     <div class="absolute top-6 right-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <a href="/guide.html" target="_blank" class="neu-btn px-4 py-2 flex items-center justify-center text-[10px] font-black tracking-widest uppercase gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -277,7 +275,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 1: GEOMETRY -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
@@ -372,7 +369,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 2: STYLE & COLOR -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
@@ -547,7 +543,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 3: FILTERS & PHYSICS -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
@@ -621,7 +616,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 4: OUTPUT -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
@@ -642,7 +636,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 5: ACTION & EXPORT UI -->
                         <div class="pt-6 pb-4">
                             <div class="flex flex-col gap-4 mb-5">
                                 <div>
@@ -718,13 +711,11 @@
         </div>
     </div>
 
-    <!-- Drag & Drop Fullscreen Overlay -->
     <div id="dragOverlay" class="fixed inset-0 z-[500] hidden bg-[var(--overlay-bg)] backdrop-blur-sm border-4 border-dashed border-[var(--accent)] flex-col items-center justify-center pointer-events-none transition-all duration-300">
         <svg class="w-16 h-16 text-[var(--accent)] mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
         <h2 class="text-3xl font-black text-[var(--accent)] tracking-widest" data-i18n="msg_drop_here">DROP FILE HERE</h2>
     </div>
 
-    <!-- Export Loading Modal -->
     <div id="exportOverlay" class="loading-overlay">
         <div class="neu-panel p-10 max-w-sm w-full text-center">
             <h2 id="exportTitle" class="text-xl font-black mb-8" data-i18n="modal_exp_title">Rendering Frames...</h2>
@@ -736,7 +727,6 @@
         </div>
     </div>
 
-    <!-- Login Authentication Modal (Email/Password + Google) -->
     <div id="loginModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[200] hidden flex-col items-center justify-center">
         <div class="neu-panel p-8 w-[400px] max-w-[90%] transform transition-all text-center">
             <div class="w-14 h-14 rounded-full bg-[var(--text-dark)] text-[var(--bg-color)] flex items-center justify-center mx-auto mb-4 shadow-xl">
@@ -768,7 +758,6 @@
         </div>
     </div>
 
-    <!-- Generic Notice Modal -->
     <div id="customModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[300] hidden flex-col items-center justify-center">
         <div class="neu-panel p-10 w-96 max-w-[90%] transform transition-all">
             <h2 id="modalTitle" class="text-xl font-black mb-3">Notice</h2>
@@ -781,7 +770,6 @@
         </div>
     </div>
 
-    <!-- MAIN SCRIPT MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -805,6 +793,20 @@
         let keyframes = [];
         let isCssFullscreen = false;
         let userPresets = {};
+
+        // === FIREBASE 启动引擎 ===
+        const firebaseConfig = {
+            apiKey: "AIzaSyCIA_yKDZyo9nOLHh1nNCRh278ldPodplM",
+            authDomain: "zyronmatrix.firebaseapp.com",
+            projectId: "zyronmatrix",
+            storageBucket: "zyronmatrix.firebasestorage.app",
+            messagingSenderId: "1021435323563",
+            appId: "1:1021435323563:web:e698deddfba66c60d4c3ee"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
         const defaults = { 
             gridSize: 20, dotScale: 0.85, sourceBrightness: 0, sourceContrast: 0,
