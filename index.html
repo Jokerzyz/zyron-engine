@@ -783,43 +783,47 @@
                 </div>
             </main>
         </div>
-    </div>
 
-    <footer class="w-full bg-[#1a1c20] text-gray-300 py-16 px-6 mt-12 border-t border-white/5 relative z-10">
-        <div class="max-w-5xl mx-auto space-y-12">
-            <section>
-                <h2 class="text-2xl font-black mb-4 text-[var(--accent)] tracking-widest uppercase">About ZYRONMATRIX Engine</h2>
-                <p class="text-sm font-bold leading-relaxed text-gray-400 mb-4">
-                    ZYRONMATRIX is an advanced, free online rendering engine designed for creative professionals, digital artists, and developers. Operating entirely within your browser, it transforms standard images and videos into stunning visual aesthetics including <strong>Cyberpunk Matrix Digital Rain</strong>, highly detailed <strong>ASCII Art text layouts</strong>, 1-bit retro dithering, and volumetric 3D frosted glass (Glassmorphism) effects.
-                </p>
-                <p class="text-sm font-bold leading-relaxed text-gray-400">
-                    With local processing through HTML5 Canvas, your files remain secure and private. Whether you are generating a hacker-style terminal sequence, designing UI mockups, or exporting vector SVG files, ZYRONMATRIX provides the ultimate control over geometry, color mapping, and spatial gradients without the need to install complex software.
-                </p>
-            </section>
-            
-            <section>
-                <h2 class="text-2xl font-black mb-6 text-[var(--accent)] tracking-widest uppercase">Frequently Asked Questions</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-2">
-                        <h3 class="text-base font-black text-gray-200">How to convert a video to ASCII art or Matrix effects?</h3>
-                        <p class="text-xs font-bold text-gray-400 leading-relaxed">Simply click "Load Media" and select your MP4 or WebM file. Choose your desired mode (Dot, Ascii, Dither, or Glass), adjust the Grid Density and Color Mapping, and click "Render Sequence" at the bottom to export your animated frames losslessly inside a ZIP file.</p>
+        <div class="mt-16 mb-4 w-full">
+            <div class="flex items-center justify-center gap-6 mb-10 opacity-70 px-4 md:px-8">
+                <div class="h-[3px] flex-1 rounded-full bg-[var(--bg-color)] shadow-[inset_2px_2px_4px_var(--shadow-dark),inset_-2px_-2px_4px_var(--shadow-light)] border border-[var(--border-light-faint)]"></div>
+                <span class="text-[10px] font-black tracking-[0.25em] text-[var(--text-muted)] uppercase">Information & FAQ</span>
+                <div class="h-[3px] flex-1 rounded-full bg-[var(--bg-color)] shadow-[inset_2px_2px_4px_var(--shadow-dark),inset_-2px_-2px_4px_var(--shadow-light)] border border-[var(--border-light-faint)]"></div>
+            </div>
+
+            <footer class="grid lg:grid-cols-3 gap-8 pb-10 px-4 md:px-8">
+                <section class="lg:col-span-1 neu-panel p-8 flex flex-col justify-start">
+                    <h2 class="text-sm font-black mb-5 text-[var(--text-muted)] tracking-widest uppercase">About ZYRONMATRIX</h2>
+                    <div class="space-y-4 text-xs font-bold leading-relaxed text-[var(--text-muted)] opacity-75">
+                        <p>ZYRONMATRIX is an advanced, free online rendering engine designed for creative professionals, digital artists, and developers. Operating entirely within your browser, it transforms standard images and videos into stunning visual aesthetics including Cyberpunk Matrix Digital Rain, highly detailed ASCII Art text layouts, 1-bit retro dithering, and volumetric 3D frosted glass (Glassmorphism) effects.</p>
+                        <p>With local processing through HTML5 Canvas, your files remain secure and private. Whether you are generating a hacker-style terminal sequence, designing UI mockups, or exporting vector SVG files, ZYRONMATRIX provides the ultimate control over geometry, color mapping, and spatial gradients without the need to install complex software.</p>
                     </div>
-                    <div class="space-y-2">
-                        <h3 class="text-base font-black text-gray-200">Is my data secure and private?</h3>
-                        <p class="text-xs font-bold text-gray-400 leading-relaxed">Yes! All image and video processing is done client-side directly in your browser using WebGL and Canvas APIs. We do not upload your media files to our servers.</p>
+                </section>
+                
+                <section class="lg:col-span-2 neu-panel p-8">
+                    <h2 class="text-sm font-black mb-6 text-[var(--text-muted)] tracking-widest uppercase">Frequently Asked Questions</h2>
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div class="space-y-2">
+                            <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">How to convert a video to ASCII art or Matrix effects?</h3>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">Simply click "Load Media" and select your MP4 or WebM file. Choose your desired mode (Dot, Ascii, Dither, or Glass), adjust the Grid Density and Color Mapping, and click "Render Sequence" at the bottom to export your animated frames losslessly inside a ZIP file.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">Is my data secure and private?</h3>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">Yes! All image and video processing is done client-side directly in your browser using WebGL and Canvas APIs. We do not upload your media files to our servers.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">Why can't I download vector SVGs?</h3>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">SVG generation involves extracting true vector paths from the generated arrays. This is a premium feature designed for designers to scale their creations infinitely. You must create a free account to unlock high-quality SVG exports.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">How do I assemble the rendered sequence into a video?</h3>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">When you render a video, ZYRONMATRIX provides a ZIP containing a PNG image sequence. You can import this sequence into Adobe Premiere Pro, After Effects, or Blender. Make sure to right-click the footage, select "Interpret Footage", and set the frame rate to match your export settings.</p>
+                        </div>
                     </div>
-                    <div class="space-y-2">
-                        <h3 class="text-base font-black text-gray-200">Why can't I download vector SVGs?</h3>
-                        <p class="text-xs font-bold text-gray-400 leading-relaxed">SVG generation involves extracting true vector paths from the generated arrays. This is a premium feature designed for designers to scale their creations infinitely. You must create a free account to unlock high-quality SVG exports.</p>
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-base font-black text-gray-200">How do I assemble the rendered sequence into a video?</h3>
-                        <p class="text-xs font-bold text-gray-400 leading-relaxed">When you render a video, ZYRONMATRIX provides a ZIP containing a PNG image sequence. You can import this sequence into Adobe Premiere Pro, After Effects, or Blender. Make sure to right-click the footage, select "Interpret Footage", and set the frame rate to match your export settings (e.g., 24 FPS).</p>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </footer>
         </div>
-    </footer>
+    </div>
 
     <div id="dragOverlay" class="fixed inset-0 z-[500] hidden bg-[var(--overlay-bg)] backdrop-blur-sm border-4 border-dashed border-[var(--accent)] flex-col items-center justify-center pointer-events-none transition-all duration-300">
         <svg class="w-16 h-16 text-[var(--accent)] mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
@@ -1013,7 +1017,6 @@
             return `${m}:${s.toString().padStart(2, '0')}`;
         }
 
-        // --- NEW: Added missing downloadFile function ---
         function downloadFile(data, extension, isText = false) {
             const link = document.createElement('a');
             link.style.display = 'none';
@@ -1022,7 +1025,7 @@
                 const blob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
                 url = URL.createObjectURL(blob);
             } else {
-                url = URL.createObjectURL(data); // Blob from canvas
+                url = URL.createObjectURL(data); 
             }
             link.href = url;
             link.download = `zyronmatrix_export_${Date.now()}.${extension}`;
@@ -2100,7 +2103,7 @@
                 const p = document.getElementById('previewContainer');
                 if (!document.fullscreenElement && !isCssFullscreen) { 
                     if (p?.requestFullscreen) p.requestFullscreen().catch(() => { isCssFullscreen = true; p?.classList.replace('relative', 'fixed'); p?.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); p?.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); document.getElementById('fsEnterIcon')?.classList.add('hidden'); document.getElementById('fsExitIcon')?.classList.remove('hidden'); triggerResize(); }); 
-                    else { isCssFullscreen = true; p?.classList.replace('relative', 'fixed'); p?.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); p?.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); document.getElementById('fsEnterIcon')?.classList.add('hidden'); document.getElementById('fsExitIcon')?.classList.remove('hidden'); triggerResize(); }
+                    else { isCssFullscreen = true; p?.classList.replace('relative', 'fixed'); p?.classList.remove('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); p?.classList.add('inset-0', 'z-[100]', 'w-screen', 'h-screen'); document.getElementById('fsEnterIcon')?.classList.add('hidden'); document.getElementById('fsExitIcon')?.remove('hidden'); triggerResize(); }
                 } else { 
                     if (document.fullscreenElement) document.exitFullscreen(); 
                     else if (isCssFullscreen) { isCssFullscreen = false; p?.classList.replace('fixed', 'relative'); p?.classList.add('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); p?.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); document.getElementById('fsEnterIcon')?.classList.remove('hidden'); document.getElementById('fsExitIcon')?.classList.add('hidden'); triggerResize(); }
