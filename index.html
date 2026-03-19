@@ -24,19 +24,52 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
-      "alternateName": "Matrix Effect & Glassmorphism Terminal",
-      "url": "https://www.zyronmatrix.com/",
-      "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain, custom ASCII text art, and frosted glass refraction effects.",
-      "applicationCategory": "MultimediaApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires HTML5 Canvas support",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
+          "alternateName": "Matrix Effect & Glassmorphism Terminal",
+          "url": "https://www.zyronmatrix.com/",
+          "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain, custom ASCII text art, and frosted glass refraction effects.",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires HTML5 Canvas support",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How to convert a video to ASCII art or Matrix effects?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Simply click 'Load Media' and select your MP4 or WebM file. Choose your desired mode, adjust the Grid Density and Color Mapping, and click 'Render Sequence' to export your animated frames losslessly."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is my data secure and private?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! All image and video processing is done client-side directly in your browser. We do not upload your media files to our servers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I assemble the rendered sequence into a video?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "ZYRONMATRIX provides a ZIP containing a PNG image sequence. Import this sequence into editing software like After Effects or Premiere Pro and interpret the footage to match your original frame rate."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
 
@@ -201,20 +234,18 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white">
+<body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white relative">
     
     <div class="sr-only">
         <h1>ZYRONMATRIX: Online Matrix Effect & Glassmorphism Video Generator</h1>
         <p>How to make a Matrix digital rain effect, convert video to ASCII art, or create stunning frosted glass refraction loops? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D frosted glass diseños.</p>
     </div>
 
-    <!-- I18N Language Switcher -->
     <div class="absolute top-6 left-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <button id="langEnBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest uppercase">EN</button>
         <button id="langZhBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest">中文</button>
     </div>
 
-    <!-- 顶部右侧悬浮 UI -->
     <div class="absolute top-6 right-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <a href="/guide.html" target="_blank" class="neu-btn px-4 py-2 flex items-center justify-center text-[10px] font-black tracking-widest uppercase gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] transition-colors" data-i18n-title="tip_guide">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -227,7 +258,7 @@
         </button>
     </div>
 
-    <div class="w-full max-w-[1920px] mx-auto">
+    <div class="w-full max-w-[1920px] mx-auto min-h-screen">
         <header class="mb-8 text-center flex flex-col items-center pt-12 md:pt-4">
             <div class="inline-flex items-center gap-4 mb-3 px-8 py-4 neu-panel">
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
@@ -250,7 +281,6 @@
                 <div class="h-full overflow-y-auto control-panel lg:-mr-[28px] lg:pr-[28px]">
                     <div class="p-6 lg:p-8 space-y-8 pb-10">
                         
-                        <!-- 4个独立的主模式卡片 (Mode Selector) -->
                         <div class="neu-inset p-2 flex flex-col xl:flex-row gap-2 rounded-2xl relative z-10">
                             <button id="modeDotBtn" class="neu-btn active flex-1 py-3 text-[11px] xl:text-[10px] font-black uppercase tracking-wider" data-i18n="tab_dot">Dot</button>
                             <button id="modeAsciiBtn" class="neu-btn flex-1 py-3 text-[11px] xl:text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]" data-i18n="tab_ascii">Ascii</button>
@@ -279,7 +309,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 1: GEOMETRY (Shared by Dot, Ascii, Dither) -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_geometry">Geometry</label>
@@ -297,7 +326,6 @@
                                     </div>
                                     <input type="range" id="gridSize" min="4" max="200" value="20" step="0.5">
                                     
-                                    <!-- 反转映射开关紧跟在排版密度下方 -->
                                     <div class="flex items-center justify-between mt-6 pt-5 border-t border-white/30">
                                         <span class="text-xs font-extrabold" data-i18n="lbl_invert">Invert Mapping (Negative)</span>
                                         <label class="relative inline-flex items-center cursor-pointer">
@@ -321,7 +349,6 @@
                                     <input type="range" id="dotScale" min="0.1" max="1.5" step="0.01" value="0.85">
                                 </div>
 
-                                <!-- DOT MODE SPECIFIC CONTROLS -->
                                 <div id="dotGeometryControls" class="space-y-5 pt-3">
                                     <div class="flex items-center justify-between">
                                         <span class="text-xs font-extrabold text-[var(--text-dark)]" data-i18n="lbl_lock_dot">Lock Dot Size (LED Look)</span>
@@ -340,7 +367,6 @@
                                     </div>
                                 </div>
 
-                                <!-- DITHER MODE SPECIFIC CONTROLS (独立控制台) -->
                                 <div id="ditherGeometryControls" class="space-y-5 pt-3 hidden">
                                     <div>
                                         <div class="flex justify-between items-center text-xs mb-3">
@@ -380,7 +406,6 @@
                                 </div>
                             </div>
 
-                            <!-- GLASS MODE SPECIFIC CONTROLS -->
                             <div id="glassGeometryControls" class="space-y-6 hidden">
                                 <div class="space-y-4">
                                     <div>
@@ -426,7 +451,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 2: STYLE & COLOR -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_style">Style & Color</label>
@@ -601,7 +625,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 3: FILTERS & PHYSICS -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_filters">Filters</label>
@@ -667,7 +690,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 4: OUTPUT -->
                         <div class="space-y-5 pt-4 border-t-2 border-white/40">
                             <div class="flex justify-between items-center">
                                 <label class="text-xs font-black text-[var(--text-dark)] uppercase tracking-widest" data-i18n="lbl_output">Output</label>
@@ -688,7 +710,6 @@
                             </div>
                         </div>
 
-                        <!-- CATEGORY 5: ACTION & EXPORT UI -->
                         <div class="pt-6 pb-4">
                             <div class="flex flex-col gap-4 mb-5">
                                 <div>
@@ -764,13 +785,47 @@
         </div>
     </div>
 
-    <!-- Drag & Drop Fullscreen Overlay -->
+    <footer class="w-full bg-[#1a1c20] text-gray-300 py-16 px-6 mt-12 border-t border-white/5 relative z-10">
+        <div class="max-w-5xl mx-auto space-y-12">
+            <section>
+                <h2 class="text-2xl font-black mb-4 text-[var(--accent)] tracking-widest uppercase">About ZYRONMATRIX Engine</h2>
+                <p class="text-sm font-bold leading-relaxed text-gray-400 mb-4">
+                    ZYRONMATRIX is an advanced, free online rendering engine designed for creative professionals, digital artists, and developers. Operating entirely within your browser, it transforms standard images and videos into stunning visual aesthetics including <strong>Cyberpunk Matrix Digital Rain</strong>, highly detailed <strong>ASCII Art text layouts</strong>, 1-bit retro dithering, and volumetric 3D frosted glass (Glassmorphism) effects.
+                </p>
+                <p class="text-sm font-bold leading-relaxed text-gray-400">
+                    With local processing through HTML5 Canvas, your files remain secure and private. Whether you are generating a hacker-style terminal sequence, designing UI mockups, or exporting vector SVG files, ZYRONMATRIX provides the ultimate control over geometry, color mapping, and spatial gradients without the need to install complex software.
+                </p>
+            </section>
+            
+            <section>
+                <h2 class="text-2xl font-black mb-6 text-[var(--accent)] tracking-widest uppercase">Frequently Asked Questions</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <h3 class="text-base font-black text-gray-200">How to convert a video to ASCII art or Matrix effects?</h3>
+                        <p class="text-xs font-bold text-gray-400 leading-relaxed">Simply click "Load Media" and select your MP4 or WebM file. Choose your desired mode (Dot, Ascii, Dither, or Glass), adjust the Grid Density and Color Mapping, and click "Render Sequence" at the bottom to export your animated frames losslessly inside a ZIP file.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-base font-black text-gray-200">Is my data secure and private?</h3>
+                        <p class="text-xs font-bold text-gray-400 leading-relaxed">Yes! All image and video processing is done client-side directly in your browser using WebGL and Canvas APIs. We do not upload your media files to our servers.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-base font-black text-gray-200">Why can't I download vector SVGs?</h3>
+                        <p class="text-xs font-bold text-gray-400 leading-relaxed">SVG generation involves extracting true vector paths from the generated arrays. This is a premium feature designed for designers to scale their creations infinitely. You must create a free account to unlock high-quality SVG exports.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-base font-black text-gray-200">How do I assemble the rendered sequence into a video?</h3>
+                        <p class="text-xs font-bold text-gray-400 leading-relaxed">When you render a video, ZYRONMATRIX provides a ZIP containing a PNG image sequence. You can import this sequence into Adobe Premiere Pro, After Effects, or Blender. Make sure to right-click the footage, select "Interpret Footage", and set the frame rate to match your export settings (e.g., 24 FPS).</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </footer>
+
     <div id="dragOverlay" class="fixed inset-0 z-[500] hidden bg-[var(--overlay-bg)] backdrop-blur-sm border-4 border-dashed border-[var(--accent)] flex-col items-center justify-center pointer-events-none transition-all duration-300">
         <svg class="w-16 h-16 text-[var(--accent)] mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
         <h2 class="text-3xl font-black text-[var(--accent)] tracking-widest" data-i18n="msg_drop_here">DROP FILE HERE</h2>
     </div>
 
-    <!-- Export Loading Modal -->
     <div id="exportOverlay" class="loading-overlay">
         <div class="neu-panel p-10 max-w-sm w-full text-center">
             <h2 id="exportTitle" class="text-xl font-black mb-8" data-i18n="modal_exp_title">Rendering Frames...</h2>
@@ -782,7 +837,6 @@
         </div>
     </div>
 
-    <!-- Login Authentication Modal -->
     <div id="loginModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[200] hidden flex-col items-center justify-center">
         <div class="neu-panel p-8 w-[400px] max-w-[90%] transform transition-all text-center">
             <div class="w-14 h-14 rounded-full bg-[var(--text-dark)] text-[var(--bg-color)] flex items-center justify-center mx-auto mb-4 shadow-xl">
@@ -814,7 +868,6 @@
         </div>
     </div>
 
-    <!-- Generic Notice Modal -->
     <div id="customModal" class="fixed inset-0 modal-overlay-bg backdrop-blur-xl z-[300] hidden flex-col items-center justify-center">
         <div class="neu-panel p-10 w-96 max-w-[90%] transform transition-all">
             <h2 id="modalTitle" class="text-xl font-black mb-3">Notice</h2>
@@ -827,7 +880,6 @@
         </div>
     </div>
 
-    <!-- MAIN SCRIPT MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -959,6 +1011,25 @@
             const m = Math.floor(seconds / 60);
             const s = Math.floor(seconds % 60);
             return `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        // --- NEW: Added missing downloadFile function ---
+        function downloadFile(data, extension, isText = false) {
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            let url;
+            if (isText) {
+                const blob = new Blob([data], { type: 'image/svg+xml;charset=utf-8' });
+                url = URL.createObjectURL(blob);
+            } else {
+                url = URL.createObjectURL(data); // Blob from canvas
+            }
+            link.href = url;
+            link.download = `zyronmatrix_export_${Date.now()}.${extension}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(url), 100);
         }
 
         function updateLutPreview() {
