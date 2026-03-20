@@ -713,7 +713,7 @@
                         <div class="pt-6 pb-4">
                             <div class="flex flex-col gap-4 mb-5">
                                 <div>
-                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="svgLoginLabel" data-i18n="lbl_login_svg">LOG IN FOR SVG</span></div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="svgLoginLabel" data-i18n="lbl_login_svg">LOGIN TO UNLOCK</span></div>
                                     <button id="exportSvgBtn" class="py-3 neu-btn text-sm font-black w-full flex justify-between items-center px-5 group text-[var(--text-dark)] hover:text-[var(--accent)]">
                                         <span data-i18n="btn_svg">SVG</span>
                                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
@@ -721,7 +721,7 @@
                                 </div>
 
                                 <div>
-                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="pngLimitLabel">8 LEFT BEFORE LOG IN</span></div>
+                                    <div class="flex justify-between text-[10px] font-bold text-[var(--text-muted)] mb-2 uppercase tracking-widest"><span id="pngLimitLabel">IMAGE EXPORTS (3 LEFT)</span></div>
                                     <div class="flex gap-3">
                                         <button id="exportPngBtn" class="flex-1 py-3 neu-btn text-sm font-black flex justify-center items-center gap-2 text-[var(--text-dark)] hover:text-[var(--accent)] group">
                                             <span>PNG</span>
@@ -892,7 +892,7 @@
         // === 1. STATE & GLOBAL VARIABLES ===
         let currentLang = localStorage.getItem('matrix_ui_lang') || ((navigator.language && navigator.language.startsWith('zh')) ? 'zh' : 'en');
         let isProUser = false;
-        let freeExportsLeft = 8;
+        let freeExportsLeft = 3;
         let currentUser = null;
         let currentAppId = 'zyronmatrix';
         let currentRenderMode = 'dot'; 
@@ -966,7 +966,7 @@
                 lbl_blur: "Glow Blur", lbl_sharp: "Subject Sharpness", lbl_stripe: "Stripe Width", lbl_disp: "Refraction Disp.", lbl_shading: "Glass Shading", lbl_noise: "Film Noise",
                 lbl_light_int: "Light Intensity", opt_lut: "Global LUT Mapping", opt_spatial: "Spatial Gradient", lbl_col1: "Primary A", lbl_col2: "Secondary B", lbl_angle: "Gradient Angle", lbl_offset: "Gradient Offset", lbl_lut_cols: "LUT Colors (Dark to Bright)",
                 lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora",
-                lbl_login_svg: "LOG IN FOR SVG", btn_svg: "SVG", login_title: "Unlock Premium", login_desc: "Login to get unlimited image exports and unlock Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN / SIGN UP", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", msg_logged_out: "You have successfully logged out.",
+                lbl_login_svg: "LOGIN TO UNLOCK", lbl_unlocked_svg: "EXPORT SVG FILE", btn_svg: "SVG", login_title: "Unlock Premium", login_desc: "Login to get unlimited image exports and unlock Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN / SIGN UP", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", msg_logged_out: "You have successfully logged out.",
                 msg_drop_here: "DROP FILE HERE", msg_err_format: "Only image or video files are supported."
             },
             zh: {
@@ -997,7 +997,7 @@
                 lbl_blur: "高斯模糊发光扩散", lbl_sharp: "发光体清晰度", lbl_stripe: "长虹玻璃槽宽", lbl_disp: "折射扭曲度 (位移)", lbl_shading: "玻璃阴影衰减", lbl_noise: "胶片噪点质感",
                 lbl_light_int: "发光光源亮度强度", opt_lut: "全局映射 (LUT)", opt_spatial: "空间光源 (一半一半)", lbl_col1: "主色彩 A", lbl_col2: "副色彩 B", lbl_angle: "交界角度", lbl_offset: "渐变色彩偏移", lbl_lut_cols: "全局映射色彩预设 (LUT Presets)",
                 lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境",
-                lbl_login_svg: "登录解锁 SVG 格式", btn_svg: "SVG", login_title: "解锁高级功能", login_desc: "登录以获取无限制图像导出权限，并解锁极清矢量 SVG 源文件下载引擎。", btn_google_login: "使用 Google 继续", btn_email_login: "登录 / 注册", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", msg_logged_out: "您已成功退出登录。",
+                lbl_login_svg: "登录解锁", lbl_unlocked_svg: "导出SVG文件", btn_svg: "SVG", login_title: "解锁高级功能", login_desc: "登录以获取无限制图像导出权限，并解锁极清矢量 SVG 源文件下载引擎。", btn_google_login: "使用 Google 继续", btn_email_login: "登录 / 注册", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", msg_logged_out: "您已成功退出登录。",
                 msg_drop_here: "松开鼠标加载文件", msg_err_format: "仅支持图片或视频文件格式。"
             }
         };
@@ -1098,12 +1098,12 @@
 
             if (isProUser) {
                 if(svgLoginLabel) { svgLoginLabel.textContent = t('lbl_unlocked_svg'); svgLoginLabel.classList.replace('text-[var(--text-dark)]', 'text-[var(--accent)]'); }
-                if(pngLimitLabel) { pngLimitLabel.textContent = currentLang === 'zh' ? '无限次数图像导出权限' : 'UNLIMITED EXPORTS'; pngLimitLabel.classList.replace('text-[var(--text-dark)]', 'text-[var(--accent)]'); }
+                if(pngLimitLabel) { pngLimitLabel.textContent = currentLang === 'zh' ? '图像导出 (无限次)' : 'IMAGE EXPORT (UNLIMITED)'; pngLimitLabel.classList.replace('text-[var(--text-dark)]', 'text-[var(--accent)]'); }
                 userIconUnauth?.classList.add('hidden'); userIconAuth?.classList.remove('hidden');
                 if(headerLoginText) headerLoginText.textContent = t('btn_logout');
                 if(headerUserBtn) headerUserBtn.title = t('btn_logout');
             } else {
-                const leftTxt = currentLang === 'zh' ? `免费额度: ${freeExportsLeft} 张` : `${freeExportsLeft} LEFT BEFORE LOG IN`;
+                const leftTxt = currentLang === 'zh' ? `图像导出 (剩余 ${freeExportsLeft} 次)` : `IMAGE EXPORTS (${freeExportsLeft} LEFT)`;
                 if(pngLimitLabel) { pngLimitLabel.textContent = leftTxt; pngLimitLabel.classList.replace('text-[var(--accent)]', 'text-[var(--text-dark)]'); }
                 if(svgLoginLabel) { svgLoginLabel.textContent = t('lbl_login_svg'); svgLoginLabel.classList.replace('text-[var(--accent)]', 'text-[var(--text-dark)]'); }
                 userIconUnauth?.classList.remove('hidden'); userIconAuth?.classList.add('hidden');
@@ -2027,6 +2027,11 @@
             document.getElementById('exportJpgBtn')?.addEventListener('click', () => renderRasterFormat('jpeg'));
             
             document.getElementById('exportSequence')?.addEventListener('click', async () => {
+                if (!isProUser) { 
+                    document.getElementById('loginModal')?.classList.remove('hidden'); 
+                    document.getElementById('loginModal')?.classList.add('flex'); 
+                    return; 
+                }
                 if (!videoElement || !isVideo) { showModal({ message: t('msg_err_export_req'), hideCancel: true }); return; }
                 isExporting = true; videoElement.pause(); 
                 const exportOverlay = document.getElementById('exportOverlay'); if(exportOverlay) exportOverlay.style.display = 'flex';
