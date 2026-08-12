@@ -4,7 +4,7 @@ ZYRONMATRIX 是一个在浏览器本地处理图片和视频的 Canvas 像素艺
 
 ## 本地开发
 
-需要 Node.js 20.19+。
+需要 Node.js 22.x。
 
 ```bash
 pnpm install
@@ -28,11 +28,25 @@ src/main.ts                         应用组装、DOM 事件和现有渲染入�
 src/styles.css                      Tailwind 入口与站点样式
 src/render/grid.ts                  网格几何、降采样和 Stucki 抖动
 src/media/video-frame-scheduler.ts  rVFC 视频帧调度与 rAF 兼容回退
+src/auth/access.ts                  已验证账号门控与认证错误映射
+src/export/zip-packager.ts          可取消的视频序列 ZIP Worker
 src/presets/storage.ts              分账号的本地预设存储
 src/services/firebase.ts            延迟加载的认证与云预设服务
+src/storage/safe-storage.ts         localStorage 异常时的内存回退
 public/                              图标、robots.txt、sitemap.xml
 ```
 
 HTML 现在只负责稳定的页面结构，样式、逻辑和第三方服务已经从单文件中拆出。新增算法应优先放进独立的严格 TypeScript 模块，并通过 `src/**/*.test.ts` 覆盖；`src/main.ts` 是迁移期间的组合层，后续可继续按 `dom/`、`export/` 和渲染 sink 拆分，而不需要更换 UI 框架。
 
 Firebase 和 JSZip 均采用按需加载。本地渲染不依赖 Firebase 成功启动，JSZip 只在视频序列导出时下载。
+
+## Firebase 发布检查
+
+仓库内的 `firestore.rules` 要单独发布，前端部署不会自动更新安全规则：
+
+```bash
+firebase login
+firebase deploy --only firestore:rules --project zyronmatrix
+```
+
+邮箱账号必须完成邮件验证后才能使用云预设和账号导出权限。Google 登录还要求在 Firebase Console 的 **Authentication → Settings → Authorized domains** 中加入实际站点域名；生产域名和每个需要测试登录的 Vercel 域名都要分别配置。

@@ -5,11 +5,16 @@ import { BAYER_8X8, GridSampler } from './render/grid';
 import { VideoFrameScheduler } from './media/video-frame-scheduler';
 import { readPresets, writePresets } from './presets/storage';
 import { loadFirebaseServices } from './services/firebase';
+import { authErrorTranslationKey, hasVerifiedAccountAccess } from './auth/access';
+import { packageZipFrames } from './export/zip-packager';
+import { createSafeStorage } from './storage/safe-storage';
 
         // === 1. STATE & GLOBAL VARIABLES ===
-        let currentLang = localStorage.getItem('matrix_ui_lang') || ((navigator.language && navigator.language.startsWith('zh')) ? 'zh' : 'en');
+        const appStorage = createSafeStorage(() => window.localStorage);
+        const storedLang = appStorage.getItem('matrix_ui_lang');
+        let currentLang = storedLang === 'en' || storedLang === 'zh' ? storedLang : ((navigator.language && navigator.language.startsWith('zh')) ? 'zh' : 'en');
         let isProUser = false;
-        const storedFreeExports = Number.parseInt(localStorage.getItem('matrix_ui_free_exports_left') || '3', 10);
+        const storedFreeExports = Number.parseInt(appStorage.getItem('matrix_ui_free_exports_left') || '3', 10);
         let freeExportsLeft = Number.isFinite(storedFreeExports) ? Math.max(0, Math.min(3, storedFreeExports)) : 3;
         let currentUser = null;
         let currentAppId = 'zyronmatrix';
@@ -28,9 +33,14 @@ import { loadFirebaseServices } from './services/firebase';
         let currentMediaUrl = null;
         let mediaGeneration = 0;
         let unsubscribePresets = null;
+        let unsubscribeAuth = null;
         let presetSubscriptionGeneration = 0;
+        let authGeneration = 0;
+        let authReady = false;
         let firebaseServices = null;
         let firebaseConnectionPromise = null;
+        let exportAbortController = null;
+        const exportControlStates = new Map();
         const gridSampler = new GridSampler();
         const videoFrameScheduler = new VideoFrameScheduler();
 
@@ -78,7 +88,10 @@ import { loadFirebaseServices } from './services/firebase';
                 lbl_blur: "Glow Blur", lbl_sharp: "Subject Sharpness", lbl_stripe: "Stripe Width", lbl_disp: "Refraction Disp.", lbl_shading: "Glass Shading", lbl_noise: "Film Noise",
                 lbl_light_int: "Light Intensity", opt_lut: "Global LUT Mapping", opt_spatial: "Spatial Gradient", lbl_col1: "Primary A", lbl_col2: "Secondary B", lbl_angle: "Gradient Angle", lbl_offset: "Gradient Offset", lbl_lut_cols: "LUT Colors (Dark to Bright)",
                 lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora",
-                lbl_login_svg: "LOGIN TO UNLOCK", lbl_unlocked_svg: "EXPORT SVG FILE", btn_svg: "SVG", login_title: "Unlock Premium", login_desc: "Login to get unlimited image exports and unlock Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN / SIGN UP", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", msg_logged_out: "You have successfully logged out.",
+                lbl_login_svg: "LOGIN TO UNLOCK", lbl_unlocked_svg: "EXPORT SVG FILE", btn_svg: "SVG", login_title: "Unlock Your Account", login_desc: "Use a verified free account to unlock unlimited image exports and Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN", btn_email_register: "CREATE FREE ACCOUNT", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", btn_verify_email: "VERIFY EMAIL", msg_logged_out: "You have successfully logged out.",
+                msg_auth_fields: "Enter both your email address and password.", msg_auth_verify_sent: "We sent a verification link to your email. Verify your address, then sign in.", msg_auth_verify_required: "Verify your email address before unlocking account features. A new verification link has been sent.",
+                msg_auth_invalid_email: "Enter a valid email address.", msg_auth_invalid_credentials: "The email or password is incorrect.", msg_auth_email_used: "This email already has an account. Sign in instead.", msg_auth_weak_password: "Use a stronger password with at least 6 characters.", msg_auth_too_many: "Too many attempts. Wait a moment and try again.", msg_auth_network: "The authentication service is unreachable. Check your connection and retry.", msg_auth_disabled: "This sign-in method is not enabled.", msg_auth_popup_blocked: "The browser blocked the Google sign-in popup. Allow popups and retry.", msg_auth_popup_closed: "Google sign-in was cancelled.", msg_auth_unauthorized_domain: "This website domain is not authorized for Google sign-in.", msg_auth_provider_mismatch: "This email uses a different sign-in method.", msg_auth_user_disabled: "This account has been disabled.", msg_auth_unknown: "Authentication failed. Please retry.",
+                msg_auth_changed: "The signed-in account changed. Please repeat the preset action.", msg_preset_name_invalid: "Preset names must be 1–80 characters and cannot contain a slash.", msg_delete_cloud: "The local preset was removed, but cloud deletion failed.",
                 msg_drop_here: "DROP FILE HERE", msg_err_format: "Only image or video files are supported."
             },
             zh: {
@@ -109,12 +122,15 @@ import { loadFirebaseServices } from './services/firebase';
                 lbl_blur: "高斯模糊发光扩散", lbl_sharp: "发光体清晰度", lbl_stripe: "长虹玻璃槽宽", lbl_disp: "折射扭曲度 (位移)", lbl_shading: "玻璃阴影衰减", lbl_noise: "胶片噪点质感",
                 lbl_light_int: "发光光源亮度强度", opt_lut: "全局映射 (LUT)", opt_spatial: "空间光源 (一半一半)", lbl_col1: "主色彩 A", lbl_col2: "副色彩 B", lbl_angle: "交界角度", lbl_offset: "渐变色彩偏移", lbl_lut_cols: "全局映射色彩预设 (LUT Presets)",
                 lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境",
-                lbl_login_svg: "登录解锁", lbl_unlocked_svg: "导出SVG文件", btn_svg: "SVG", login_title: "解锁高级功能", login_desc: "登录以获取无限制图像导出权限，并解锁极清矢量 SVG 源文件下载引擎。", btn_google_login: "使用 Google 继续", btn_email_login: "登录 / 注册", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", msg_logged_out: "您已成功退出登录。",
+                lbl_login_svg: "登录解锁", lbl_unlocked_svg: "导出SVG文件", btn_svg: "SVG", login_title: "解锁账号功能", login_desc: "使用已验证的免费账号解锁无限图片导出和 SVG 下载。", btn_google_login: "使用 Google 继续", btn_email_login: "登录", btn_email_register: "创建免费账号", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", btn_verify_email: "验证邮箱", msg_logged_out: "您已成功退出登录。",
+                msg_auth_fields: "请输入邮箱和密码。", msg_auth_verify_sent: "验证邮件已发送，请先完成邮箱验证，再返回登录。", msg_auth_verify_required: "请先验证邮箱再解锁账号功能，新的验证邮件已经发送。",
+                msg_auth_invalid_email: "请输入有效的电子邮箱。", msg_auth_invalid_credentials: "邮箱或密码不正确。", msg_auth_email_used: "该邮箱已经注册，请直接登录。", msg_auth_weak_password: "密码强度不足，请至少输入 6 个字符。", msg_auth_too_many: "尝试次数过多，请稍后再试。", msg_auth_network: "暂时无法连接认证服务，请检查网络后重试。", msg_auth_disabled: "当前登录方式尚未启用。", msg_auth_popup_blocked: "浏览器阻止了 Google 登录窗口，请允许弹窗后重试。", msg_auth_popup_closed: "已取消 Google 登录。", msg_auth_unauthorized_domain: "当前网站域名尚未获得 Google 登录授权。", msg_auth_provider_mismatch: "该邮箱使用了其他登录方式。", msg_auth_user_disabled: "该账号已被停用。", msg_auth_unknown: "登录失败，请稍后重试。",
+                msg_auth_changed: "登录账号已经变化，请重新执行预设操作。", msg_preset_name_invalid: "预设名称需为 1–80 个字符，且不能包含斜杠。", msg_delete_cloud: "本地预设已删除，但云端删除失败。",
                 msg_drop_here: "松开鼠标加载文件", msg_err_format: "仅支持图片或视频文件格式。"
             }
         };
 
-        const t = (key) => translations[currentLang][key] || key;
+        const t = (key) => translations[currentLang]?.[key] || translations.en[key] || key;
 
         // === 2. HELPER FUNCTIONS ===
         function hexToRgb(hex) {
@@ -210,7 +226,53 @@ import { loadFirebaseServices } from './services/firebase';
             ctx.clearRect(0, 0, halftoneCanvas.width, halftoneCanvas.height);
             const txtColor = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || 'rgba(0,0,0,0.3)';
             ctx.fillStyle = txtColor; ctx.font = '900 32px Nunito, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(translations[currentLang].no_file_preview, halftoneCanvas.width / 2, halftoneCanvas.height / 2);
+            ctx.fillText(t('no_file_preview'), halftoneCanvas.width / 2, halftoneCanvas.height / 2);
+        }
+
+        function setCloudStatus(statusKey) {
+            const cloudStatus = document.getElementById('cloudStatus');
+            if (!cloudStatus) return;
+            cloudStatus.setAttribute('data-i18n', statusKey);
+            cloudStatus.textContent = t(statusKey);
+            const isSynced = statusKey === 'status_synced';
+            const isError = statusKey === 'status_sync_err';
+            cloudStatus.className = `text-[9px] ${isSynced ? 'text-[var(--accent)]' : isError ? 'text-[var(--danger)]' : 'text-[var(--text-muted)]'} font-bold px-3 py-1 neu-inset rounded-full`;
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal')?.classList.remove('hidden');
+            document.getElementById('loginModal')?.classList.add('flex');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal')?.classList.add('hidden');
+            document.getElementById('loginModal')?.classList.remove('flex');
+            const password = document.getElementById('authPassword');
+            if (password) password.value = '';
+        }
+
+        function showAuthError(error) {
+            return showModal({ title: t('msg_err'), message: t(authErrorTranslationKey(error)), hideCancel: true });
+        }
+
+        function setAuthButtonsDisabled(disabled) {
+            ['authEmailBtn', 'authRegisterBtn', 'authGoogleBtn'].forEach(id => {
+                const button = document.getElementById(id);
+                if (button) button.disabled = disabled;
+            });
+        }
+
+        function setExportControlsLocked(locked) {
+            const controls = document.querySelectorAll('aside input, aside select, aside button, #videoControls input, #videoControls button, #headerUserBtn');
+            controls.forEach(control => {
+                if (locked) {
+                    if (!exportControlStates.has(control)) exportControlStates.set(control, control.disabled);
+                    control.disabled = true;
+                } else if (exportControlStates.has(control)) {
+                    control.disabled = exportControlStates.get(control);
+                    exportControlStates.delete(control);
+                }
+            });
         }
 
         function updateLoginUI() {
@@ -221,7 +283,10 @@ import { loadFirebaseServices } from './services/firebase';
             const userIconAuth = document.getElementById('userIconAuth');
             const headerUserBtn = document.getElementById('headerUserBtn');
 
-            if (isProUser) {
+            if (!authReady) {
+                if(headerLoginText) headerLoginText.textContent = t('status_conn');
+                if(headerUserBtn) headerUserBtn.title = t('status_conn');
+            } else if (isProUser) {
                 if(svgLoginLabel) { svgLoginLabel.textContent = t('lbl_unlocked_svg'); svgLoginLabel.classList.replace('text-[var(--text-dark)]', 'text-[var(--accent)]'); }
                 if(pngLimitLabel) { pngLimitLabel.textContent = currentLang === 'zh' ? '图像导出 (无限次)' : 'IMAGE EXPORT (UNLIMITED)'; pngLimitLabel.classList.replace('text-[var(--text-dark)]', 'text-[var(--accent)]'); }
                 userIconUnauth?.classList.add('hidden'); userIconAuth?.classList.remove('hidden');
@@ -232,7 +297,7 @@ import { loadFirebaseServices } from './services/firebase';
                 if(pngLimitLabel) { pngLimitLabel.textContent = leftTxt; pngLimitLabel.classList.replace('text-[var(--accent)]', 'text-[var(--text-dark)]'); }
                 if(svgLoginLabel) { svgLoginLabel.textContent = t('lbl_login_svg'); svgLoginLabel.classList.replace('text-[var(--accent)]', 'text-[var(--text-dark)]'); }
                 userIconUnauth?.classList.remove('hidden'); userIconAuth?.classList.add('hidden');
-                if(headerLoginText) headerLoginText.textContent = t('btn_login_header');
+                if(headerLoginText) headerLoginText.textContent = currentUser && !currentUser.isAnonymous && !currentUser.emailVerified ? t('btn_verify_email') : t('btn_login_header');
                 if(headerUserBtn) headerUserBtn.title = t('tip_login');
             }
         }
@@ -244,14 +309,14 @@ import { loadFirebaseServices } from './services/firebase';
             else { langZhBtn?.classList.add('text-[var(--accent)]'); langEnBtn?.classList.remove('text-[var(--accent)]'); }
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (translations[currentLang][key]) {
+                if (translations[currentLang]?.[key]) {
                     if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'email' || el.type === 'password')) el.placeholder = translations[currentLang][key];
                     else el.textContent = translations[currentLang][key];
                 }
             });
             document.querySelectorAll('[data-i18n-title]').forEach(el => {
                 const key = el.getAttribute('data-i18n-title');
-                if (translations[currentLang][key]) el.title = translations[currentLang][key];
+                if (translations[currentLang]?.[key]) el.title = translations[currentLang][key];
             });
             if(currentRenderMode === 'dot') {
                 const el = document.getElementById('lblGridSize'); if(el) el.textContent = t('lbl_grid');
@@ -299,6 +364,7 @@ import { loadFirebaseServices } from './services/firebase';
         }
 
         function setRenderMode(mode) {
+            if (isExporting || isRasterExporting) return;
             currentRenderMode = mode;
             const modeDotBtn = document.getElementById('modeDotBtn');
             const modeAsciiBtn = document.getElementById('modeAsciiBtn');
@@ -791,8 +857,10 @@ import { loadFirebaseServices } from './services/firebase';
                 showModal({ title: t('msg_sys_notice'), message: t('msg_err_upload'), hideCancel: true });
                 return;
             }
-            if (!isProUser && freeExportsLeft <= 0) { document.getElementById('loginModal')?.classList.remove('hidden'); document.getElementById('loginModal')?.classList.add('flex'); return; }
+            if (!isProUser && freeExportsLeft <= 0) { openLoginModal(); return; }
+            const shouldChargeFreeExport = !isProUser;
             isRasterExporting = true;
+            setExportControlsLocked(true);
             try {
                 const c = document.createElement('canvas');
                 const resVal = document.getElementById('exportResolution')?.value || 'source';
@@ -803,17 +871,22 @@ import { loadFirebaseServices } from './services/firebase';
                 if (currentRenderMode === 'glass') { generateGlass(c, scale, source); }
                 else { generateHalftone(c, scale, source, isVideo ? getInterpolatedGridSize(videoElement.currentTime) : (parseFloat(document.getElementById('gridSize')?.value || 20))); }
                 c.toBlob((blob) => {
-                    isRasterExporting = false;
-                    if (!blob) { showModal({ title: t('msg_err'), message: t('msg_err_render'), hideCancel: true }); return; }
-                    downloadFile(blob, format === 'jpeg' ? 'jpg' : 'png');
-                    if (!isProUser) {
-                        freeExportsLeft = Math.max(0, freeExportsLeft - 1);
-                        localStorage.setItem('matrix_ui_free_exports_left', String(freeExportsLeft));
-                        updateLoginUI();
+                    try {
+                        if (!blob) { showModal({ title: t('msg_err'), message: t('msg_err_render'), hideCancel: true }); return; }
+                        downloadFile(blob, format === 'jpeg' ? 'jpg' : 'png');
+                        if (shouldChargeFreeExport) {
+                            freeExportsLeft = Math.max(0, freeExportsLeft - 1);
+                            appStorage.setItem('matrix_ui_free_exports_left', String(freeExportsLeft));
+                            updateLoginUI();
+                        }
+                    } finally {
+                        isRasterExporting = false;
+                        setExportControlsLocked(false);
                     }
                 }, `image/${format}`, format === 'jpeg' ? 0.95 : undefined);
             } catch (error) {
                 isRasterExporting = false;
+                setExportControlsLocked(false);
                 console.error(error);
                 showModal({ title: t('msg_err'), message: t('msg_err_render'), hideCancel: true });
             }
@@ -826,8 +899,8 @@ import { loadFirebaseServices } from './services/firebase';
             for (const name in userPresets) { const opt = document.createElement('option'); opt.value = name; opt.textContent = name; presetSelect.appendChild(opt); }
             if (userPresets[currentSelection]) presetSelect.value = currentSelection;
         }
-        function loadLocalPresets(uid = currentUser?.uid) { userPresets = readPresets(localStorage, uid); updatePresetDropdown(); }
-        function persistLocalPresets(uid = currentUser?.uid) { writePresets(localStorage, userPresets, uid); }
+        function loadLocalPresets(uid = currentUser?.uid) { userPresets = readPresets(appStorage, uid); updatePresetDropdown(); }
+        function persistLocalPresets(uid = currentUser?.uid) { writePresets(appStorage, userPresets, uid); }
 
         function applyPreset(preset) {
             if (!preset || typeof preset !== 'object') return;
@@ -950,50 +1023,75 @@ import { loadFirebaseServices } from './services/firebase';
                 const services = await loadFirebaseServices();
                 firebaseServices = services;
                 const { auth, db, authApi, firestoreApi } = services;
-                authApi.onAuthStateChanged(auth, (user) => {
+                if (unsubscribeAuth) unsubscribeAuth();
+                await new Promise((resolve) => {
+                  let waitingForInitialState = true;
+                  const finishInitialState = () => {
+                    if (!waitingForInitialState) return;
+                    waitingForInitialState = false;
+                    resolve();
+                  };
+                  unsubscribeAuth = authApi.onIdTokenChanged(auth, (user) => {
                     const subscriptionGeneration = ++presetSubscriptionGeneration;
+                    authGeneration += 1;
                     if (unsubscribePresets) {
-                        unsubscribePresets();
-                        unsubscribePresets = null;
+                      unsubscribePresets();
+                      unsubscribePresets = null;
                     }
                     currentUser = user;
-                    if (user && !user.isAnonymous) {
-                        isProUser = true; updateLoginUI();
-                        const cs = document.getElementById('cloudStatus');
-                        if(cs) { cs.textContent = t('status_synced'); cs.className = "text-[9px] text-[var(--accent)] font-bold px-3 py-1 neu-inset rounded-full"; }
-                        const subscribedUid = user.uid;
-                        unsubscribePresets = firestoreApi.onSnapshot(firestoreApi.collection(db, 'artifacts', currentAppId, 'users', subscribedUid, 'presets'), (snapshot) => {
-                            if (subscriptionGeneration !== presetSubscriptionGeneration || currentUser?.uid !== subscribedUid) return;
-                            userPresets = readPresets(localStorage, subscribedUid);
-                            snapshot.forEach(snapshotDoc => userPresets[snapshotDoc.id] = snapshotDoc.data());
-                            updatePresetDropdown();
-                        }, () => {
-                            if (subscriptionGeneration !== presetSubscriptionGeneration || currentUser?.uid !== subscribedUid) return;
-                            const cs = document.getElementById('cloudStatus');
-                            if (cs) cs.textContent = t('status_sync_err');
-                            loadLocalPresets(subscribedUid);
-                        });
+                    isProUser = hasVerifiedAccountAccess(user);
+                    authReady = true;
+                    updateLoginUI();
+                    if (isProUser) {
+                      setCloudStatus('status_conn');
+                      const subscribedUid = user.uid;
+                      unsubscribePresets = firestoreApi.onSnapshot(firestoreApi.collection(db, 'artifacts', currentAppId, 'users', subscribedUid, 'presets'), (snapshot) => {
+                        if (subscriptionGeneration !== presetSubscriptionGeneration || currentUser?.uid !== subscribedUid) return;
+                        const cloudPresets = {};
+                        snapshot.forEach(snapshotDoc => cloudPresets[snapshotDoc.id] = snapshotDoc.data());
+                        userPresets = cloudPresets;
+                        writePresets(appStorage, cloudPresets, subscribedUid);
+                        updatePresetDropdown();
+                        setCloudStatus('status_synced');
+                      }, () => {
+                        if (subscriptionGeneration !== presetSubscriptionGeneration || currentUser?.uid !== subscribedUid) return;
+                        setCloudStatus('status_sync_err');
+                        loadLocalPresets(subscribedUid);
+                      });
                     } else {
-                        isProUser = false; updateLoginUI();
-                        const cs = document.getElementById('cloudStatus');
-                        if(cs) { cs.textContent = t('status_local'); cs.className = "text-[9px] text-[var(--text-muted)] font-bold px-3 py-1 neu-inset rounded-full"; }
-                        loadLocalPresets();
+                      setCloudStatus('status_local');
+                      loadLocalPresets(user?.uid ?? null);
                     }
+                    finishInitialState();
+                  }, () => {
+                    currentUser = null;
+                    isProUser = false;
+                    authReady = true;
+                    setCloudStatus('status_local');
+                    loadLocalPresets(null);
+                    updateLoginUI();
+                    finishInitialState();
+                  });
                 });
               } catch (error) {
                 console.warn('Firebase unavailable; continuing in local mode.', error);
+                if (unsubscribeAuth) unsubscribeAuth();
+                unsubscribeAuth = null;
                 firebaseServices = null;
                 firebaseConnectionPromise = null;
-                loadLocalPresets();
-                const cloudStatus = document.getElementById('cloudStatus');
-                if (cloudStatus) cloudStatus.textContent = t('status_local');
+                currentUser = null;
+                isProUser = false;
+                authReady = true;
+                loadLocalPresets(null);
+                setCloudStatus('status_local');
+                updateLoginUI();
               }
             })();
             return firebaseConnectionPromise;
         }
 
         function initApp() {
-            const storedTheme = localStorage.getItem('matrix_ui_theme');
+            const storedTheme = appStorage.getItem('matrix_ui_theme');
             const useDarkTheme = storedTheme === 'dark';
             document.body.classList.toggle('dark-mode', useDarkTheme);
             document.getElementById('themeIconSun')?.classList.toggle('hidden', useDarkTheme);
@@ -1004,12 +1102,15 @@ import { loadFirebaseServices } from './services/firebase';
             applyI18n();
             setRenderMode('dot');
             triggerResize();
+            setCloudStatus('status_conn');
             void connectFirebase();
             window.addEventListener('resize', triggerResize);
             window.addEventListener('beforeunload', () => {
                 stopVideoFrameLoop();
                 if (currentMediaUrl) URL.revokeObjectURL(currentMediaUrl);
                 if (unsubscribePresets) unsubscribePresets();
+                if (unsubscribeAuth) unsubscribeAuth();
+                exportAbortController?.abort();
             });
 
             // Bind Event Listeners
@@ -1081,100 +1182,166 @@ import { loadFirebaseServices } from './services/firebase';
             document.getElementById('asciiCharsInput')?.addEventListener('input', () => { const aps = document.getElementById('asciiPresetSelect'); if(aps) aps.value = 'custom'; const ps = document.getElementById('presetSelect'); if(ps) ps.value = ""; document.getElementById('deletePresetBtn')?.classList.add('hidden'); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
 
             document.getElementById('gridSize')?.addEventListener('input', (e) => { isManuallyOverridingGrid = true; const ps = document.getElementById('presetSelect'); if(ps) ps.value = ""; document.getElementById('deletePresetBtn')?.classList.add('hidden'); const gsi = document.getElementById('gridSizeInput'); if(gsi) gsi.value = parseFloat(e.target.value).toFixed(1); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
-            document.getElementById('gridSizeInput')?.addEventListener('input', (e) => { isManuallyOverridingGrid = true; const ps = document.getElementById('presetSelect'); if(ps) ps.value = ""; document.getElementById('deletePresetBtn')?.classList.add('hidden'); let val = parseFloat(e.target.value); if (!isNaN(val)) { const gs = document.getElementById('gridSize'); if(gs) { val = Math.max(parseFloat(gs.min), Math.min(parseFloat(gs.max), val)); gs.value = String(val); } if (!isVideo || (videoElement && videoElement.paused)) processFrame(); } });
+            document.getElementById('gridSizeInput')?.addEventListener('input', (e) => { isManuallyOverridingGrid = true; const ps = document.getElementById('presetSelect'); if(ps) ps.value = ""; document.getElementById('deletePresetBtn')?.classList.add('hidden'); let val = parseFloat(e.target.value); if (!isNaN(val)) { const gs = document.getElementById('gridSize'); if(gs) { val = Math.max(parseFloat(gs.min), Math.min(parseFloat(gs.max), val)); gs.value = String(val); e.target.value = String(val); } if (!isVideo || (videoElement && videoElement.paused)) processFrame(); } });
 
-            document.getElementById('langEnBtn')?.addEventListener('click', () => { currentLang = 'en'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
-            document.getElementById('langZhBtn')?.addEventListener('click', () => { currentLang = 'zh'; localStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
+            document.getElementById('langEnBtn')?.addEventListener('click', () => { currentLang = 'en'; appStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
+            document.getElementById('langZhBtn')?.addEventListener('click', () => { currentLang = 'zh'; appStorage.setItem('matrix_ui_lang', currentLang); applyI18n(); });
 
             document.getElementById('themeToggleBtn')?.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode'); localStorage.setItem('matrix_ui_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+                document.body.classList.toggle('dark-mode'); appStorage.setItem('matrix_ui_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
                 document.getElementById('themeIconSun')?.classList.toggle('hidden'); document.getElementById('themeIconMoon')?.classList.toggle('hidden');
                 if (!imageElement && !videoElement) initEmptyCanvas();
             });
 
-            document.getElementById('headerUserBtn')?.addEventListener('click', async () => { if (isProUser && firebaseServices) { await firebaseServices.authApi.signOut(firebaseServices.auth); updateLoginUI(); } else { document.getElementById('loginModal')?.classList.remove('hidden'); document.getElementById('loginModal')?.classList.add('flex'); } });
-            document.getElementById('loginCancelBtn')?.addEventListener('click', () => { document.getElementById('loginModal')?.classList.add('hidden'); document.getElementById('loginModal')?.classList.remove('flex'); });
-
-            document.getElementById('authGoogleBtn')?.addEventListener('click', async () => { try { await connectFirebase(); const services = firebaseServices; if (!services) throw new Error(t('msg_err_cloud')); const googleProvider = new services.authApi.GoogleAuthProvider(); await services.authApi.signInWithPopup(services.auth, googleProvider); document.getElementById('loginModal')?.classList.add('hidden'); document.getElementById('loginModal')?.classList.remove('flex'); } catch(e) { showModal({ message: e.message, hideCancel: true }); } });
-
-            document.getElementById('authEmailBtn')?.addEventListener('click', async () => {
-                const em = document.getElementById('authEmail')?.value;
-                const pw = document.getElementById('authPassword')?.value;
-                if(em && pw) {
+            document.getElementById('headerUserBtn')?.addEventListener('click', async () => {
+                if (!authReady) { await connectFirebase(); return; }
+                if (isProUser && firebaseServices) {
                     try {
-                        await connectFirebase();
-                        const services = firebaseServices;
-                        if (!services) throw new Error(t('msg_err_cloud'));
-                        try {
-                            await services.authApi.signInWithEmailAndPassword(services.auth, em, pw);
-                        } catch (err) {
-                            if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-                                await services.authApi.createUserWithEmailAndPassword(services.auth, em, pw);
-                            } else {
-                                throw err;
-                            }
-                        }
-                        document.getElementById('loginModal')?.classList.add('hidden');
-                        document.getElementById('loginModal')?.classList.remove('flex');
-                    } catch(e) {
-                        showModal({ title: t('msg_err'), message: e.message, hideCancel: true });
+                        await firebaseServices.authApi.signOut(firebaseServices.auth);
+                        await showModal({ title: t('msg_sys_notice'), message: t('msg_logged_out'), hideCancel: true });
+                    } catch (error) {
+                        await showAuthError(error);
                     }
+                    return;
                 }
-                else showModal({ title: t('msg_sys_notice'), message: currentLang === 'zh' ? "请输入邮箱和密码" : "Please enter email and password.", hideCancel: true });
+                openLoginModal();
+            });
+            document.getElementById('loginCancelBtn')?.addEventListener('click', closeLoginModal);
+
+            document.getElementById('authGoogleBtn')?.addEventListener('click', async () => {
+                setAuthButtonsDisabled(true);
+                try {
+                    await connectFirebase();
+                    const services = firebaseServices;
+                    if (!services) throw { code: 'auth/network-request-failed' };
+                    const googleProvider = new services.authApi.GoogleAuthProvider();
+                    const credential = await services.authApi.signInWithPopup(services.auth, googleProvider);
+                    if (!hasVerifiedAccountAccess(credential.user)) {
+                        await services.authApi.signOut(services.auth);
+                        throw { code: 'auth/invalid-credential' };
+                    }
+                    closeLoginModal();
+                } catch(error) {
+                    await showAuthError(error);
+                } finally {
+                    setAuthButtonsDisabled(false);
+                }
             });
 
-            document.getElementById('exportSvgBtn')?.addEventListener('click', () => { if (isExporting || isRasterExporting) return; if (!isProUser) { document.getElementById('loginModal')?.classList.remove('hidden'); document.getElementById('loginModal')?.classList.add('flex'); return; } exportVectorSVG(); });
+            const readAuthFields = () => ({
+                email: document.getElementById('authEmail')?.value.trim() ?? '',
+                password: document.getElementById('authPassword')?.value ?? '',
+            });
+
+            document.getElementById('authEmailBtn')?.addEventListener('click', async () => {
+                const { email, password } = readAuthFields();
+                if (!email || !password) { await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_fields'), hideCancel: true }); return; }
+                setAuthButtonsDisabled(true);
+                try {
+                    await connectFirebase();
+                    const services = firebaseServices;
+                    if (!services) throw { code: 'auth/network-request-failed' };
+                    const credential = await services.authApi.signInWithEmailAndPassword(services.auth, email, password);
+                    await services.authApi.reload(credential.user);
+                    if (!hasVerifiedAccountAccess(credential.user)) {
+                        try { await services.authApi.sendEmailVerification(credential.user); } finally { await services.authApi.signOut(services.auth); }
+                        closeLoginModal();
+                        await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_verify_required'), hideCancel: true });
+                        return;
+                    }
+                    await credential.user.getIdToken(true);
+                    closeLoginModal();
+                } catch(error) {
+                    await showAuthError(error);
+                } finally {
+                    setAuthButtonsDisabled(false);
+                }
+            });
+
+            document.getElementById('authRegisterBtn')?.addEventListener('click', async () => {
+                const { email, password } = readAuthFields();
+                if (!email || !password) { await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_fields'), hideCancel: true }); return; }
+                setAuthButtonsDisabled(true);
+                try {
+                    await connectFirebase();
+                    const services = firebaseServices;
+                    if (!services) throw { code: 'auth/network-request-failed' };
+                    const credential = await services.authApi.createUserWithEmailAndPassword(services.auth, email, password);
+                    try { await services.authApi.sendEmailVerification(credential.user); } finally { await services.authApi.signOut(services.auth); }
+                    closeLoginModal();
+                    await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_verify_sent'), hideCancel: true });
+                } catch(error) {
+                    await showAuthError(error);
+                } finally {
+                    setAuthButtonsDisabled(false);
+                }
+            });
+
+            document.getElementById('exportSvgBtn')?.addEventListener('click', () => { if (isExporting || isRasterExporting) return; if (!isProUser) { openLoginModal(); return; } exportVectorSVG(); });
             document.getElementById('exportPngBtn')?.addEventListener('click', () => renderRasterFormat('png'));
             document.getElementById('exportJpgBtn')?.addEventListener('click', () => renderRasterFormat('jpeg'));
 
             document.getElementById('exportSequence')?.addEventListener('click', async () => {
                 if (isExporting || isRasterExporting) return;
                 if (!isProUser) {
-                    document.getElementById('loginModal')?.classList.remove('hidden');
-                    document.getElementById('loginModal')?.classList.add('flex');
+                    openLoginModal();
                     return;
                 }
                 if (!videoElement || !isVideo || videoElement.readyState < 2 || !videoElement.videoWidth || !videoElement.videoHeight || !Number.isFinite(videoElement.duration) || videoElement.duration <= 0) { showModal({ message: t('msg_err_export_req'), hideCancel: true }); return; }
                 const exportVideo = videoElement;
                 const resumeAfterExport = !exportVideo.paused;
-                isExporting = true; exportVideo.pause();
+                const exportRenderMode = currentRenderMode;
+                const abortController = new AbortController();
+                exportAbortController = abortController;
+                isExporting = true; exportVideo.pause(); setExportControlsLocked(true);
                 const exportOverlay = document.getElementById('exportOverlay'); if(exportOverlay) exportOverlay.style.display = 'flex';
+                const exportTitle = document.getElementById('exportTitle'); if (exportTitle) exportTitle.textContent = t('modal_exp_title');
+                const exportProgressBar = document.getElementById('exportProgressBar'); if (exportProgressBar) exportProgressBar.style.width = '0%';
+                const exportStatus = document.getElementById('exportStatus'); if (exportStatus) exportStatus.textContent = t('modal_exp_status');
                 const exportResolution = document.getElementById('exportResolution'); const resVal = exportResolution ? exportResolution.value : 'source'; let exportWidth = exportVideo.videoWidth, exportHeight = exportVideo.videoHeight;
                 if (resVal !== 'source') [exportWidth, exportHeight] = resVal.split('x').map(Number);
                 const exportCanvas = document.createElement('canvas'); exportCanvas.width = exportWidth; exportCanvas.height = exportHeight; const scale = exportWidth / exportVideo.videoWidth;
                 try {
-                    const { default: JSZip } = await import('jszip');
-                    const zip = new JSZip();
+                    const frames = [];
                     const fpsInput = document.getElementById('fpsInput'); const fps = fpsInput ? parseInt(fpsInput.value) : 24; const totalFrames = Math.ceil(exportVideo.duration * fps); const timeStep = 1 / fps;
                     for (let i = 0; i < totalFrames; i++) {
-                        if (!isExporting) break; const targetTime = i * timeStep;
+                        abortController.signal.throwIfAborted();
+                        const targetTime = i * timeStep;
                         if (Math.abs(exportVideo.currentTime - targetTime) > 0.01) {
                             await new Promise(resolve => { let fired = false; const handler = () => { if(fired) return; fired = true; exportVideo.removeEventListener('seeked', handler); resolve(); }; exportVideo.addEventListener('seeked', handler); exportVideo.currentTime = targetTime; setTimeout(() => { if(!fired){ fired = true; exportVideo.removeEventListener('seeked', handler); resolve(); } }, 500); });
                         }
-                        if (!isExporting) break;
-                        if (currentRenderMode === 'glass') { generateGlass(exportCanvas, scale, exportVideo); } else { generateHalftone(exportCanvas, scale, exportVideo, getInterpolatedGridSize(targetTime)); }
+                        abortController.signal.throwIfAborted();
+                        if (exportRenderMode === 'glass') { generateGlass(exportCanvas, scale, exportVideo); } else { generateHalftone(exportCanvas, scale, exportVideo, getInterpolatedGridSize(targetTime)); }
                         const blob = await new Promise(res => exportCanvas.toBlob(res, 'image/png'));
-                        if (!isExporting) break;
-                        if (blob) zip.file(`frame_${i.toString().padStart(5, '0')}.png`, blob);
+                        abortController.signal.throwIfAborted();
+                        if (!blob) throw new Error('Frame encoding failed.');
+                        frames.push({ name: `frame_${i.toString().padStart(5, '0')}.png`, data: await blob.arrayBuffer() });
                         const pb = document.getElementById('exportProgressBar'); if(pb) pb.style.width = `${((i + 1) / totalFrames) * 100}%`;
                         const st = document.getElementById('exportStatus'); if(st) st.textContent = `${t('msg_engine')} ${i + 1} / ${totalFrames}`;
                     }
-                    if (isExporting) {
-                        const et = document.getElementById('exportTitle'); if(et) et.textContent = t('msg_compressing');
-                        const content = await zip.generateAsync({ type: "blob" }, (meta) => {
-                            const pb = document.getElementById('exportProgressBar'); if(pb) pb.style.width = `${Math.max(meta.percent, ((totalFrames-1)/totalFrames)*100)}%`;
-                            const st = document.getElementById('exportStatus'); if(st) st.textContent = `Compressing: ${Math.round(meta.percent)}%`;
-                        });
-                        if (!isExporting) return;
-                        const url = URL.createObjectURL(content); const link = document.createElement('a'); link.href = url; link.download = `zyronmatrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url);
-                    }
-                } catch (e) { console.error(e); showModal({ title: t('msg_err'), message: t('msg_err_export'), hideCancel: true }); } finally { isExporting = false; if(exportOverlay) exportOverlay.style.display = 'none'; if (resumeAfterExport && exportVideo === videoElement && isVideo) exportVideo.play().catch(() => {}); }
+                    abortController.signal.throwIfAborted();
+                    const et = document.getElementById('exportTitle'); if(et) et.textContent = t('msg_compressing');
+                    const content = await packageZipFrames(frames, abortController.signal, (percent) => {
+                        const pb = document.getElementById('exportProgressBar'); if(pb) pb.style.width = `${Math.max(percent, ((totalFrames-1)/totalFrames)*100)}%`;
+                        const st = document.getElementById('exportStatus'); if(st) st.textContent = `Compressing: ${Math.round(percent)}%`;
+                    });
+                    abortController.signal.throwIfAborted();
+                    const url = URL.createObjectURL(content); const link = document.createElement('a'); link.href = url; link.download = `zyronmatrix_video_export_${Date.now()}.zip`; link.style.display = 'none'; document.body.appendChild(link); link.click(); document.body.removeChild(link); setTimeout(() => URL.revokeObjectURL(url), 1000);
+                } catch (e) {
+                    if (e?.name !== 'AbortError') { console.error(e); showModal({ title: t('msg_err'), message: t('msg_err_export'), hideCancel: true }); }
+                } finally {
+                    if (exportAbortController === abortController) exportAbortController = null;
+                    isExporting = false;
+                    setExportControlsLocked(false);
+                    if(exportOverlay) exportOverlay.style.display = 'none';
+                    if (resumeAfterExport && exportVideo === videoElement && isVideo) exportVideo.play().catch(() => {});
+                }
             });
-            document.getElementById('cancelExport')?.addEventListener('click', () => { isExporting = false; });
+            document.getElementById('cancelExport')?.addEventListener('click', () => { isExporting = false; exportAbortController?.abort(); });
 
             // --- DRAG AND DROP & FILE UPLOAD ---
             document.getElementById('fileUpload')?.addEventListener('change', (e) => {
-                if (!isExporting) handleMediaFile(e.target.files[0]);
+                if (!isExporting && !isRasterExporting) handleMediaFile(e.target.files[0]);
                 e.target.value = '';
             });
 
@@ -1197,20 +1364,20 @@ import { loadFirebaseServices } from './services/firebase';
                 const overlay = document.getElementById('dragOverlay');
                 if(overlay) { overlay.classList.add('hidden'); overlay.classList.remove('flex'); }
                 if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                    if (!isExporting) handleMediaFile(e.dataTransfer.files[0]);
+                    if (!isExporting && !isRasterExporting) handleMediaFile(e.dataTransfer.files[0]);
                 }
             });
 
             const playPauseBtn = document.getElementById('playPauseBtn');
-            if(playPauseBtn) playPauseBtn.onclick = () => { isManuallyOverridingGrid = false; if (videoElement) { if (videoElement.paused) { videoElement.play().catch(e=>{}); } else { videoElement.pause(); } } };
-            function stepFrame(direction) { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.pause(); const fps = document.getElementById('fpsInput') ? parseInt(document.getElementById('fpsInput').value) : 24; videoElement.currentTime = Math.max(0, Math.min(videoElement.duration, videoElement.currentTime + (direction * (1 / (fps || 24))))); const vs = document.getElementById('videoScrubber'); if(vs) vs.value = (videoElement.currentTime / videoElement.duration) * 100 || 0; updateTimeDisplay(); }
+            if(playPauseBtn) playPauseBtn.onclick = () => { if (isExporting) return; isManuallyOverridingGrid = false; if (videoElement) { if (videoElement.paused) { videoElement.play().catch(e=>{}); } else { videoElement.pause(); } } };
+            function stepFrame(direction) { if (isExporting || !isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.pause(); const fps = document.getElementById('fpsInput') ? parseInt(document.getElementById('fpsInput').value) : 24; videoElement.currentTime = Math.max(0, Math.min(videoElement.duration, videoElement.currentTime + (direction * (1 / (fps || 24))))); const vs = document.getElementById('videoScrubber'); if(vs) vs.value = (videoElement.currentTime / videoElement.duration) * 100 || 0; updateTimeDisplay(); }
             const prevFrameBtn = document.getElementById('prevFrameBtn'); if(prevFrameBtn) prevFrameBtn.onclick = () => stepFrame(-1);
             const nextFrameBtn = document.getElementById('nextFrameBtn'); if(nextFrameBtn) nextFrameBtn.onclick = () => stepFrame(1);
             const videoScrubber = document.getElementById('videoScrubber');
-            const startScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = true; isManuallyOverridingGrid = false; wasPlaying = !videoElement.paused; videoElement.pause(); };
-            const stopScrubbing = () => { if (!isVideo || !videoElement) return; isScrubbing = false; if (wasPlaying) { videoElement.play().catch(e=>{}); } };
+            const startScrubbing = () => { if (isExporting || !isVideo || !videoElement) return; isScrubbing = true; isManuallyOverridingGrid = false; wasPlaying = !videoElement.paused; videoElement.pause(); };
+            const stopScrubbing = () => { if (isExporting || !isVideo || !videoElement) return; isScrubbing = false; if (wasPlaying) { videoElement.play().catch(e=>{}); } };
             videoScrubber?.addEventListener('mousedown', startScrubbing); videoScrubber?.addEventListener('touchstart', startScrubbing, {passive: true}); videoScrubber?.addEventListener('mouseup', stopScrubbing); videoScrubber?.addEventListener('touchend', stopScrubbing);
-            videoScrubber?.addEventListener('input', (e) => { if (!isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.currentTime = (e.target.value / 100) * videoElement.duration; updateTimeDisplay(); });
+            videoScrubber?.addEventListener('input', (e) => { if (isExporting || !isVideo || !videoElement) return; isManuallyOverridingGrid = false; videoElement.currentTime = (e.target.value / 100) * videoElement.duration; updateTimeDisplay(); });
             document.addEventListener('mouseup', () => { if (isScrubbing) stopScrubbing(); });
             document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isCssFullscreen) { const p = document.getElementById('previewContainer'); isCssFullscreen = false; p?.classList.replace('fixed', 'relative'); p?.classList.add('p-4', 'md:p-8', 'h-[50vh]', 'lg:h-[calc(100vh-140px)]'); p?.classList.remove('inset-0', 'z-[100]', 'w-screen', 'h-screen'); document.getElementById('fsEnterIcon')?.classList.remove('hidden'); document.getElementById('fsExitIcon')?.classList.add('hidden'); triggerResize(); return; } if (!isVideo || !videoElement || isExporting || e.target.tagName === 'INPUT') return; if (e.code === 'Space') { e.preventDefault(); playPauseBtn?.click(); } else if (e.code === 'ArrowLeft') { e.preventDefault(); stepFrame(-1); } else if (e.code === 'ArrowRight') { e.preventDefault(); stepFrame(1); } });
 
@@ -1232,13 +1399,14 @@ import { loadFirebaseServices } from './services/firebase';
             });
 
             document.getElementById('addKeyframe')?.addEventListener('click', () => {
+                if (isExporting) return;
                 if (!isVideo || !videoElement) { showModal({ title: t('msg_sys_notice'), message: t('msg_err_keyframe'), hideCancel: true }); return; }
                 const time = videoElement.currentTime; const gs = document.getElementById('gridSize'); const value = parseFloat(gs?.value || 20);
                 keyframes = keyframes.filter(k => Math.abs(k.time - time) > 0.1); keyframes.push({ time, value });
                 isManuallyOverridingGrid = false; updateKeyframeUI(); processFrame();
                 const btn = document.getElementById('addKeyframe'); const oldText = btn.innerHTML; btn.innerHTML = t('msg_key_added'); setTimeout(() => { btn.innerHTML = oldText; }, 1500);
             });
-            document.getElementById('clearKeyframes')?.addEventListener('click', () => { keyframes = []; updateKeyframeUI(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
+            document.getElementById('clearKeyframes')?.addEventListener('click', () => { if (isExporting) return; keyframes = []; updateKeyframeUI(); if (!isVideo || (videoElement && videoElement.paused)) processFrame(); });
 
             document.getElementById('resetGeometryBtn')?.addEventListener('click', () => {
                 const ids = ['gridSize', 'dotScale', 'dotCutoff', 'ditherThreshold', 'stuckiFactor', 'glassImgScale', 'glassImgOffsetX', 'glassImgOffsetY', 'glassExtract', 'glassMaskW', 'glassMaskH', 'glassMaskX', 'glassMaskY'];
@@ -1253,7 +1421,7 @@ import { loadFirebaseServices } from './services/firebase';
 
             document.getElementById('resetColorBtn')?.addEventListener('click', () => {
                 const resetValues = {
-                    bgColor: defaults.bgColor, dotColor: defaults.dotColor, dotStyleSelect: defaults.dotStyle,
+                    bgColor: defaults.bgColor, dotColor: defaults.dotColor, dotStyleSelect: defaults.dotStyle, asciiLogicSelect: defaults.asciiLogic,
                     customColorDark: defaults.customColorDark, customColorMid: defaults.customColorMid, customColorLight: defaults.customColorLight,
                     asciiCharsInput: defaults.asciiChars, asciiPresetSelect: defaults.asciiChars, asciiRatio: defaults.asciiRatio, asciiIntensity: defaults.asciiIntensity,
                     glassLight: defaults.glassLight, glassColorMode: defaults.glassColorMode, glassSpatial1: defaults.glassSpatial1,
@@ -1292,7 +1460,14 @@ import { loadFirebaseServices } from './services/firebase';
             });
 
             document.getElementById('savePresetBtn')?.addEventListener('click', async () => {
+                if (isExporting || isRasterExporting) return;
+                const operationGeneration = authGeneration;
+                const operationUid = currentUser?.uid ?? null;
+                const operationServices = firebaseServices;
+                const operationIsCloud = Boolean(operationServices && isProUser && operationUid);
                 const name = await showModal({ title: t('msg_save_preset'), message: t('msg_enter_name'), showInput: true }); if (!name) return;
+                if (operationGeneration !== authGeneration || operationUid !== (currentUser?.uid ?? null)) { await showModal({ title: t('msg_err'), message: t('msg_auth_changed'), hideCancel: true }); return; }
+                if (name.length > 80 || name.includes('/')) { await showModal({ title: t('msg_err'), message: t('msg_preset_name_invalid'), hideCancel: true }); return; }
                 const p = {};
                 const ids = ['gridSize', 'dotScale', 'sourceBrightness', 'sourceContrast', 'brightness', 'contrast', 'fpsInput', 'dotCutoff', 'ditherThreshold', 'stuckiFactor', 'asciiRatio', 'asciiIntensity', 'glassImgScale', 'glassImgOffsetX', 'glassImgOffsetY', 'glassMaskW', 'glassMaskH', 'glassMaskX', 'glassMaskY', 'glassLight', 'glassAngle', 'glassOffset', 'glassBlur', 'glassSharp', 'glassStripe', 'glassDisp', 'glassShading', 'glassNoise'];
                 ids.forEach(id => { const el = document.getElementById(id); if(el) p[id] = parseFloat(el.value); });
@@ -1302,17 +1477,40 @@ import { loadFirebaseServices } from './services/firebase';
                 bools.forEach(id => { const el = document.getElementById(id); if(el) p[id] = el.checked; });
                 p.renderMode = currentRenderMode;
                 userPresets[name] = p; const ps = document.getElementById('presetSelect'); updatePresetDropdown(); if(ps) ps.value = name; document.getElementById('deletePresetBtn')?.classList.remove('hidden');
-                if (firebaseServices && currentUser && !currentUser.isAnonymous) { try { const { db, firestoreApi } = firebaseServices; await firestoreApi.setDoc(firestoreApi.doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name), p); } catch (e) { persistLocalPresets(currentUser.uid); showModal({ title: t('msg_err'), message: t('msg_err_cloud'), hideCancel: true }); } }
-                else { persistLocalPresets(); updatePresetDropdown(); if(ps) ps.value = name; }
+                persistLocalPresets(operationUid);
+                if (operationIsCloud) {
+                    try {
+                        const { db, firestoreApi } = operationServices;
+                        await firestoreApi.setDoc(firestoreApi.doc(db, 'artifacts', currentAppId, 'users', operationUid, 'presets', name), p);
+                        if (operationGeneration === authGeneration) setCloudStatus('status_synced');
+                    } catch (e) {
+                        if (operationGeneration === authGeneration) setCloudStatus('status_sync_err');
+                        await showModal({ title: t('msg_err'), message: t('msg_err_cloud'), hideCancel: true });
+                    }
+                }
             });
 
             document.getElementById('deletePresetBtn')?.addEventListener('click', async () => {
+                if (isExporting || isRasterExporting) return;
                 const ps = document.getElementById('presetSelect'); const name = ps ? ps.value : null; if (!name) return;
+                const operationGeneration = authGeneration;
+                const operationUid = currentUser?.uid ?? null;
+                const operationServices = firebaseServices;
+                const operationIsCloud = Boolean(operationServices && isProUser && operationUid);
                 if (await showModal({ title: t('msg_del_preset'), message: `${t('msg_confirm_del')} "${name}" ?`, showInput: false })) {
+                    if (operationGeneration !== authGeneration || operationUid !== (currentUser?.uid ?? null)) { await showModal({ title: t('msg_err'), message: t('msg_auth_changed'), hideCancel: true }); return; }
                     delete userPresets[name]; if(ps) ps.value = ""; document.getElementById('deletePresetBtn')?.classList.add('hidden');
-                    persistLocalPresets();
-                    if (firebaseServices && currentUser && !currentUser.isAnonymous) { try { const { db, firestoreApi } = firebaseServices; await firestoreApi.deleteDoc(firestoreApi.doc(db, 'artifacts', currentAppId, 'users', currentUser.uid, 'presets', name)); } catch (e) {} }
-                    else { updatePresetDropdown(); }
+                    persistLocalPresets(operationUid);
+                    updatePresetDropdown();
+                    if (operationIsCloud) {
+                        try {
+                            const { db, firestoreApi } = operationServices;
+                            await firestoreApi.deleteDoc(firestoreApi.doc(db, 'artifacts', currentAppId, 'users', operationUid, 'presets', name));
+                        } catch (e) {
+                            if (operationGeneration === authGeneration) setCloudStatus('status_sync_err');
+                            await showModal({ title: t('msg_err'), message: t('msg_delete_cloud'), hideCancel: true });
+                        }
+                    }
                 }
             });
         }
