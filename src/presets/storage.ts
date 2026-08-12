@@ -1,10 +1,12 @@
+import type { StorageLike } from '../storage/safe-storage';
+
 export type PresetRecord = Record<string, Record<string, unknown>>;
 
 export function presetStorageKey(uid?: string | null): string {
   return `halftone_user_presets:${uid || 'anonymous'}`;
 }
 
-export function readPresets(storage: Storage, uid?: string | null): PresetRecord {
+export function readPresets(storage: StorageLike, uid?: string | null): PresetRecord {
   const key = presetStorageKey(uid);
   let raw = storage.getItem(key);
   if (!raw && !uid) {
@@ -23,6 +25,6 @@ export function readPresets(storage: Storage, uid?: string | null): PresetRecord
   }
 }
 
-export function writePresets(storage: Storage, presets: PresetRecord, uid?: string | null): void {
+export function writePresets(storage: StorageLike, presets: PresetRecord, uid?: string | null): void {
   storage.setItem(presetStorageKey(uid), JSON.stringify(presets));
 }

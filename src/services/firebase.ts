@@ -27,7 +27,7 @@ export function loadFirebaseServices(): Promise<FirebaseServices> {
     import('firebase/auth'),
     import('firebase/firestore'),
   ]).then(([appApi, authApi, firestoreApi]) => {
-    const app = appApi.initializeApp(firebaseConfig);
+    const app = appApi.getApps().length ? appApi.getApp() : appApi.initializeApp(firebaseConfig);
     return {
       app,
       auth: authApi.getAuth(app),
