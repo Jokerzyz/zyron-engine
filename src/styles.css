@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+        :root {
+            --bg-color: #E0E5EC;
+            --shadow-dark: #a3b1c6;
+            --shadow-light: #ffffff;
+            --shadow-dark-strong: rgba(163, 177, 198, 0.6);
+            --shadow-dark-faint: rgba(184, 198, 217, 0.15);
+
+            --text-dark: #000000;
+            --text-muted: rgba(0, 0, 0, 0.45);
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --danger: #d92d20;
+
+            --border-light: rgba(255, 255, 255, 0.4);
+            --border-light-faint: rgba(255, 255, 255, 0.2);
+            --inner-highlight: rgba(255, 255, 255, 0.8);
+            --inner-highlight-strong: rgba(255, 255, 255, 0.9);
+
+            --overlay-bg: rgba(224, 229, 236, 0.85);
+            --modal-bg: rgba(163, 177, 198, 0.2);
+        }
+
+        body.dark-mode {
+            --bg-color: #2b2e33;
+            --shadow-dark: #1d1f23;
+            --shadow-light: #393d43;
+            --shadow-dark-strong: rgba(0, 0, 0, 0.6);
+            --shadow-dark-faint: rgba(0, 0, 0, 0.2);
+
+            --text-dark: #f0f0f0;
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --accent: #4d88ff;
+            --accent-glow: rgba(77, 136, 255, 0.15);
+            --danger: #ff6b6b;
+
+            --border-light: rgba(255, 255, 255, 0.05);
+            --border-light-faint: rgba(255, 255, 255, 0.02);
+            --inner-highlight: rgba(255, 255, 255, 0.05);
+            --inner-highlight-strong: rgba(255, 255, 255, 0.08);
+
+            --overlay-bg: rgba(43, 46, 51, 0.85);
+            --modal-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+            letter-spacing: 0.02em;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .control-panel::-webkit-scrollbar {
+            width: 18px;
+        }
+        .control-panel::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 20px;
+            box-shadow: inset 3px 3px 6px var(--shadow-dark),
+                        inset -3px -3px 6px var(--shadow-light);
+            border: 4px solid var(--bg-color);
+            margin-top: 36px;
+            margin-bottom: 36px;
+        }
+        .control-panel::-webkit-scrollbar-thumb {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: inset 1px 1px 2px var(--inner-highlight-strong),
+                        inset -1px -1px 3px var(--shadow-dark-strong);
+            border: 2px solid transparent;
+            background-clip: content-box;
+            cursor: pointer;
+        }
+        .control-panel::-webkit-scrollbar-thumb:hover { background-color: var(--shadow-light); }
+        .control-panel::-webkit-scrollbar-thumb:active { background-color: var(--accent); box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3); }
+
+        .neu-panel {
+            background: var(--bg-color);
+            border-radius: 32px;
+            box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+            border: 1px solid var(--border-light);
+        }
+
+        .neu-inset {
+            background: var(--bg-color);
+            border-radius: 20px;
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+            border: 1px solid transparent;
+        }
+
+        .neu-btn {
+            background: var(--bg-color);
+            border-radius: 16px;
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light), inset 1px 1px 2px var(--inner-highlight);
+            color: var(--text-dark);
+            font-weight: 800;
+            transition: all 0.2s cubic-bezier(0.15, 0.8, 0.25, 1);
+            border: 1px solid var(--border-light-faint);
+            display: inline-flex; justify-content: center; align-items: center;
+            cursor: pointer;
+        }
+        .neu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light), inset 1px 1px 2px var(--inner-highlight-strong);
+        }
+        .neu-btn:active, .neu-btn.active {
+            transform: translateY(1px);
+            box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+            border-color: transparent; color: var(--accent);
+        }
+
+        .neu-input {
+            background: var(--bg-color);
+            border-radius: 14px;
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            border: 2px solid transparent;
+            color: var(--text-dark); padding: 10px 14px; font-weight: 700; transition: all 0.25s ease; appearance: none; -webkit-appearance: none;
+        }
+        .neu-input:focus { outline: none; border-color: var(--accent); color: var(--accent); box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light), 0 0 0 4px var(--accent-glow); }
+
+        input[type="range"] { -webkit-appearance: none; width: 100%; background: transparent; padding: 10px 0; }
+        input[type="range"]:focus { outline: none; }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%; height: 12px; background: var(--bg-color); border-radius: 12px;
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%;
+            background: var(--bg-color);
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light), inset 2px 2px 4px var(--inner-highlight-strong);
+            margin-top: -7px; cursor: pointer; transition: all 0.15s ease; border: 2px solid var(--bg-color);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
+        input[type="range"]::-webkit-slider-thumb:active { background: var(--accent); box-shadow: 2px 2px 6px var(--shadow-dark), -2px -2px 6px var(--shadow-light); }
+
+        input[type="color"] {
+            -webkit-appearance: none; border: none; width: 40px; height: 40px; border-radius: 50%;
+            padding: 0; background: var(--bg-color); cursor: pointer; overflow: hidden;
+            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); transition: transform 0.2s;
+        }
+        input[type="color"]:hover { transform: scale(1.05); }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 4px; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
+
+        .keyframe-marker { position: absolute; width: 12px; height: 12px; background: #ffb703; border-radius: 50%; top: 50%; transform: translate(-50%, -50%); pointer-events: none; border: 2px solid var(--shadow-light); box-shadow: 0 0 8px rgba(255, 183, 3, 0.8), 2px 2px 4px var(--shadow-dark); z-index: 40; }
+
+        canvas {
+            border-radius: 24px; background: var(--bg-color); image-rendering: auto; max-width: 100%; max-height: 100%; object-fit: contain;
+            box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); border: 1px solid var(--border-light); transition: all 0.4s ease;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .loading-overlay { display: none; position: fixed; inset: 0; background: var(--overlay-bg); backdrop-filter: blur(12px); z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        .modal-overlay-bg { background: var(--modal-bg); }
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
