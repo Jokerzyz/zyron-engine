@@ -3,13 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide & Art - Matrix UI Kit | ASCII 艺术引擎原理解析</title>
+    <title>ASCII 艺术原理与创作指南 | ZYRONMATRIX</title>
     
-    <meta name="description" content="深入了解 Matrix UI Kit 背后的渲染原理。学习如何利用 Canvas 将图片与视频转换为极具赛博朋克风格的 ASCII 艺术与矩阵代码雨特效。">
-    <meta name="keywords" content="ASCII艺术教程, 矩阵特效原理, Canvas渲染, 极客视觉设计">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="学习如何把图片和视频转换为 ASCII 艺术：理解亮度采样、字符密度映射、连续文本遮罩、视频序列导出和浏览器本地处理。">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
     <link rel="canonical" href="https://www.zyronmatrix.com/guide.html">
     <link rel="icon" type="image/png" href="/logo.png">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://www.zyronmatrix.com/guide.html">
+    <meta property="og:site_name" content="ZYRONMATRIX">
+    <meta property="og:title" content="ASCII 艺术原理与创作指南 | ZYRONMATRIX">
+    <meta property="og:description" content="从亮度采样、字符映射到视频序列导出，系统理解浏览器里的 ASCII 艺术生成过程。">
+    <meta property="og:image" content="https://www.zyronmatrix.com/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ASCII 艺术原理与创作指南 | ZYRONMATRIX">
+    <meta name="twitter:description" content="学习图片和视频转 ASCII 艺术的核心原理与实用技巧。">
+    <meta name="twitter:image" content="https://www.zyronmatrix.com/logo.png">
+    <meta name="theme-color" content="#0066ff">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "@id": "https://www.zyronmatrix.com/guide.html#article",
+          "headline": "ASCII 艺术原理与创作指南",
+          "description": "学习亮度采样、字符密度映射、连续文本遮罩、视频序列导出和浏览器本地处理。",
+          "url": "https://www.zyronmatrix.com/guide.html",
+          "inLanguage": "zh-CN",
+          "datePublished": "2026-03-16",
+          "dateModified": "2026-08-12",
+          "image": "https://www.zyronmatrix.com/logo.png",
+          "author": {
+            "@type": "Organization",
+            "name": "ZYRONMATRIX",
+            "url": "https://www.zyronmatrix.com/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "ZYRONMATRIX",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.zyronmatrix.com/logo.png"
+            }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "ZYRONMATRIX",
+              "item": "https://www.zyronmatrix.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "ASCII 艺术指南",
+              "item": "https://www.zyronmatrix.com/guide.html"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 
     <link rel="stylesheet" href="/src/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -107,7 +166,7 @@
             <a href="/" class="text-sm font-black text-[var(--accent)] tracking-widest hover:underline uppercase flex items-center gap-2">
                 <span>←</span> 返回主工具
             </a>
-            <h1 class="text-2xl font-black uppercase tracking-wider text-[var(--text-dark)]">Matrix UI <span class="text-[var(--accent)]">GUIDE</span></h1>
+            <h1 class="text-2xl font-black tracking-wider text-[var(--text-dark)]">ASCII 艺术<span class="text-[var(--accent)]">创作指南</span></h1>
         </header>
 
         <!-- SEO 核心文章内容 -->
@@ -116,8 +175,8 @@
             <p>ASCII 艺术是一种基于文字的视觉艺术形式。在早期的计算机时代，由于硬件性能的限制，显示器无法渲染复杂的位图图像（如 JPEG 或 PNG）。当时的极客与黑客们便利用标准的 ASCII 字符集（包括字母、数字以及标点符号）来“拼凑”出各种图形与画面。</p>
             <p>通过巧妙利用不同字符的“视觉密度”（例如，<code>@</code> 或 <code>M</code> 看起来比较黑、比较实，而 <code>.</code> 或 <code>-</code> 看起来比较亮、比较空），创作者可以在终端屏幕上表现出极具立体感的明暗关系。如今，ASCII 艺术已经成为赛博朋克（Cyberpunk）美学中不可或缺的灵魂符号。</p>
 
-            <h2 id="how-matrix-ui-works">2. Matrix UI Kit 的底层渲染引擎揭秘</h2>
-            <p>Matrix UI Kit 并非简单的滤镜叠加，而是运行在浏览器内的实时光栅化引擎（Rasterization Engine）。当我们上传一张图片或一段视频时，引擎在底层的处理分为以下几个精密步骤：</p>
+            <h2 id="how-matrix-ui-works">2. ZYRONMATRIX 的底层渲染过程</h2>
+            <p>ZYRONMATRIX 并非简单地叠加滤镜，而是通过浏览器 Canvas 对图片或视频帧进行采样、亮度映射与重新绘制。处理过程包含以下步骤：</p>
             
             <h3>第一步：色彩空间采样 (Color Space Sampling)</h3>
             <p>引擎会将视频帧绘制在一个离屏的 Canvas (Offscreen Canvas) 上，并将画面切分为无数个像素块（Grid）。通过计算每个区块内的 RGB 色彩平均值，系统能够精确提取出该区域的光度（Luminance）。</p>
@@ -141,7 +200,16 @@
             </ul>
 
             <h2 id="privacy">4. 关于您的隐私与本地渲染</h2>
-            <p>Matrix UI Kit 秉持最高级别的隐私安全原则。所有的视频解码、逐帧切片、色彩提取以及最终的高清 ZIP 打包工作，**全部在您的浏览器本地内存中完成**。没有任何一张图片或视频会被上传到云端服务器。这意味着哪怕您断开网络，在本地环境下依然可以完美运行这款强大的视觉引擎。</p>
+            <p>ZYRONMATRIX 的视频解码、逐帧采样、色彩提取和 ZIP 打包均在浏览器本地完成。图片和视频源文件不会上传到我们的服务器；登录服务仅处理账号认证与保存的参数预设。</p>
+
+            <h2 id="related-tools">5. 直接开始创作</h2>
+            <p>根据素材类型和目标效果，可以进入对应说明页，了解推荐参数后返回主工具进行渲染：</p>
+            <ul>
+                <li><a href="/image-to-ascii.html" class="text-[var(--accent)] hover:underline">图片转 ASCII 艺术</a></li>
+                <li><a href="/video-to-ascii.html" class="text-[var(--accent)] hover:underline">视频转 ASCII 序列</a></li>
+                <li><a href="/dither-image.html" class="text-[var(--accent)] hover:underline">1-bit 图片抖动</a></li>
+                <li><a href="/glassmorphism-generator.html" class="text-[var(--accent)] hover:underline">磨砂玻璃效果生成</a></li>
+            </ul>
 
         </article>
 
@@ -152,9 +220,9 @@
 
     <script>
         // 自动继承主站缓存的深色模式状态
-        if (localStorage.getItem('matrix_ui_theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
+        try {
+            if (localStorage.getItem('matrix_ui_theme') === 'dark') document.body.classList.add('dark-mode');
+        } catch (_) {}
     </script>
 </body>
 </html>

@@ -61,7 +61,7 @@ import { createSafeStorage } from './storage/safe-storage';
 
         const translations = {
             en: {
-                app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
+                app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Free image & video to ASCII, dot matrix, dither, and glass effects",
                 tab_dot: "Dot Matrix", tab_ascii: "Ascii Art", tab_dither: "1-Bit Dither", tab_glass: "Frosted Glass", lbl_source: "Source & Preset", status_synced: "Synced", status_local: "Local Storage", status_sync_err: "Sync Failed", status_conn: "Connecting...",
                 btn_load: "Load Media", no_file: "No file selected...", no_file_preview: "NO MEDIA UPLOADED", opt_custom_preset: "-- Custom (Unsaved) --", tip_save_preset: "Save Preset", tip_del_preset: "Delete Preset", tip_theme: "Toggle Dark/Light Theme",
                 lbl_geometry: "Geometry", btn_reset: "⟲ Reset", lbl_grid: "Grid Density", lbl_keyed: "(KEYED)", btn_add_key: "📍 Add Keyframe", btn_clear_key: "Clear Anims",
@@ -88,14 +88,14 @@ import { createSafeStorage } from './storage/safe-storage';
                 lbl_blur: "Glow Blur", lbl_sharp: "Subject Sharpness", lbl_stripe: "Stripe Width", lbl_disp: "Refraction Disp.", lbl_shading: "Glass Shading", lbl_noise: "Film Noise",
                 lbl_light_int: "Light Intensity", opt_lut: "Global LUT Mapping", opt_spatial: "Spatial Gradient", lbl_col1: "Primary A", lbl_col2: "Secondary B", lbl_angle: "Gradient Angle", lbl_offset: "Gradient Offset", lbl_lut_cols: "LUT Colors (Dark to Bright)",
                 lut_p1: "Classic Blue/Orange", lut_p2: "Cyberpunk", lut_p3: "Toxic", lut_p4: "Sunset", lut_p5: "Aurora",
-                lbl_login_svg: "LOGIN TO UNLOCK", lbl_unlocked_svg: "EXPORT SVG FILE", btn_svg: "SVG", login_title: "Unlock Your Account", login_desc: "Use a verified free account to unlock unlimited image exports and Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN", btn_email_register: "CREATE FREE ACCOUNT", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", btn_verify_email: "VERIFY EMAIL", msg_logged_out: "You have successfully logged out.",
-                msg_auth_fields: "Enter both your email address and password.", msg_auth_verify_sent: "We sent a verification link to your email. Verify your address, then sign in.", msg_auth_verify_required: "Verify your email address before unlocking account features. A new verification link has been sent.",
+                lbl_login_svg: "LOGIN TO UNLOCK", lbl_unlocked_svg: "EXPORT SVG FILE", btn_svg: "SVG", login_title: "Unlock Your Account", login_desc: "Use a verified free account to unlock unlimited image exports and Vector SVG downloads.", btn_google_login: "Continue with Google", btn_email_login: "SIGN IN", btn_email_register: "CREATE FREE ACCOUNT", ph_email: "Email Address", ph_password: "Password", lbl_or: "OR", btn_login_header: "LOGIN", btn_logout: "LOGOUT", btn_verify_email: "VERIFY EMAIL", tip_login: "Sign in or manage your account", msg_logged_out: "You have successfully logged out.",
+                msg_auth_fields: "Enter both your email address and password.", msg_auth_signing_in: "Signing in…", msg_auth_registering: "Creating your account…", msg_auth_google_wait: "Opening Google sign-in…", msg_auth_verify_sent: "We sent a verification link to your email. Verify your address, then sign in.", msg_auth_verify_required: "Verify your email address before unlocking account features. A new verification link has been sent.",
                 msg_auth_invalid_email: "Enter a valid email address.", msg_auth_invalid_credentials: "The email or password is incorrect.", msg_auth_email_used: "This email already has an account. Sign in instead.", msg_auth_weak_password: "Use a stronger password with at least 6 characters.", msg_auth_too_many: "Too many attempts. Wait a moment and try again.", msg_auth_network: "The authentication service is unreachable. Check your connection and retry.", msg_auth_disabled: "This sign-in method is not enabled.", msg_auth_popup_blocked: "The browser blocked the Google sign-in popup. Allow popups and retry.", msg_auth_popup_closed: "Google sign-in was cancelled.", msg_auth_unauthorized_domain: "This website domain is not authorized for Google sign-in.", msg_auth_provider_mismatch: "This email uses a different sign-in method.", msg_auth_user_disabled: "This account has been disabled.", msg_auth_unknown: "Authentication failed. Please retry.",
                 msg_auth_changed: "The signed-in account changed. Please repeat the preset action.", msg_preset_name_invalid: "Preset names must be 1–80 characters and cannot contain a slash.", msg_delete_cloud: "The local preset was removed, but cloud deletion failed.",
                 msg_drop_here: "DROP FILE HERE", msg_err_format: "Only image or video files are supported."
             },
             zh: {
-                app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "Tactile Elements • Organic Claymorphism • High Quality Render",
+                app_title: "ZYRONMATRIX", app_subtitle: "ASCII ENGINE", app_desc: "免费将图片和视频转换为 ASCII、点阵、抖动与玻璃效果",
                 tab_dot: "圆点矩阵 (Dot)", tab_ascii: "ASCII 字符", tab_dither: "像素抖动 (Dither)", tab_glass: "长虹毛玻璃", lbl_source: "Source & Preset", status_synced: "已同步", status_local: "本地存储", status_sync_err: "同步失败", status_conn: "连接中...",
                 btn_load: "载入媒体", no_file: "未选择文件...", no_file_preview: "等待载入媒体", opt_custom_preset: "-- 自定义参数 (未保存) --", tip_save_preset: "保存预设", tip_del_preset: "删除预设", tip_theme: "切换深浅色主题",
                 lbl_geometry: "Geometry", btn_reset: "⟲ 恢复", lbl_grid: "阵列排版密度", lbl_keyed: "(KEYED)", btn_add_key: "📍 打关键帧", btn_clear_key: "清空动画",
@@ -122,8 +122,8 @@ import { createSafeStorage } from './storage/safe-storage';
                 lbl_blur: "高斯模糊发光扩散", lbl_sharp: "发光体清晰度", lbl_stripe: "长虹玻璃槽宽", lbl_disp: "折射扭曲度 (位移)", lbl_shading: "玻璃阴影衰减", lbl_noise: "胶片噪点质感",
                 lbl_light_int: "发光光源亮度强度", opt_lut: "全局映射 (LUT)", opt_spatial: "空间光源 (一半一半)", lbl_col1: "主色彩 A", lbl_col2: "副色彩 B", lbl_angle: "交界角度", lbl_offset: "渐变色彩偏移", lbl_lut_cols: "全局映射色彩预设 (LUT Presets)",
                 lut_p1: "经典蓝橙", lut_p2: "赛博朋克", lut_p3: "生化危机", lut_p4: "日落余晖", lut_p5: "极光幻境",
-                lbl_login_svg: "登录解锁", lbl_unlocked_svg: "导出SVG文件", btn_svg: "SVG", login_title: "解锁账号功能", login_desc: "使用已验证的免费账号解锁无限图片导出和 SVG 下载。", btn_google_login: "使用 Google 继续", btn_email_login: "登录", btn_email_register: "创建免费账号", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", btn_verify_email: "验证邮箱", msg_logged_out: "您已成功退出登录。",
-                msg_auth_fields: "请输入邮箱和密码。", msg_auth_verify_sent: "验证邮件已发送，请先完成邮箱验证，再返回登录。", msg_auth_verify_required: "请先验证邮箱再解锁账号功能，新的验证邮件已经发送。",
+                lbl_login_svg: "登录解锁", lbl_unlocked_svg: "导出SVG文件", btn_svg: "SVG", login_title: "解锁账号功能", login_desc: "使用已验证的免费账号解锁无限图片导出和 SVG 下载。", btn_google_login: "使用 Google 继续", btn_email_login: "登录", btn_email_register: "创建免费账号", ph_email: "电子邮箱", ph_password: "密码", lbl_or: "或者", btn_login_header: "登录", btn_logout: "退出登录", btn_verify_email: "验证邮箱", tip_login: "登录或管理账号", msg_logged_out: "您已成功退出登录。",
+                msg_auth_fields: "请输入邮箱和密码。", msg_auth_signing_in: "正在登录…", msg_auth_registering: "正在创建账号…", msg_auth_google_wait: "正在打开 Google 登录…", msg_auth_verify_sent: "验证邮件已发送，请先完成邮箱验证，再返回登录。", msg_auth_verify_required: "请先验证邮箱再解锁账号功能，新的验证邮件已经发送。",
                 msg_auth_invalid_email: "请输入有效的电子邮箱。", msg_auth_invalid_credentials: "邮箱或密码不正确。", msg_auth_email_used: "该邮箱已经注册，请直接登录。", msg_auth_weak_password: "密码强度不足，请至少输入 6 个字符。", msg_auth_too_many: "尝试次数过多，请稍后再试。", msg_auth_network: "暂时无法连接认证服务，请检查网络后重试。", msg_auth_disabled: "当前登录方式尚未启用。", msg_auth_popup_blocked: "浏览器阻止了 Google 登录窗口，请允许弹窗后重试。", msg_auth_popup_closed: "已取消 Google 登录。", msg_auth_unauthorized_domain: "当前网站域名尚未获得 Google 登录授权。", msg_auth_provider_mismatch: "该邮箱使用了其他登录方式。", msg_auth_user_disabled: "该账号已被停用。", msg_auth_unknown: "登录失败，请稍后重试。",
                 msg_auth_changed: "登录账号已经变化，请重新执行预设操作。", msg_preset_name_invalid: "预设名称需为 1–80 个字符，且不能包含斜杠。", msg_delete_cloud: "本地预设已删除，但云端删除失败。",
                 msg_drop_here: "松开鼠标加载文件", msg_err_format: "仅支持图片或视频文件格式。"
@@ -240,8 +240,10 @@ import { createSafeStorage } from './storage/safe-storage';
         }
 
         function openLoginModal() {
+            setAuthStatus();
             document.getElementById('loginModal')?.classList.remove('hidden');
             document.getElementById('loginModal')?.classList.add('flex');
+            setTimeout(() => document.getElementById('authEmail')?.focus(), 50);
         }
 
         function closeLoginModal() {
@@ -249,17 +251,37 @@ import { createSafeStorage } from './storage/safe-storage';
             document.getElementById('loginModal')?.classList.remove('flex');
             const password = document.getElementById('authPassword');
             if (password) password.value = '';
+            setAuthStatus();
+        }
+
+        function setAuthStatus(message = '', tone = 'neutral') {
+            const status = document.getElementById('authStatus');
+            if (!status) return;
+            status.textContent = message;
+            status.className = `rounded-xl px-4 py-3 text-left text-[11px] font-black leading-relaxed ${message ? '' : 'hidden'} ${tone === 'error' ? 'text-[var(--danger)] bg-red-500/10' : 'text-[var(--accent)] bg-[var(--accent-glow)]'}`;
         }
 
         function showAuthError(error) {
-            return showModal({ title: t('msg_err'), message: t(authErrorTranslationKey(error)), hideCancel: true });
+            const message = t(authErrorTranslationKey(error));
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal && !loginModal.classList.contains('hidden')) {
+                setAuthStatus(message, 'error');
+                return Promise.resolve();
+            }
+            return showModal({ title: t('msg_err'), message, hideCancel: true });
         }
 
         function setAuthButtonsDisabled(disabled) {
             ['authEmailBtn', 'authRegisterBtn', 'authGoogleBtn'].forEach(id => {
                 const button = document.getElementById(id);
-                if (button) button.disabled = disabled;
+                if (button) {
+                    button.disabled = disabled;
+                    button.setAttribute('aria-disabled', String(disabled));
+                    button.classList.toggle('opacity-60', disabled);
+                    button.classList.toggle('cursor-wait', disabled);
+                }
             });
+            document.getElementById('authEmailForm')?.setAttribute('aria-busy', String(disabled));
         }
 
         function setExportControlsLocked(locked) {
@@ -303,6 +325,10 @@ import { createSafeStorage } from './storage/safe-storage';
         }
 
         function applyI18n() {
+            document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+            document.title = currentLang === 'zh'
+                ? '免费图片与视频转 ASCII 艺术生成器 | ZYRONMATRIX'
+                : 'Free Image & Video to ASCII Art Generator | ZYRONMATRIX';
             const langEnBtn = document.getElementById('langEnBtn');
             const langZhBtn = document.getElementById('langZhBtn');
             if (currentLang === 'en') { langEnBtn?.classList.add('text-[var(--accent)]'); langZhBtn?.classList.remove('text-[var(--accent)]'); }
@@ -1026,9 +1052,16 @@ import { createSafeStorage } from './storage/safe-storage';
                 if (unsubscribeAuth) unsubscribeAuth();
                 await new Promise((resolve) => {
                   let waitingForInitialState = true;
+                  const initialStateTimeout = window.setTimeout(() => {
+                    authReady = true;
+                    setCloudStatus('status_local');
+                    updateLoginUI();
+                    finishInitialState();
+                  }, 10000);
                   const finishInitialState = () => {
                     if (!waitingForInitialState) return;
                     waitingForInitialState = false;
+                    window.clearTimeout(initialStateTimeout);
                     resolve();
                   };
                   unsubscribeAuth = authApi.onIdTokenChanged(auth, (user) => {
@@ -1209,6 +1242,7 @@ import { createSafeStorage } from './storage/safe-storage';
             document.getElementById('loginCancelBtn')?.addEventListener('click', closeLoginModal);
 
             document.getElementById('authGoogleBtn')?.addEventListener('click', async () => {
+                setAuthStatus(t('msg_auth_google_wait'));
                 setAuthButtonsDisabled(true);
                 try {
                     await connectFirebase();
@@ -1232,10 +1266,15 @@ import { createSafeStorage } from './storage/safe-storage';
                 email: document.getElementById('authEmail')?.value.trim() ?? '',
                 password: document.getElementById('authPassword')?.value ?? '',
             });
+            ['authEmail', 'authPassword'].forEach(id => {
+                document.getElementById(id)?.addEventListener('input', () => setAuthStatus());
+            });
 
-            document.getElementById('authEmailBtn')?.addEventListener('click', async () => {
+            document.getElementById('authEmailForm')?.addEventListener('submit', async (event) => {
+                event.preventDefault();
                 const { email, password } = readAuthFields();
-                if (!email || !password) { await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_fields'), hideCancel: true }); return; }
+                if (!email || !password) { setAuthStatus(t('msg_auth_fields'), 'error'); return; }
+                setAuthStatus(t('msg_auth_signing_in'));
                 setAuthButtonsDisabled(true);
                 try {
                     await connectFirebase();
@@ -1260,7 +1299,8 @@ import { createSafeStorage } from './storage/safe-storage';
 
             document.getElementById('authRegisterBtn')?.addEventListener('click', async () => {
                 const { email, password } = readAuthFields();
-                if (!email || !password) { await showModal({ title: t('msg_sys_notice'), message: t('msg_auth_fields'), hideCancel: true }); return; }
+                if (!email || !password) { setAuthStatus(t('msg_auth_fields'), 'error'); return; }
+                setAuthStatus(t('msg_auth_registering'));
                 setAuthButtonsDisabled(true);
                 try {
                     await connectFirebase();

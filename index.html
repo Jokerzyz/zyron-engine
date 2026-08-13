@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>ZYRONMATRIX v1.45 | Matrix Effect & Glassmorphism Generator</title>
+    <title>Free Image & Video to ASCII Art Generator | ZYRONMATRIX</title>
     
-    <meta name="description" content="Free online advanced Matrix digital rain, ASCII art, and Glassmorphism generator. Convert images and videos into cyberpunk hacker code streams and frosted glass refraction effects.">
-    <meta name="keywords" content="Matrix effect, ASCII art, ASCII generator, Glassmorphism, frosted glass, video to ASCII, image to text, cyberpunk, digital rain, WebGL, Neumorphism UI">
+    <meta name="description" content="Turn images and videos into ASCII art, dot matrix graphics, 1-bit dithering, and frosted-glass effects. Free local processing with PNG, JPG, SVG, and ZIP export.">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="author" content="ZyronMatrix">
     
@@ -18,22 +17,61 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.zyronmatrix.com/">
-    <meta property="og:title" content="ZYRONMATRIX | Advanced Matrix & Glassmorphism Engine">
-    <meta property="og:description" content="Convert images and videos into cyberpunk ASCII art and frosted glass effects. Supports custom masking and high-quality sequence exports.">
+    <meta property="og:site_name" content="ZYRONMATRIX">
+    <meta property="og:title" content="Free Image & Video to ASCII Art Generator | ZYRONMATRIX">
+    <meta property="og:description" content="Create ASCII art, dot matrix graphics, 1-bit dithering, and frosted-glass effects locally in your browser.">
+    <meta property="og:image" content="https://www.zyronmatrix.com/logo.png">
+    <meta property="og:image:alt" content="ZYRONMATRIX browser-based ASCII art and pixel rendering engine">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Image & Video to ASCII Art Generator | ZYRONMATRIX">
+    <meta name="twitter:description" content="Private browser-based ASCII, dot matrix, dither, and frosted-glass rendering for images and video.">
+    <meta name="twitter:image" content="https://www.zyronmatrix.com/logo.png">
+    <meta name="theme-color" content="#0066ff">
     
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "WebApplication",
-          "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
-          "alternateName": "Matrix Effect & Glassmorphism Terminal",
+          "@type": "WebSite",
+          "@id": "https://www.zyronmatrix.com/#website",
           "url": "https://www.zyronmatrix.com/",
-          "description": "An advanced, browser-based multimedia tool that converts images and videos into Matrix digital rain, custom ASCII text art, and frosted glass refraction effects.",
+          "name": "ZYRONMATRIX",
+          "alternateName": "ZYRONMATRIX ASCII Engine",
+          "inLanguage": ["en", "zh-CN"]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://www.zyronmatrix.com/#organization",
+          "name": "ZYRONMATRIX",
+          "url": "https://www.zyronmatrix.com/",
+          "logo": "https://www.zyronmatrix.com/logo.png",
+          "sameAs": [
+            "https://github.com/Jokerzyz/zyron-engine"
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://www.zyronmatrix.com/#application",
+          "name": "ZYRONMATRIX ASCII & Matrix Effect Generator",
+          "alternateName": "ZYRONMATRIX ASCII Engine",
+          "url": "https://www.zyronmatrix.com/",
+          "description": "A free browser application that converts images and videos into ASCII art, dot matrix graphics, 1-bit dithering, and frosted-glass effects without uploading source media.",
           "applicationCategory": "MultimediaApplication",
           "operatingSystem": "All",
           "browserRequirements": "Requires HTML5 Canvas support",
+          "softwareVersion": "1.46",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Image to ASCII art conversion",
+            "Video to ASCII frame sequence conversion",
+            "Dot matrix rendering",
+            "Bayer and Stucki 1-bit dithering",
+            "Frosted-glass image effects",
+            "Local in-browser media processing",
+            "PNG, JPG, SVG, and ZIP sequence export"
+          ],
+          "publisher": { "@id": "https://www.zyronmatrix.com/#organization" },
           "offers": {
             "@type": "Offer",
             "price": "0",
@@ -77,11 +115,6 @@
 </head>
 <body class="p-4 md:p-6 lg:p-8 selection:bg-[#0066ff] selection:text-white relative">
     
-    <div class="sr-only">
-        <h1>ZYRONMATRIX: Online Matrix Effect & Glassmorphism Video Generator</h1>
-        <p>How to make a Matrix digital rain effect, convert video to ASCII art, or create stunning frosted glass refraction loops? ZYRONMATRIX is a free, powerful, browser-based rendering engine. It transforms images and mp4 videos into dynamic ASCII text art, retro hacker terminal screens, and volumetric 3D frosted glass diseños.</p>
-    </div>
-
     <div class="absolute top-6 left-6 z-50 flex gap-1 neu-inset p-1.5 rounded-2xl border border-white/30 shadow-sm">
         <button id="langEnBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest uppercase">EN</button>
         <button id="langZhBtn" class="neu-btn px-4 py-2 text-[10px] font-black tracking-widest">中文</button>
@@ -105,7 +138,7 @@
                 <div class="w-8 h-8 rounded-full neu-inset flex items-center justify-center shadow-inner">
                     <div class="w-3 h-3 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"></div>
                 </div>
-                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.45</span></h1>
+                <h1 class="text-3xl font-black tracking-tight text-[var(--text-dark)] uppercase"><span data-i18n="app_title">ZYRONMATRIX</span> <span class="text-xl text-[var(--accent)] ml-1">v1.46</span></h1>
                 
                 <div class="flex items-center justify-center gap-3 ml-2">
                     <button id="themeToggleBtn" class="neu-btn w-10 h-10 rounded-full flex items-center justify-center" data-i18n-title="tip_theme">
@@ -114,7 +147,7 @@
                     </button>
                 </div>
             </div>
-            <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Tactile Elements • Organic Claymorphism • High Quality Render</p>
+            <p class="text-[var(--text-muted)] text-sm font-extrabold tracking-wide" data-i18n="app_desc">Free image & video to ASCII, dot matrix, dither, and glass effects</p>
         </header>
 
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-10 xl:gap-14">
@@ -637,7 +670,7 @@
                     <h2 class="text-sm font-black mb-5 text-[var(--text-muted)] tracking-widest uppercase">About ZYRONMATRIX</h2>
                     <div class="space-y-4 text-xs font-bold leading-relaxed text-[var(--text-muted)] opacity-75">
                         <p>ZYRONMATRIX is an advanced, free online rendering engine designed for creative professionals, digital artists, and developers. Operating entirely within your browser, it transforms standard images and videos into stunning visual aesthetics including Cyberpunk Matrix Digital Rain, highly detailed ASCII Art text layouts, 1-bit retro dithering, and volumetric 3D frosted glass (Glassmorphism) effects.</p>
-                        <p>With local processing through HTML5 Canvas, your files remain secure and private. Whether you are generating a hacker-style terminal sequence, designing UI mockups, or exporting vector SVG files, ZYRONMATRIX provides the ultimate control over geometry, color mapping, and spatial gradients without the need to install complex software.</p>
+                        <p>With local processing through HTML5 Canvas, your source media stays in your browser. Create hacker-style terminal sequences, image-to-ASCII artwork, dot matrix graphics, 1-bit dither images, or frosted-glass compositions without installing desktop software.</p>
                     </div>
                 </section>
                 
@@ -650,11 +683,11 @@
                         </div>
                         <div class="space-y-2">
                             <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">Is my data secure and private?</h3>
-                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">Yes! All image and video processing is done client-side directly in your browser using WebGL and Canvas APIs. We do not upload your media files to our servers.</p>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">Yes. Image and video rendering is performed client-side with HTML5 Canvas. Your source media is not uploaded to our servers; account services only store authentication and saved presets.</p>
                         </div>
                         <div class="space-y-2">
                             <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">Why can't I download vector SVGs?</h3>
-                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">SVG generation involves extracting true vector paths from the generated arrays. This is a premium feature designed for designers to scale their creations infinitely. You must create a free account to unlock high-quality SVG exports.</p>
+                            <p class="text-xs font-bold text-[var(--text-muted)] leading-relaxed opacity-75">A verified free account unlocks SVG export. Dot, ASCII, and dither modes create scalable vector elements; the Glass mode SVG contains a raster image because that effect relies on pixel processing.</p>
                         </div>
                         <div class="space-y-2">
                             <h3 class="text-[11px] font-black text-[var(--text-dark)] uppercase tracking-wider opacity-60">How do I assemble the rendered sequence into a video?</h3>
@@ -662,6 +695,17 @@
                         </div>
                     </div>
                 </section>
+
+                <nav aria-label="ZYRONMATRIX tools and learning resources" class="lg:col-span-3 neu-panel p-6 md:p-8">
+                    <h2 class="text-sm font-black mb-5 text-[var(--text-muted)] tracking-widest uppercase">Explore Tools & Guides</h2>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs font-black">
+                        <a class="neu-btn px-4 py-3 text-center" href="/image-to-ascii.html">Image to ASCII</a>
+                        <a class="neu-btn px-4 py-3 text-center" href="/video-to-ascii.html">Video to ASCII</a>
+                        <a class="neu-btn px-4 py-3 text-center" href="/dither-image.html">1-Bit Dither</a>
+                        <a class="neu-btn px-4 py-3 text-center" href="/glassmorphism-generator.html">Frosted Glass</a>
+                        <a class="neu-btn px-4 py-3 text-center" href="/guide.html">ASCII Art Guide</a>
+                    </div>
+                </nav>
             </footer>
         </div>
     </div>
@@ -690,12 +734,13 @@
             <h2 class="text-2xl font-black mb-2 text-[var(--text-dark)]" data-i18n="login_title">Unlock Your Account</h2>
             <p class="text-[11px] font-bold text-[var(--text-muted)] mb-6 leading-relaxed" data-i18n="login_desc">Use a verified free account to unlock unlimited image exports and Vector SVG downloads.</p>
             
-            <div class="space-y-4 mb-6">
+            <form id="authEmailForm" class="space-y-4 mb-6" novalidate>
                 <input type="email" id="authEmail" class="neu-input w-full text-xs py-3" placeholder="Email Address" data-i18n="ph_email">
                 <input type="password" id="authPassword" class="neu-input w-full text-xs py-3" placeholder="Password" data-i18n="ph_password">
-                <button id="authEmailBtn" class="w-full py-3.5 neu-btn text-[11px] font-black tracking-widest text-[var(--accent)] border-[2px] border-[var(--accent)]/10 mt-2" data-i18n="btn_email_login">SIGN IN</button>
-                <button id="authRegisterBtn" class="w-full py-3 neu-btn text-[11px] font-black tracking-widest text-[var(--text-dark)]" data-i18n="btn_email_register">CREATE FREE ACCOUNT</button>
-            </div>
+                <button type="submit" id="authEmailBtn" class="w-full py-3.5 neu-btn text-[11px] font-black tracking-widest text-[var(--accent)] border-[2px] border-[var(--accent)]/10 mt-2" data-i18n="btn_email_login">SIGN IN</button>
+                <button type="button" id="authRegisterBtn" class="w-full py-3 neu-btn text-[11px] font-black tracking-widest text-[var(--text-dark)]" data-i18n="btn_email_register">CREATE FREE ACCOUNT</button>
+                <p id="authStatus" class="hidden rounded-xl px-4 py-3 text-left text-[11px] font-black leading-relaxed" role="status" aria-live="polite"></p>
+            </form>
 
             <div class="flex items-center gap-3 mb-6">
                 <div class="h-px bg-[var(--shadow-dark)] opacity-20 flex-1"></div>
