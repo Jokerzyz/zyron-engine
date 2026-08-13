@@ -1,0 +1,135 @@
+@import './styles.css';
+
+.seo-page {
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.seo-shell {
+  width: min(960px, 100%);
+  margin: 0 auto;
+}
+
+.seo-card {
+  background: var(--bg-color);
+  border: 1px solid var(--border-light);
+  border-radius: 2rem;
+  box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+}
+
+.seo-copy h1 {
+  color: var(--text-dark);
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+.seo-copy h2 {
+  color: var(--text-dark);
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 900;
+  margin: 2.5rem 0 0.8rem;
+}
+
+.seo-copy h3 {
+  color: var(--accent);
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin: 1.5rem 0 0.4rem;
+}
+
+.seo-copy p,
+.seo-copy li,
+.seo-copy td,
+.seo-copy th {
+  color: var(--text-muted);
+  font-weight: 700;
+  line-height: 1.75;
+}
+
+.seo-copy p {
+  margin-bottom: 1rem;
+}
+
+.seo-copy ul,
+.seo-copy ol {
+  margin: 0.75rem 0 1.4rem 1.4rem;
+}
+
+.seo-copy ul { list-style: disc; }
+.seo-copy ol { list-style: decimal; }
+
+.seo-copy strong { color: var(--text-dark); }
+
+.seo-copy a:not(.neu-btn) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.seo-summary {
+  border-left: 4px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0 2rem;
+  background: var(--accent-glow);
+  border-radius: 0 1rem 1rem 0;
+}
+
+.seo-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0 2rem;
+}
+
+.seo-step {
+  padding: 1.2rem;
+  border-radius: 1.25rem;
+  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+
+.seo-step span {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.7rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-weight: 900;
+}
+
+.seo-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0 2rem;
+  border-radius: 1.25rem;
+  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+
+.seo-copy table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.seo-copy th,
+.seo-copy td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.seo-copy th { color: var(--text-dark); }
+
+.seo-faq {
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.seo-faq:last-child { border-bottom: 0; }
+
+@media (min-width: 768px) {
+  .seo-page { padding: 3rem; }
+}

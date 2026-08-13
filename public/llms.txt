@@ -1,0 +1,27 @@
+# ZYRONMATRIX
+
+> ZYRONMATRIX is a free, open-source browser application for converting images and videos into ASCII art, dot matrix graphics, 1-bit dithering, and frosted-glass image effects.
+
+Canonical site: https://www.zyronmatrix.com/
+Source code: https://github.com/Jokerzyz/zyron-engine
+
+## Primary pages
+
+- [Main rendering tool](https://www.zyronmatrix.com/): Upload an image or browser-supported video and render Dot, ASCII, Dither, or Glass effects.
+- [Image to ASCII](https://www.zyronmatrix.com/image-to-ascii.html): Image-to-ASCII workflow, modes, color controls, privacy, and export formats.
+- [Video to ASCII](https://www.zyronmatrix.com/video-to-ascii.html): Video preview, grid keyframes, FPS selection, and PNG sequence export.
+- [1-bit dither](https://www.zyronmatrix.com/dither-image.html): Threshold, Bayer 8x8 ordered dithering, and Stucki error diffusion.
+- [Frosted glass effect](https://www.zyronmatrix.com/glassmorphism-generator.html): Directional stripe refraction, blur, glow, masks, gradients, LUT colors, and film noise.
+- [ASCII art guide](https://www.zyronmatrix.com/guide.html): Chinese-language explanation of sampling, tone mapping, continuous text masks, and export workflow.
+
+## Verified behavior
+
+- Source image and video files are decoded and rendered locally in the browser; they are not uploaded to ZYRONMATRIX servers.
+- Account services handle Firebase authentication and saved parameter presets.
+- Anonymous users receive three local PNG/JPG exports. A verified free account unlocks unlimited image exports, SVG, video sequences, and cloud presets.
+- Dot, ASCII, and Dither SVG exports contain vector elements. Glass SVG export contains an embedded raster image because the effect uses pixel processing.
+- Video sequence export produces numbered PNG frames in a ZIP archive, not a playable video file.
+
+## Technology
+
+Vite, TypeScript, HTML5 Canvas, Firebase Authentication and Firestore, JSZip, requestVideoFrameCallback with a requestAnimationFrame fallback.
